@@ -1,0 +1,14 @@
+cff-version: 1.2.0
+message: "If you use this software or data, please cite it as below."
+title: "Eratosthenes sieve dynamics beyond 2p: code, data and verification"
+authors:
+  - family-names: "Hojka"
+    given-names: "Tomasz"
+version: "0.1.0"
+license: MIT
+keywords:
+  - Eratosthenes sieve
+  - gaps between primes
+  - Jacobsthal function
+  - primorial
+  - driving terms
