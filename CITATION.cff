@@ -6,7 +6,7 @@ authors:
     given-names: "Tomasz"
 version: "0.1.0"
 license: MIT
-repository-code: "https://github.com/hojka1987t-dot/-sieve-dynamics-beyond-2p"
+repository-code: "https://github.com/hojka1987t-dot/sieve-dynamics-beyond-2p"
 keywords:
   - Eratosthenes sieve
   - gaps between primes
