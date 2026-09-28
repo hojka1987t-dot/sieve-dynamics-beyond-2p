@@ -38,6 +38,7 @@ This work gives the exact transition law for **all spans**, resolved by residue 
 | `code/sat_check/` | independent check with a SAT model solved by Google OR-Tools CP-SAT |
 | `code/brute_force/` | full-cycle brute-force verification of all theorems, the "sieve laboratory", the audit |
 | `code/analysis/` | birth of maximal gaps, Holt's models for gaps 84–104, reproduction of Holt's Figure 6 |
+| `paper/` | the paper: LaTeX source and PDF (draft; the final version will carry the DOIs) |
 | `docs/` | working notes with all statements and proofs (Polish, v5) |
 
 ## Running
@@ -54,7 +55,7 @@ The engine, the verifier and the classifier were run in JupyterLab on Windows wi
 ## Third-party data (not included)
 
 - Holt's population data for G(37#): <https://github.com/fbholt/Primegaps-v2>
-- Ziller's complete lists of maximal configurations for n ≤ 54 (file `remainders`), published with his work on Jacobsthal's function
+- Complete lists of maximal configurations for n ≤ 54: ancillary file `remainders.txt` of M. Ziller and J. F. Morack, arXiv:1611.03310
 - OEIS A048670 table with start positions (R. Gerbicz; values n = 62–64 computed by A. Bożek): <https://oeis.org/A048670>
 
 ## References
@@ -63,9 +64,10 @@ The engine, the verifier and the classifier were run in JupyterLab on Windows wi
 - F. B. Holt, *Models for gaps g = 2p₁*, arXiv:2309.16833 (2023)
 - F. B. Holt, *Eratosthenes sieve supports the k-tuple conjecture*, arXiv:2502.20470 (2025)
 - F. B. Holt, *Discrete dynamics in Eratosthenes sieve*, arXiv:2608.26384 (2026)
-- M. Ziller, arXiv:2007.01808 (2020) — differences between consecutive numbers coprime to primorials, table of missing differences, Conjecture 4.1
-- T. Hagedorn, *Computation of Jacobsthal's function h(n) for n < 50*, Math. Comp. 78 (2009)
-- L. Hajdu, N. Saradha, *Disproof of a conjecture of Jacobsthal* (2012)
+- M. Ziller, *On differences between consecutive numbers coprime to primorials*, arXiv:2007.01808 (2020)
+- M. Ziller, J. F. Morack, *Algorithmic concepts for the computation of Jacobsthal's function*, arXiv:1611.03310 (2016)
+- T. Hagedorn, *Computation of Jacobsthal's function h(n) for n < 50*, Math. Comp. 78 (2009), 1073–1087
+- L. Hajdu, N. Saradha, *Disproof of a conjecture of Jacobsthal*, Math. Comp. 81 (2012), 2461–2471
 
 ## AI assistance
 
