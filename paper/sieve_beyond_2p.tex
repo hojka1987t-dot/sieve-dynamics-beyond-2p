@@ -315,7 +315,7 @@ $k$ & missing $g$ & $M^{(q)}_2$ & $h(k)$, birth & basis \\
 
 \paragraph{Result.} All $20$ missing differences up to $k = 30$ are delays; none is caused by a blocked birth. Seventeen are holes in the set of qualifying pair sums, and three --- $186$, $188$ at $k = 21$ and $328$ at $k = 30$ --- lie in the shadow of a maximum produced by a coincident birth. Blocked births do occur as individual events, but in this range they never remove a difference from the table.
 
-\paragraph{Observations in other sieves.} Replacing the primorial chain by sieves built from random subsets and orders of the primes up to $37$ (moduli up to $3 \cdot 10^7$, computed by brute force), we found the birth law exact in all $3689$ sieves; among their $734$ missing differences, $356$ were shadows, none was caused by a blocked birth, and every one of them was born at the next stage. These are observations on small moduli, not evidence about large $k$.
+\paragraph{Observations in other sieves.} Replacing the primorial chain by sieves built from random subsets and orders of the primes up to $37$, we examined $3689$ such sieves (moduli up to $3 \cdot 10^7$, computed by brute force; the survey uses a fixed random seed and is reproducible). The birth law was exact in all of them; among their $734$ missing differences, $356$ were shadows, none was caused by a blocked birth, and every one of them was born at the next stage. These are observations on small moduli, not evidence about large $k$.
 
 \subsection{How maximal gaps arise}\label{sec:maxima}
 
@@ -355,7 +355,7 @@ Convention $|s| < N$ & spans $\ge N$, including $N = 2$ & laws hold (214 + 60 ca
 \caption{Computational verification.}\label{tab:verification}
 \end{table}
 
-\paragraph{Data availability.} Code, data (the matrices $n_{g,j}$ for $41\#$, $43\#$, $47\#$, the pair structures, the classification results and the verification logs) and scripts reproducing every table of this paper are available at \TODO{repository URL and Zenodo DOI}.
+\paragraph{Data availability.} Code, data (the matrices $n_{g,j}$ for $41\#$, $43\#$, $47\#$, the pair structures, the classification results and the verification logs) and the programs used for all computations are available at \TODO{repository URL and Zenodo DOI}. Table~\ref{tab:holt} and the census of Section~\ref{sec:maxima} are reproduced by the scripts in \texttt{code/analysis}, Table~\ref{tab:verification} and the survey of Section~\ref{sec:ziller} by those in \texttt{code/brute\_force}. The classification in Table~\ref{tab:ziller} rests on the result files in \texttt{data/}, produced by the exhaustive searches and the SAT check, whose programs are included; these runs take from hours to about a day.
 
 \section{Open questions}\label{sec:open}
 

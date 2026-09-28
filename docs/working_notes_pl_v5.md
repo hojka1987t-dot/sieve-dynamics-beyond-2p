@@ -1,3 +1,5 @@
+> Notatki robocze (po polsku), wersja 5. Obowiązującą wersją jest artykuł w folderze `paper/`; w razie rozbieżności decyduje artykuł.
+
 # Dynamika sita Eratostenesa ponad granicą 2q — twierdzenia i dowody
 
 *Wersja robocza 5 do weryfikacji. Najlepiej czytać w JupyterLab (podgląd Markdown), gdzie wzory się renderują.*
@@ -191,7 +193,7 @@ W reżimie spokojnym (Wniosek 3.1) $`H(qN) = M^{(q)}_2(N)`$, więc cienie są ni
 
 **Uwaga 3.4 (dziedzina).** Twierdzenie 3 jest sformułowane dla $`g < N`$, a Wnioski 3.1–3.3 dotyczą wszystkich luk $`\mathcal{G}(qN)`$, czyli $`g \le H(qN)`$. Mieszczą się więc w dziedzinie twierdzenia, o ile $`H(qN) \le N`$. **Zachodzi to dla każdego parzystego bezkwadratowego $`N`$ z co najmniej jednym nieparzystym czynnikiem pierwszym i każdej nieparzystej liczby pierwszej $`q \nmid N`$.**
 
-*Dowód.* Korzystamy z klasycznego oszacowania Jacobsthala $`H(M) \le 2^{\omega(M)}`$, gdzie $`\omega(M)`$ to liczba czynników pierwszych $`M`$. Mamy $`\omega(qN) = \omega(N) + 1`$. Jeśli $`\omega(N) \ge 3`$, to $`N \ge 2 \cdot 3 \cdot 5 = 30`$ i każdy kolejny czynnik jest $`\ge 7`$, więc $`2^{\omega(N)+1} \le N`$. Jeśli $`N = 2p`$ z $`p \ge 5`$, to $`H(qN) \le 8 \le 2p`$. Jeśli $`N = 6`$, to luki $`\mathcal{G}(6)`$ to naprzemiennie 4 i 2, a punkty usuwane przez $`q \ge 5`$ są od siebie odległe o co najmniej $`2q \ge 10`$, więc nie usuwają dwóch sąsiednich punktów i $`H(6q) = 6`$. $`\square`$
+*Dowód.* Korzystamy z klasycznego oszacowania Kanolda (Math. Ann. 170, 1967) $`H(M) \le 2^{\omega(M)}`$, gdzie $`\omega(M)`$ to liczba czynników pierwszych $`M`$. Mamy $`\omega(qN) = \omega(N) + 1`$. Jeśli $`\omega(N) \ge 3`$, to $`N \ge 2 \cdot 3 \cdot 5 = 30`$ i każdy kolejny czynnik jest $`\ge 7`$, więc $`2^{\omega(N)+1} \le N`$. Jeśli $`N = 2p`$ z $`p \ge 5`$, to $`H(qN) \le 8 \le 2p`$. Jeśli $`N = 6`$, to luki $`\mathcal{G}(6)`$ to naprzemiennie 4 i 2, a punkty usuwane przez $`q \ge 5`$ są od siebie odległe o co najmniej $`2q \ge 10`$, więc nie usuwają dwóch sąsiednich punktów i $`H(6q) = 6`$. $`\square`$
 
 Wyjątkiem jest tylko $`N = 2`$, gdzie $`H(2q) = 4 > 2`$ — tego przypadku nie rozważamy. Dla primoriali $`N = p_k\#`$, $`k \ge 2`$, daje to $`H(qN) = h(k+1) \le p_k\#`$. Sprawdzono też obliczeniowo: oszacowanie Jacobsthala na 163 modułach i nierówność $`H(qN) \le N`$ na 504 parach $`(N, q)`$, bez wyjątku. Dowody Twierdzeń 1 i 3 same z warunku $`g < N`$ nie korzystają; jest on konwencją, dzięki której człon jest zawsze ciągiem kolejnych luk jednego okresu cyklu.
 ---
@@ -308,6 +310,8 @@ gdzie $`\nu_q(C)`$ to liczba klas reszt zajętych przez $`C`$, a $`B_s(N)`$ to l
 **Lemat 6 (trwałość).** Jeśli $`\nu_q(C) < q`$, to $`n_{s,m}(qN) \ge n_{s,m}(N)`$ — raz obecna konstelacja nie znika. Jeśli $`\nu_q(C) = q`$, to $`s`$ nie występuje w $`\mathcal{G}(qN)`$ ani w $`\mathcal{G}(M)`$ dla żadnego modułu $`M`$ podzielnego przez $`q`$.
 
 *Dowód.* Z Twierdzenia 5: $`n_{s,m}(qN) \ge (q - \nu_q(C))\, n_{s,m}(N) \ge n_{s,m}(N)`$. Gdy $`\nu_q(C) = q`$, dla każdego $`x`$ któryś punkt $`x + c`$, $`c \in C`$, jest podzielny przez $`q`$, a więc nie należy do $`\Omega(M)`$ dla żadnego $`M`$ z $`q \mid M`$. $`\square`$
+
+*Uwaga.* W istocie Lemat 6 to Lemat 2.6 Holta (arXiv 2608.26384) zastosowany do samych wystąpień $`s`$; nowe jest oparte na nim kryterium z Wniosku 5.1.
 
 **Wniosek 5.1 (pierwsze pojawienie się).** Niech $`N_0 \mid N_1 \mid N_2 \mid \dots`$ będzie ciągiem etapów, w którym $`2 \mid N_0`$ i $`N_{i+1} = q_i N_i`$ dla nieparzystych liczb pierwszych $`q_i \nmid N_i`$. Konstelacja $`s`$ pojawia się w tym ciągu po raz pierwszy na etapie $`N_{i+1}`$ wtedy i tylko wtedy, gdy $`n_{s,m}(N_i) = 0`$ i $`B^{(q_i)}_s(N_i) > 0`$.
 

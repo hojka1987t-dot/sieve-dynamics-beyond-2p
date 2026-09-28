@@ -1,0 +1,10 @@
+[
+ {
+  "k+1": 30,
+  "g": 326,
+  "typ": "PARA",
+  "konstelacja": "(72,254)",
+  "X": "84258147263211108962294414255809182974278601",
+  "uwaga": "pair of adjacent gaps (72,254) in G(p_29#); witness X checked by gcd; gives M2 = 326 at k = 30, hence 328 is a shadow"
+ }
+]
