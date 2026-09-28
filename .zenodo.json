@@ -1,0 +1,27 @@
+{
+  "title": "Eratosthenes sieve dynamics beyond 2p: code, data and verification",
+  "upload_type": "software",
+  "description": "Code, data and verification scripts accompanying the preprint by T. Hojka, \"Exact dynamics of Eratosthenes sieve beyond 2p: coincident fusions, births of gaps and missing differences\" (doi:10.5281/zenodo.23007183). Code is licensed under MIT; data and documents under CC BY 4.0.",
+  "creators": [
+    {
+      "name": "Hojka, Tomasz",
+      "affiliation": "Independent researcher"
+    }
+  ],
+  "license": "MIT",
+  "keywords": [
+    "Eratosthenes sieve",
+    "gaps between primes",
+    "Jacobsthal function",
+    "primorial",
+    "driving terms"
+  ],
+  "related_identifiers": [
+    {
+      "identifier": "10.5281/zenodo.23007183",
+      "relation": "isSupplementTo",
+      "resource_type": "publication-preprint",
+      "scheme": "doi"
+    }
+  ]
+}
