@@ -1,7 +1,8 @@
 # Eratosthenes sieve dynamics beyond 2p
 
 **Author:** Tomasz Hojka (independent researcher)
-**Status:** preprint in preparation. This repository contains the code, data and verification scripts that accompany it.
+**Preprint:** <https://doi.org/10.5281/zenodo.23007183>
+This repository contains the code, data and verification scripts that accompany it.
 
 ## What this is about
 
@@ -68,6 +69,12 @@ The engine, the verifier and the classifier were run in JupyterLab on Windows wi
 - M. Ziller, J. F. Morack, *Algorithmic concepts for the computation of Jacobsthal's function*, arXiv:1611.03310 (2016)
 - T. Hagedorn, *Computation of Jacobsthal's function h(n) for n < 50*, Math. Comp. 78 (2009), 1073–1087
 - L. Hajdu, N. Saradha, *Disproof of a conjecture of Jacobsthal*, Math. Comp. 81 (2012), 2461–2471
+
+## How to cite
+
+The paper: T. Hojka, *Exact dynamics of Eratosthenes sieve beyond 2p: coincident fusions, births of gaps and missing differences*, preprint (2026), doi:10.5281/zenodo.23007183.
+
+The code and data: use **Cite this repository** on the GitHub page, or the DOI of the archived release on Zenodo.
 
 ## AI assistance
 

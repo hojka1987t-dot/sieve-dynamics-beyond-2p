@@ -1,10 +1,11 @@
 cff-version: 1.2.0
-message: "If you use this software or data, please cite it as below."
+message: "If you use this software or data, please cite the paper and the software as below."
 title: "Eratosthenes sieve dynamics beyond 2p: code, data and verification"
 authors:
   - family-names: "Hojka"
     given-names: "Tomasz"
-version: "0.1.0"
+    affiliation: "Independent researcher"
+version: "1.0.0"
 license: MIT
 repository-code: "https://github.com/hojka1987t-dot/sieve-dynamics-beyond-2p"
 keywords:
@@ -13,3 +14,12 @@ keywords:
   - Jacobsthal function
   - primorial
   - driving terms
+preferred-citation:
+  type: article
+  status: preprint
+  title: "Exact dynamics of Eratosthenes sieve beyond 2p: coincident fusions, births of gaps and missing differences"
+  authors:
+    - family-names: "Hojka"
+      given-names: "Tomasz"
+  year: 2026
+  doi: "10.5281/zenodo.23007183"
