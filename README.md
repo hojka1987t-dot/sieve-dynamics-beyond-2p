@@ -1,7 +1,8 @@
 # Eratosthenes sieve dynamics beyond 2p
 
 **Author:** Tomasz Hojka (independent researcher)
-**Preprint:** <https://doi.org/10.5281/zenodo.23007183>
+**Preprint:** <https://doi.org/10.5281/zenodo.23007183>  
+**Code and data, release v1.0.0:** <https://doi.org/10.5281/zenodo.23009305>
 This repository contains the code, data and verification scripts that accompany it.
 
 ## What this is about
@@ -74,7 +75,7 @@ The engine, the verifier and the classifier were run in JupyterLab on Windows wi
 
 The paper: T. Hojka, *Exact dynamics of Eratosthenes sieve beyond 2p: coincident fusions, births of gaps and missing differences*, preprint (2026), doi:10.5281/zenodo.23007183.
 
-The code and data: use **Cite this repository** on the GitHub page, or the DOI of the archived release on Zenodo.
+The code and data: T. Hojka, *Eratosthenes sieve dynamics beyond 2p: code, data and verification*, version v1.0.0 (2026), doi:10.5281/zenodo.23009305.
 
 ## AI assistance
 
