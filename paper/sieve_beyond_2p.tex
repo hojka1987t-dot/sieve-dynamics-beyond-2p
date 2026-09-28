@@ -1,0 +1,388 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[a4paper,margin=2.6cm]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{booktabs}
+\usepackage{hyperref}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\G}{\mathcal{G}}
+\newcommand{\D}{\mathcal{D}}
+\newcommand{\C}{\mathcal{C}}
+\newcommand{\TODO}[1]{\textbf{[#1]}}
+
+\title{Exact dynamics of Eratosthenes sieve beyond $2p$:\\ coincident fusions, births of gaps and missing differences}
+\author{Tomasz Hojka\\ \small Independent researcher}
+\date{\small Draft --- September 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+At each stage of Eratosthenes sieve the integers coprime to a modulus $N$ form a periodic cycle of gaps $\G(N)$. F.~B.~Holt showed that the populations of gaps and constellations, together with their driving terms, evolve by an exact linear system as long as the span is smaller than twice the next prime $q$. Beyond that threshold several points of one driving term may be removed in the same image, and the lengths of the resulting terms were not determined. We give the exact transition law for all spans: the points of a driving term split into residue classes modulo $q$, each class is removed in exactly one of the $q$ images, and this determines every image. Consequences include a ladder of thresholds (classes of $2,3,4,5$ points appear from spans $2q, 6q, 8q, 12q$), a form in binomial moments with nonnegative sources, an exact birth law for gaps and constellations, a criterion for the first appearance of a constellation, and a sufficient condition for the exactness of Holt's Markov chain. As applications we extend Holt's exact models to gaps $84 \le g \le 104$, reproduce the pre-linear rows of his worked example, classify all $20$ missing differences in Ziller's table up to $k = 30$ (all are delays; $17$ holes and $3$ shadows; none is caused by a blocked birth), and describe how the maximal gaps of $\G(p_n\#)$ arise for $n \le 64$. All theorems are also verified computationally; code and data accompany the paper.
+\end{abstract}
+
+\section{Introduction}
+
+For a prime $p$ let $p\#$ denote the product of all primes up to $p$. The integers coprime to $p\#$ --- the candidates that survive Eratosthenes sieve up to $p$ --- form a periodic set; the sequence of differences between consecutive elements over one period is the \emph{cycle of gaps} $\G(p\#)$, of length $\varphi(p\#)$ and span $p\#$. Holt and Rudd \cite{HR15} observed that $\G(p_{k+1}\#)$ arises from $\G(p_k\#)$ by a simple recursion: concatenate $p_{k+1}$ copies of the cycle and fuse adjacent gaps at the positions of the multiples of $p_{k+1}$. In a series of papers \cite{HR15,Ho23,Ho25,Ho26} Holt developed this into a discrete dynamical system. A central notion is that of a \emph{driving term}: a run of consecutive gaps whose sum equals a given gap $g$ (or which contains a given constellation $s$), and which can turn into $g$ (or into $s$) at a later stage by fusions. The populations $n_{g,j}(p\#)$ of driving terms of span $g$ and length $j$ obey the linear recursion
+\[
+  n_{g,j}(qN) = (q-j-1)\, n_{g,j}(N) + j\, n_{g,j+1}(N)
+\]
+with explicit eigenstructure, which yields exact models for the relative populations of gaps and constellations at all later stages of the sieve.
+
+This recursion holds under a restriction: the span must be smaller than twice the next prime. For larger spans two fusions can fall into the same image of a driving term. Holt notes that the minimum distance between fusions is $2p_{k+1}$ \cite[Obs.~2.3]{Ho26}, that for spans below $2p_1$ all fusions of a constellation fall into different images \cite[Lemma~2.4]{Ho26}, and that for gaps beyond $2p_1$ the counts of driving terms of various lengths could not be determined \cite{HR15,Ho23}; the single case $g = 2p_1$ was handled by a special first iteration \cite{Ho23}. Several fusions at the \emph{boundary} of one image are accounted for in his aggregate count through the number $\nu_s(p)$ of residue classes covered by the boundary points \cite[Lemma~2.5, Lemma~2.7]{Ho26}. What remained open is the case of several \emph{interior} fusions in the same image, which changes the distribution of lengths.
+
+\paragraph{Main result.} We show that the transition from $\G(N)$ to $\G(qN)$ is determined exactly, for every span, by the partition of the points of a driving term into residue classes modulo $q$: each class is removed in exactly one of the $q$ images, and the remaining images are untouched (Theorem~\ref{thm:transition}). Holt's recursion is the special case in which all classes are singletons.
+
+\paragraph{Consequences.} Section~\ref{sec:transition} derives a ladder of thresholds for the size of the classes (Corollary~\ref{cor:ladder}) and a form of the dynamics in binomial moments, in which the nonlinearity appears only as a nonnegative source (Theorem~\ref{thm:moments}). Section~\ref{sec:births} gives an exact birth law for gaps and constellations (Theorem~\ref{thm:birth}), a criterion for the first appearance of a constellation (Corollary~\ref{cor:first}), and the description of the set of gap lengths $\D(qN)$ in terms of $\G(N)$. Section~\ref{sec:chain} identifies the exact process on shapes of driving terms and gives a sufficient condition for Holt's Markov chain on lengths to be exact (Theorem~\ref{thm:chain}).
+
+\paragraph{Applications} (part~2 of this draft). We extend Holt's exact models from gaps $g \le 82$ to $g \le 104$, which includes the gaps $84 \le g \le 90$ named in \cite{Ho26} as a current goal; reproduce the rows of Holt's worked example \cite[Fig.~6]{Ho26} that lie outside the linear model; classify all missing differences in Ziller's table \cite{Zi20} up to $k=30$; and describe how the maximal gaps of $\G(p_n\#)$ --- the values of Jacobsthal's function for primorials, OEIS A048670 --- arise from the previous cycle for $n \le 64$.
+
+\paragraph{What is not claimed.} All results concern the cycles $\G(N)$; nothing is claimed about the actual gaps between primes. Ziller's Conjecture~4.1 \cite{Zi20} is reformulated, not proved. The condition in Theorem~\ref{thm:chain} is sufficient; its necessity is only observed. Statements marked as computed or observed rest on computation and are labelled as such.
+
+\section{Setting and notation}\label{sec:setting}
+
+Throughout, $N$ is a squarefree integer with $2 \mid N$, and $q$ is an odd prime with $q \nmid N$. The main case is $N = p_k\#$ and $q = p_{k+1}$. Let $\Omega(N) = \{x \in \mathbb{Z} : \gcd(x,N) = 1\}$, a set periodic modulo $N$. The cycle of gaps $\G(N)$ is the sequence of differences of consecutive elements of $\Omega(N)$ over one period; $\D(N)$ is the set of gap lengths occurring in $\G(N)$ and
+\[
+  H(N) := \max \D(N)
+\]
+is the largest gap, the value of Jacobsthal's function at $N$. For primorials we write $\D(k) := \D(p_k\#)$ and $h(k) := H(p_k\#)$, as in \cite{Zi20}.
+
+\begin{definition}[Constellations and driving terms]
+A \emph{constellation} is a finite sequence $s = (s_1,\dots,s_m)$ of even positive integers with span $|s| = s_1+\dots+s_m$; its points are $C = \{c_0 = 0 < c_1 < \dots < c_m = |s|\}$, $c_i = s_1 + \dots + s_i$. We assume $0 < |s| < N$. A \emph{driving term for $s$} in $\G(N)$ is a residue $x \bmod N$ with $x + c \in \Omega(N)$ for all $c \in C$. Its point set is
+\[
+  P(x) = \{ t \in \{0, 1, \dots, |s|\} : x + t \in \Omega(N) \} \supseteq C,
+\]
+its \emph{length} is $J = |P(x)| - 1$ (the number of gaps of $\G(N)$ it spans), and $E(x) = P(x) \setminus C$ is the set of its \emph{extra points}. We write $n_{s,J}(N)$ for the number of driving terms for $s$ of length $J$; the occurrences of $s$ itself are those with $J = m$. For a single gap ($m = 1$, $s = (g)$) we write $n_{g,j}(N)$.
+\end{definition}
+
+The condition $|s| < N$ is a convention ensuring that a driving term lies within one period of the cycle; none of the proofs below uses it (Remark~\ref{rem:domain}). In Holt's terms, a driving term for $s$ becomes $s$ through \emph{interior fusions} (removal of extra points), while a \emph{boundary fusion} (removal of a point of $C$) eliminates it as a driving term for $s$ \cite[\S2.1]{Ho26}.
+
+\paragraph{Images and classes.} For $x \bmod N$ the $q$ residues $X \bmod qN$ with $X \equiv x \pmod N$ are $X_i = x + iN$, $0 \le i < q$; we call them the \emph{images} of $x$. For a driving term $x$ we partition $P(x)$ into classes of congruence modulo $q$ and denote the set of classes by $\C(x)$. For a finite set $A$, $\nu_q(A)$ denotes the number of residue classes modulo $q$ occupied by $A$; thus $|\C(x)| = \nu_q(P(x))$, and $\nu_q(C)$ is Holt's $\nu_s(q)$.
+
+\section{The transition law}\label{sec:transition}
+
+\begin{lemma}\label{lem:parity}
+For $t, t' \in P(x)$ we have $t \equiv t' \pmod q$ if and only if $2q \mid t - t'$.
+\end{lemma}
+
+\begin{proof}
+Since $2 \mid N$, all elements of $\Omega(N)$ are odd, so $t - t' = (x+t) - (x+t')$ is even; for even $d$ and odd prime $q$, $q \mid d \iff 2q \mid d$.
+\end{proof}
+
+This is the quantitative content of Holt's observation that the minimum distance between fusions is $2p_{k+1}$ \cite[Obs.~2.3]{Ho26}.
+
+\begin{lemma}\label{lem:images}
+The images $X_0, \dots, X_{q-1}$ of $x$ run through all residues modulo $q$, each exactly once.
+\end{lemma}
+
+\begin{proof}
+$\gcd(N, q) = 1$, so $i \mapsto iN \bmod q$ is a bijection of $\mathbb{Z}/q$.
+\end{proof}
+
+\begin{lemma}\label{lem:survival}
+If $X \equiv x \pmod N$, then $X + t \in \Omega(qN)$ if and only if $x + t \in \Omega(N)$ and $q \nmid X + t$.
+\end{lemma}
+
+\begin{proof}
+$\gcd(X+t, qN) = 1$ iff $\gcd(X+t, N) = 1$ and $q \nmid X+t$, and $X + t \equiv x + t \pmod N$.
+\end{proof}
+
+\begin{theorem}[Transition law]\label{thm:transition}
+Let $x$ be a driving term for $s$ of length $J$ in $\G(N)$, with classes $\C = \C(x)$. Among the $q$ images of $x$:
+\begin{enumerate}
+\item for each class $K \in \C$ there is exactly one image $X_K$ in which $q \mid X_K + t$ for all $t \in K$ and for no $t \in P(x) \setminus K$;
+\item the remaining $q - |\C|$ images contain no point divisible by $q$.
+\end{enumerate}
+Consequently the images of type 2 are driving terms for $s$ of length $J$ in $\G(qN)$; the image $X_K$ with $K \cap C = \emptyset$ is a driving term for $s$ of length $J - |K|$; and the image $X_K$ with $K \cap C \ne \emptyset$ is not a driving term for $s$. Every driving term for $s$ in $\G(qN)$ arises in this way from exactly one driving term in $\G(N)$ and exactly one of its images. Hence
+\begin{equation}\label{eq:transition}
+  n_{s,J'}(qN) = \sum_{x} \Big( [\,J(x) = J'\,]\,\big(q - |\C(x)|\big) + \#\{ K \in \C(x) : K \cap C = \emptyset,\ J(x) - |K| = J' \} \Big),
+\end{equation}
+the sum running over all driving terms for $s$ in $\G(N)$.
+\end{theorem}
+
+\begin{proof}
+$q \mid X + t$ iff $X \equiv -t \pmod q$. The set $\{-t \bmod q : t \in P(x)\}$ has exactly $|\C|$ elements, one for each class. By Lemma~\ref{lem:images} each residue modulo $q$ is taken by exactly one image; the image with residue $-t$ removes exactly the points of the class of $t$, and the other $q - |\C|$ images remove none. By Lemma~\ref{lem:survival} the points of $\Omega(qN)$ in $[X, X + |s|]$ are the points of $P(x)$ minus the removed class. If the removed class meets $C$, a point of $s$ is lost; otherwise $|K|$ extra points are removed and the length drops by $|K|$. Conversely, if $X$ is a driving term for $s$ in $\G(qN)$, then by Lemma~\ref{lem:survival} $x = X \bmod N$ has $x + c \in \Omega(N)$ for all $c \in C$, so $x$ is a driving term in $\G(N)$ and $X$ is one of its images; $x$ is determined by $X$.
+\end{proof}
+
+\begin{remark}[Holt's recursion]\label{rem:holt}
+If no two points of $P(x)$ are congruent modulo $q$ --- by Lemma~\ref{lem:parity} this holds whenever $|s| < 2q$ --- all classes are singletons, $|\C(x)| = J + 1$, and there are $J - m$ extra points. Then \eqref{eq:transition} becomes
+\[
+  n_{s,J}(qN) = (q - J - 1)\, n_{s,J}(N) + (J + 1 - m)\, n_{s,J+1}(N),
+\]
+which for gaps ($m = 1$) is the recursion of Holt and Rudd \cite[Thm.~3.2]{HR15}, and for constellations the recursion underlying \cite[Fig.~7]{Ho26}. Theorem~\ref{thm:transition} determines the lengths also when several interior fusions fall into one image, the case left open in \cite{HR15,Ho23}.
+\end{remark}
+
+\begin{corollary}[Ladder of thresholds]\label{cor:ladder}
+A class with $r \ge 2$ points has its extreme points at distance at least $2q(r-1)$, a positive multiple of $2q$. If moreover $3 \mid N$ and $q \ne 3$, a class with three points spans at least $6q$.
+\end{corollary}
+
+\begin{proof}
+The first statement follows from Lemma~\ref{lem:parity}. For the second, let $t_1 < t_2 < t_3$ lie in one class, $t_2 = t_1 + 2qa$, $t_3 = t_2 + 2qb$ with $a, b \ge 1$. If $a = b = 1$, the residues of $t_1, t_1 + 2q, t_1 + 4q$ modulo $3$ are $t_1, t_1 - q, t_1 + q$, all three residues since $3 \nmid q$; one of the points would be divisible by $3$, contradicting $3 \mid N$. Hence $a + b \ge 3$.
+\end{proof}
+
+Hagedorn's bounds for the number of positions a prime can remove \cite[Prop.~3.3]{Ha09} translate into further thresholds: in the presence of the primes $3$ and $5$ and for $q > 5$, classes of four points require span at least $8q$ and classes of five points at least $12q$. In all our tests (Section~\ref{sec:verification}, part~2) the first classes of $2, 3, 4, 5$ points occur exactly at the spans $2q, 6q, 8q, 12q$. In particular, for $3 \mid N$ and $|s| < 6q$ all classes have at most two points, at distance $2q$ or $4q$.
+
+\begin{theorem}[Moment form]\label{thm:moments}
+For $k \ge 0$ let $S_k(s, N) = \sum_J \binom{J - m}{k}\, n_{s,J}(N)$, the number of pairs (driving term, $k$-subset of its extra points), and for a finite set $A$ let $W_N(A) = \#\{x \bmod N : x + a \in \Omega(N)\ \forall a \in A\}$. Then
+\[
+  S_k(s, N) = \sum_{\substack{T \subseteq \{1, \dots, |s|-1\} \setminus C\\ |T| = k}} W_N(C \cup T),
+  \qquad
+  S_k(s, qN) = (q - m - 1 - k)\, S_k(s, N) + \Pi_k(s, N),
+\]
+where
+\[
+  \Pi_k(s, N) = \sum_{|T| = k} \big( m + 1 + k - \nu_q(C \cup T) \big)\, W_N(C \cup T) \;\ge\; 0 .
+\]
+Moreover $n_{s,m}(N) = \sum_{k \ge 0} (-1)^k S_k(s, N)$.
+\end{theorem}
+
+\begin{proof}
+A pair $(x, T)$ with $x + a \in \Omega(N)$ for $a \in C \cup T$ is exactly a driving term $x$ together with a $k$-subset $T$ of its extra points, which gives the first identity. By the Chinese remainder theorem $W_{qN}(A) = W_N(A)\,(q - \nu_q(A))$, since the condition modulo $q$ excludes exactly $\nu_q(A)$ residues. Writing $q - \nu_q(A) = (q - |A|) + (|A| - \nu_q(A))$ with $|A| = m + 1 + k$ gives the recursion; $|A| - \nu_q(A) \ge 0$ counts coincidences modulo $q$. The last identity is binomial inversion, $\sum_k (-1)^k \binom{J-m}{k} = [J = m]$.
+\end{proof}
+
+For $k = 0$ the theorem gives $S_0(s, qN) = (q - \nu_q(C))\, S_0(s, N)$, the aggregate count of Holt \cite[Thm.~1.1, Lemma~2.7]{Ho26} (for gaps \cite[Cor.~5.3]{HR15}). The coefficients $q - m - 1 - k$ are the eigenvalues of Holt's linear system and the $S_k$ are its left-eigenvector coordinates \cite[\S3]{Ho26}; in these coordinates the nonlinearity is a nonnegative source, and decreases of a population can arise only through the alternating sum for $n_{s,m}$.
+
+\section{Births}\label{sec:births}
+
+\begin{theorem}[Birth law]\label{thm:birth}
+\[
+  n_{s,m}(qN) = \big(q - \nu_q(C)\big)\, n_{s,m}(N) + B^{(q)}_s(N),
+\]
+where $B^{(q)}_s(N)$ is the number of driving terms for $s$ in $\G(N)$ whose extra points form a single residue class modulo $q$ that is disjoint from the classes of the points of $C$.
+\end{theorem}
+
+\begin{proof}
+Apply Theorem~\ref{thm:transition} with target length $m$. Occurrences of $s$ in $\G(N)$ have $P = C$ and keep $q - \nu_q(C)$ untouched images. A longer driving term yields an occurrence of $s$ exactly when the removed class equals its whole set of extra points and contains no point of $C$, and then it yields exactly one.
+\end{proof}
+
+For a gap ($s = (g)$) we write $e_g = [\,2q \mid g\,]$, so that $q - \nu_q(\{0, g\}) = q - 2 + e_g$. In the language of constellations of consecutive gaps $(a_1, \dots, a_j)$, $j \ge 2$, of $\G(N)$ with sum $g$, the condition of Theorem~\ref{thm:birth} reads: $2q \nmid a_1$, $2q \nmid a_j$, and $2q \mid a_i$ for $1 < i < j$ (Lemma~\ref{lem:parity}). For $3 \mid N$ and $g < 6q$ only pairs $(a, b)$ and triples $(u, v, w)$ with $v \in \{2q, 4q\}$ occur. A pair with $2q \mid a$ or $2q \mid b$ does not produce a gap: we call this a \emph{blocked birth}. A triple whose middle gap is a multiple of $2q$ and whose end gaps are not produces a gap of length $u + v + w$ in one image: a \emph{coincident birth}.
+
+\begin{lemma}[Persistence]\label{lem:persistence}
+If $\nu_q(C) < q$, then $n_{s,m}(qN) \ge n_{s,m}(N)$. If $\nu_q(C) = q$, then $s$ occurs in no $\G(M)$ with $q \mid M$.
+\end{lemma}
+
+\begin{proof}
+The first part follows from Theorem~\ref{thm:birth}; the second because every $x$ then has a point $x + c$, $c \in C$, divisible by $q$.
+\end{proof}
+
+In substance this is Holt's Lemma~2.6 \cite{Ho26} applied to the occurrences of $s$ itself.
+
+\begin{corollary}[First appearance]\label{cor:first}
+Let $N_0 \mid N_1 \mid \cdots$ with $2 \mid N_0$ and $N_{i+1} = q_i N_i$ for odd primes $q_i \nmid N_i$. The constellation $s$ occurs for the first time in this chain at $N_{i+1}$ if and only if $n_{s,m}(N_i) = 0$ and $B^{(q_i)}_s(N_i) > 0$.
+\end{corollary}
+
+\begin{proof}
+If $s$ occurs in $\G(N_{i+1})$ it is admissible modulo every prime dividing $N_{i+1}$; had it occurred at some $N_r$ with $r < i$, Lemma~\ref{lem:persistence} applied to $q_r, \dots, q_{i-1}$ would give an occurrence in $\G(N_i)$. The converse follows from Theorem~\ref{thm:birth}.
+\end{proof}
+
+\begin{corollary}[Calm regime]\label{cor:calm}
+If all gaps of $\G(N)$ are smaller than $2q$, then for every even $g$ with $2 \le g < N$
+\[
+  n_{g,1}(qN) = (q - 2 + e_g)\, n_{g,1}(N) + n_{g,2}(N),
+\]
+\[
+  \D(qN) = \D(N) \cup \{ a + b : (a, b) \text{ adjacent gaps of } \G(N) \},
+  \qquad H(qN) = \max\{ a + b \}.
+\]
+\end{corollary}
+
+\begin{proof}
+No gap is a multiple of $2q$, so every pair qualifies and no constellation with a middle gap divisible by $2q$ exists. $\D(N) \subseteq \D(qN)$ because $q - 2 + e_g \ge 1$.
+\end{proof}
+
+\begin{remark}[Domain]\label{rem:domain}
+The corollaries concern gaps up to $H(qN)$ while the convention of Section~\ref{sec:setting} requires spans below $N$. This is consistent: $H(qN) \le N$ for every even squarefree $N$ with an odd prime factor. Indeed, by Kanold's bound $H(M) \le 2^{\omega(M)}$ \cite{Ka67}; if $\omega(N) \ge 3$ then $2^{\omega(N)+1} \le N$; if $N = 2p$ with $p \ge 5$ then $H(qN) \le 8 \le 2p$; and for $N = 6$ the gaps of $\G(6)$ alternate $4, 2$ and a prime $q \ge 5$ cannot remove two adjacent points, so $H(6q) = 6$. (For $N = 2$ one has $H(2q) = 4 > 2$.) The proofs of Theorems~\ref{thm:transition} and~\ref{thm:birth} do not use the convention at all, and our tests confirm the laws also for spans $\ge N$.
+\end{remark}
+
+For primorials, the known values of Jacobsthal's function give $h(k) < 2p_{k+1}$ for all $k \le 18$ ($h(18) = 132 < 134$), while $h(19) = 152 \ge 142 = 2p_{20}$. Hence for $k \le 18$
+\[
+  \D(k+1) = \D(k) \cup \{\text{sums of two adjacent gaps of } \G(p_k\#)\}, \qquad h(k+1) = \max\{\text{such sums}\},
+\]
+and $k + 1 = 20$ is the first stage at which blocked and coincident births are possible. Ziller observed that $h(k) > 2p_k$ for $k > 17$ \cite[\S4]{Zi20}; the condition relevant here compares $h(k)$ with $2p_{k+1}$.
+
+\begin{corollary}[Missing differences]\label{cor:missing}
+An even $g$ with $2 \le g < H(qN)$ is missing from $\D(qN)$ if and only if $n_{g,1}(N) = 0$ and $B^{(q)}_g(N) = 0$. Let $M^{(q)}_2(N)$ be the largest sum $a + b$ over pairs of adjacent gaps of $\G(N)$ with $2q \nmid a$, $2q \nmid b$. A missing difference $g$ is
+\begin{itemize}
+\item by cause: a \emph{delay} if no pair of adjacent gaps of $\G(N)$ sums to $g$, and a \emph{blocked birth} if such pairs exist but each contains a gap divisible by $2q$;
+\item by position: a \emph{hole} if $g < M^{(q)}_2(N)$, and a \emph{shadow} if $M^{(q)}_2(N) < g < H(qN)$; in the latter case the maximum $H(qN)$ arises from a coincident birth.
+\end{itemize}
+In the calm regime every missing difference is a hole and a delay.
+\end{corollary}
+
+\begin{corollary}[Maximal gaps]\label{cor:max}
+The largest gap $H(qN)$ is the maximum of $H(N)$ and of all spans $g$ with $B^{(q)}_g(N) > 0$. If it is attained by a qualifying constellation of length $j$, then in each maximal interval of $\G(qN)$ produced by it the prime $q$ alone removes exactly $j - 1$ points. For $3 \mid N$ and $H(qN) < 6q$ this is one point for a pair birth and two points, at distance $2q$ or $4q$, for a coincident birth.
+\end{corollary}
+
+\section{The process on shapes and Holt's chain}\label{sec:chain}
+
+Let $m_P(N)$ be the number of driving terms for $s$ with $P(x) = P$, the population of the \emph{shape} $P$.
+
+\begin{theorem}\label{thm:chain}
+For every span the shape populations evolve by the exact linear system
+\[
+  m_{P'}(qN) = \sum_P m_P(N)\, T_q(P, P'),
+\]
+where $T_q(P, P) = q - |\C(P)|$, $T_q(P, P \setminus K) = 1$ for every class $K \in \C(P)$ with $K \cap C = \emptyset$, and all other coefficients are zero. Holt's chain on lengths is the aggregation of shapes of equal length. If no populated shape has two points congruent modulo $q$ --- in particular if $|s| < 2q$ --- the coefficients depend only on the length, $T(J \to J) = q - J - 1$ and $T(J \to J - 1) = J - m$, and Holt's chain is exact.
+\end{theorem}
+
+\begin{proof}
+The system is Theorem~\ref{thm:transition}. With singleton classes $|\C(P)| = J + 1$ and there are $J - m$ classes disjoint from $C$, each of one point.
+\end{proof}
+
+\begin{remark}
+The condition is sufficient, not claimed necessary: contributions of different shapes have different signs and could in principle cancel. In all tested cases in which some populated shape contained two congruent points, Holt's chain was inexact ($44$ of $44$ in the main test, over $200$ cases in the audit).
+\end{remark}
+
+\section{Applications}\label{sec:applications}
+
+\subsection{Holt's exact models for gaps $84 \le g \le 104$}\label{sec:holt}
+
+Holt's exact models require initial conditions $n_{g,j}(p_0\#)$ at a stage after which every step is linear for the gap considered, that is $g < 2p_1$ for the prime $p_1$ following $p_0$. With initial conditions from $\G(37\#)$ this gives the models for $g \le 82$; the gaps $84 \le g \le 90$ are named in \cite[\S5]{Ho26} as a current goal.
+
+We computed the complete matrices $n_{g,j}(p\#)$ for $p = 41$ ($g \le 110$), $p = 43$ ($g \le 104$) and $p = 47$ ($g \le 104$). Since $2 \cdot 53 = 106 > 104$, every step from $47\#$ on is linear for $g \le 104$, so $n_{g,j}(47\#)$ are exact initial conditions, with $p_0 = 47$, for all gaps up to $104$. They pass three independent checks.
+\begin{enumerate}
+\item The transitions $37\# \to 41\# \to 43\# \to 47\#$, all of which contain spans beyond $2q$, are reproduced exactly by Theorem~\ref{thm:transition} from Holt's data for $\G(37\#)$ and our pair structures ($309$, $225$ and $153$ cells).
+\item The populations of gaps in $\G(53\#)$ obtained from $n_{g,j}(47\#)$ by one linear step agree with an independently computed profile of $\G(53\#)$ for all even $g \le 104$ ($52$ of $52$).
+\item The leading coefficient of Holt's model, $\ell_1 = \sum_j w_{g,j}(47\#)$, where $w_{g,j}(47\#)$ is $n_{g,j}(47\#)$ divided by the number $\prod_{3 \le p \le 47}(p-2)$ of gaps $2$ in $\G(47\#)$, equals the Hardy--Littlewood constant $\prod_{q \mid g,\ q > 2} \frac{q-1}{q-2}$ \cite[eq.~(1.3)]{Ho26}, \cite{HL23} exactly, as a rational number, for all eleven gaps.
+\end{enumerate}
+Table~\ref{tab:holt} lists the first coefficients $\ell_j = \sum_{i \ge j} \binom{i-1}{j-1} w_{g,i}(47\#)$ of Holt's expansion \cite[eq.~(1.2)]{Ho26}; the complete matrices are in the accompanying data. Evaluating the models shows how slowly large gaps approach their limits: at $p \approx 10^5$ the relative populations of the gaps $84$--$104$ have reached only between $0.4\%$ and $1.2\%$ of $\ell_1$, in line with the parameter $\lambda = \Theta(1/\ln p)$ of \cite{Ho26}.
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{rrrr}
+\toprule
+$g$ & $\ell_1$ (= HL constant) & $\ell_2$ & $\ell_3$ \\
+\midrule
+84 & 2.400000 & 25.8583 & 129.4360 \\
+86 & 1.024390 & 11.4282 & 59.3230 \\
+88 & 1.111111 & 12.5253 & 65.7569 \\
+90 & 2.666667 & 31.1566 & 169.9885 \\
+92 & 1.047619 & 12.6201 & 71.1408 \\
+94 & 1.022222 & 12.4851 & 71.4527 \\
+96 & 2.000000 & 24.9092 & 145.4980 \\
+98 & 1.200000 & 15.3165 & 91.7893 \\
+100 & 1.333333 & 17.2173 & 104.4522 \\
+102 & 2.133333 & 28.4414 & 178.3882 \\
+104 & 1.090909 & 14.8365 & 95.0951 \\
+\bottomrule
+\end{tabular}
+\caption{Coefficients of Holt's exact models for the gaps $84 \le g \le 104$, initial conditions at $p_0 = 47$.}\label{tab:holt}
+\end{table}
+
+\paragraph{Holt's worked example.} For the constellation $s = 2,10,2,10,2$ ($|s| = 26$) Holt lists the populations of $s$ and its driving terms of lengths $5, 6, 7$ at $p = 5, 7, 11, 13$ \cite[Fig.~6]{Ho26}: $(0,0,1)$, $(1,0,2)$, $(6,4,8)$, $(52,44,48)$, and notes that the linear system holds from $p = 13$ on. The three transitions $5 \to 7$, $7 \to 11$ and $11 \to 13$ lie outside his model ($|s| \ge 2q$). Theorem~\ref{thm:transition} derives each of them exactly from the previous stage; they involve $3$, $3$ and $18$ removals of several points in one image, respectively.
+
+\paragraph{A remark on quadratic density.} Holt shows that the expected quadratic density of a gap increases along the sieve \cite[Thm.~4.3]{Ho26}, under the assumption $g < 2p_1$. The proof uses the recursion only through the inequality $n_{g,1}(p_k\#) \ge (p_k - 2)\, n_{g,1}(p_{k-1}\#)$. By Theorem~\ref{thm:birth} this inequality holds for every gap, since $n_{g,1}(qN) = (q - 2 + e_g)\, n_{g,1}(N) + B^{(q)}_g(N)$ with $e_g \ge 0$ and $B^{(q)}_g(N) \ge 0$. Hence the conclusion of \cite[Thm.~4.3]{Ho26} holds for every gap once it occurs, without the restriction $g < 2p_1$.
+
+\subsection{Ziller's table of missing differences}\label{sec:ziller}
+
+Ziller \cite{Zi20} tabulated, for $k \le 44$, the even numbers below $h(k)$ that do not occur as gaps in $\G(p_k\#)$ --- the \emph{missing differences} of $\D(k)$. Writing $N_{\min}(k)$ for the largest even number such that all even numbers up to it belong to $\D(k)$, he conjectured that $h(k-1) \le N_{\min}(k)$ for $k > 1$ \cite[Conj.~4.1]{Zi20}: every even number up to $h(k-1)$ occurs as a gap of $\G(p_k\#)$, or equivalently, every missing difference of $\D(k)$ exceeds $h(k-1)$. We reproduced his table independently for $18 \le k \le 30$ by an exhaustive search (Section~\ref{sec:verification}); all entries agree.
+
+A missing difference of $\D(k)$ arises from $\G(p_{k-1}\#)$ with $q = p_k$, and Corollary~\ref{cor:missing} classifies it. For $k \le 19$ the calm regime applies ($h(k-1) < 2p_k$), so all missing differences are delays and holes by Corollary~\ref{cor:calm}. For $20 \le k \le 30$ we searched $\G(p_{k-1}\#)$ exhaustively for the constellations $(2q, g - 2q)$ whose existence would make $g$ a blocked birth; none exists, so all are delays. Ten of these fourteen negative results were confirmed independently with a SAT model solved by CP-SAT; four of them ($170, 230, 256, 296$) are impossible already modulo $3$. The position (hole or shadow) is determined by the reach of pairs $M^{(q)}_2$, obtained from a complete classification of the new differences for $20 \le k \le 27$ (all $54$ present differences in these bands: $50$ pair births and $4$ coincident births, namely $190$, $216$, $234$ and $282$, all of them maxima), from the pair sum $326$ at $k = 30$, and from the type of the maxima (Section~\ref{sec:maxima}).
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{rllll}
+\toprule
+$k$ & missing $g$ & $M^{(q)}_2$ & $h(k)$, birth & basis \\
+\midrule
+6 & 20 & 22 & 22, pair & theorem \\
+8 & 32 & 34 & 34, pair & theorem \\
+14 & 86, 88 & 90 & 90, pair & theorem \\
+15 & 98 & 100 & 100, pair & theorem \\
+19 & 146 & 152 & 152, pair & theorem \\
+20 & 166, 170, 172 & 174 & 174, pair & search + SAT \\
+21 & 182; \textbf{186, 188} & 184 & 190, coincident & search + SAT \\
+22 & 194 & 200 & 200, pair and coincident & search + SAT \\
+24 & 230 & 232 & 234, coincident & search + SAT \\
+25 & 254, 256 & 258 & 258, pair & search; SAT for 256 \\
+27 & 278 & 280 & 282, coincident & search \\
+28 & 296, 298 & 300 & 300, pair & search; SAT for 296 \\
+30 & \textbf{328} & 326 & 330, coincident & search \\
+\bottomrule
+\end{tabular}
+\caption{All missing differences of $\D(k)$ for $k \le 30$. All are delays. Shadows in bold; all others are holes. ``Theorem'': calm regime; ``search'': exhaustive search for the blocking constellation; ``SAT'': independent confirmation by CP-SAT (for $254$ the solver did not finish within one hour).}\label{tab:ziller}
+\end{table}
+
+\paragraph{Result.} All $20$ missing differences up to $k = 30$ are delays; none is caused by a blocked birth. Seventeen are holes in the set of qualifying pair sums, and three --- $186$, $188$ at $k = 21$ and $328$ at $k = 30$ --- lie in the shadow of a maximum produced by a coincident birth. Blocked births do occur as individual events, but in this range they never remove a difference from the table.
+
+\paragraph{Observations in other sieves.} Replacing the primorial chain by sieves built from random subsets and orders of the primes up to $37$ (moduli up to $3 \cdot 10^7$, computed by brute force), we found the birth law exact in all $3689$ sieves; among their $734$ missing differences, $356$ were shadows, none was caused by a blocked birth, and every one of them was born at the next stage. These are observations on small moduli, not evidence about large $k$.
+
+\subsection{How maximal gaps arise}\label{sec:maxima}
+
+By Corollary~\ref{cor:max}, a maximal gap of $\G(p_n\#)$ arises from $\G(p_{n-1}\#)$ either by a pair birth, in which $p_n$ alone removes one point of the maximal interval, or by a coincident birth, in which it removes two points at distance $2p_n$ (up to $n = 64$ one has $h(n) < 4p_n$, so no other route is possible). Counting the points removed by $p_n$ alone in maximal intervals classifies the route. We used the complete lists of maximal configurations for $n \le 54$ published by Ziller and Morack \cite{ZM16} (ancillary file \texttt{remainders.txt}) and the start positions of one maximal interval for each $n \le 64$ from the OEIS table of A048670 (R.~Gerbicz; the values for $n = 62$--$64$ computed by A.~Bo\.zek) \cite{OEIS}; see also \cite{Ha09,HS12}.
+\begin{itemize}
+\item For $n \le 19$ all maxima are pair births, as the calm regime requires; $n = 20$ is a pair birth as well.
+\item For $21 \le n \le 54$ (all configurations): coincident births only for $22$ values of $n$, pair births only for $6$ ($n = 25, 28, 29, 31, 35, 42$), both routes for $6$ ($n = 22, 26, 33, 34, 38, 46$).
+\item For $55 \le n \le 64$ (one interval each): coincident births at $n = 56, 58, 59, 61, 62, 64$ and pair births at $n = 55, 57, 60, 63$.
+\item In every coincident birth the two points are exactly $2p_n$ apart; the two sources agree wherever both are available.
+\end{itemize}
+Thus from $n = 21$ on both routes occur, the coincident one more often. The data do not support a simple rule deciding the route: an extrapolation from $n \le 54$, where $47 \le n \le 54$ are all coincident births, predicted coincident births for $n = 55$--$57$ and failed at $n = 55$ and $57$; nor does the ratio $2p_n/h(n-1)$ decide it, since pair births occur even at its smallest values in the range.
+
+\section{Computations and verification}\label{sec:verification}
+
+\paragraph{Programs.} The population matrices were computed by an exact counting engine that enumerates the windows of a wheel of small primes and treats the remaining primes by an exact covering computation; its results agree with Holt's published data for $\G(37\#)$ ($415$ cells) and with his recursion across $37\# \to 41\# \to 43\#$ ($408$ cells). Ziller's table was verified for $18 \le k \le 30$ by an exhaustive search over the sectors of a wheel, with every positive answer certified by an explicit witness checked with $\gcd$. The same machinery, restricted to prescribed interior points, decides the existence of constellations for the classification of Section~\ref{sec:ziller}. The independent check models the existence of a constellation as a covering problem --- one residue class for each prime, all interior points except the prescribed ones covered, the prescribed points and the endpoints not covered --- solved by Google OR-Tools CP-SAT; the model was validated against brute force on $70$ constellations in $\G(19\#)$.
+
+\paragraph{Brute-force verification.} Independently of the engine, all statements of Sections~\ref{sec:transition}--\ref{sec:chain} were checked by listing complete cycles for moduli up to $510510$, including sieves that omit a small prime, in which multi-point removals are frequent. Table~\ref{tab:verification} summarises the checks.
+
+\begin{table}[ht]
+\centering
+\small
+\begin{tabular}{p{4.3cm}p{5.6cm}p{4.3cm}}
+\toprule
+Statement & Test & Result \\
+\midrule
+Thm.~\ref{thm:transition}, gaps & full cycles; $7\#\to11$, $11\#\to13$, $13\#\to17$ and sieves without $5$, $7$, $11$ & 1585 cells, 0 errors; classes up to 5 points \\
+Thm.~\ref{thm:transition}, gaps, engine & $23\#\to29\#$, $37\#\to41\#$, $41\#\to43\#$, $43\#\to47\#$ & 805 cells, 0 errors \\
+Thm.~\ref{thm:transition}, constellations & 160 constellations, spans $2q$--$5q$ & 425 cells, 0 errors \\
+Cor.~\ref{cor:ladder} & same tests & first 2-, 3-, 4-, 5-point classes at $2q, 6q, 8q, 12q$ \\
+Thm.~\ref{thm:moments} & $k = 0,\dots,3$, 180 constellations; engine for gaps & 720 of 720; 609 cells \\
+Thm.~\ref{thm:birth} & all births of constellations with at most 4 gaps & 783 of 783 \\
+Lemma~\ref{lem:persistence}, Cor.~\ref{cor:first} & chain $2 \to \dots \to 30030$, 389 constellations & no exception; 1945 of 1945 \\
+Thm.~\ref{thm:chain} & 180 + 600 constellations & sufficient condition never violated \\
+Convention $|s| < N$ & spans $\ge N$, including $N = 2$ & laws hold (214 + 60 cases) \\
+\bottomrule
+\end{tabular}
+\caption{Computational verification.}\label{tab:verification}
+\end{table}
+
+\paragraph{Data availability.} Code, data (the matrices $n_{g,j}$ for $41\#$, $43\#$, $47\#$, the pair structures, the classification results and the verification logs) and scripts reproducing every table of this paper are available at \TODO{repository URL and Zenodo DOI}.
+
+\section{Open questions}\label{sec:open}
+
+\begin{enumerate}
+\item \emph{Ziller's Conjecture 4.1.} By Theorem~\ref{thm:birth} it states that every even number up to $h(k-1)$ is a gap of $\G(p_{k-1}\#)$ or the span of a qualifying constellation; in the calm regime, a gap or a sum of two adjacent gaps. Is there a structural reason why the holes of this set stay near its top? In all small sieves we examined no missing difference persisted for more than one stage.
+\item \emph{Which route produces the maximum?} Both pair and coincident births of maxima occur for $n \ge 21$, with no simple rule deciding between them.
+\item \emph{Necessity in Theorem~\ref{thm:chain}.} Is Holt's chain exact only if no populated shape has two points congruent modulo $q$?
+\item \emph{Higher thresholds.} Up to $n = 64$ the maxima stay below $4p_n$. For larger $n$ they will pass the thresholds $4p_n$ and $6p_n$, where births through pairs at distance $4q$ and through classes of three points become possible for maximal gaps.
+\item \emph{Paired progressions.} The same method applies to sieves removing two residue classes per prime, as in the paired Jacobsthal function of Ziller and Morack \cite{ZM17}; the classes of coincidence and the thresholds then change.
+\end{enumerate}
+
+\section*{Acknowledgements}
+Parts of the code, the computations and the drafting were carried out with the assistance of Claude, an AI model developed by Anthropic. The author takes full responsibility for the content.
+
+\begin{thebibliography}{99}
+\bibitem{HR15} F.~B.~Holt and H.~Rudd, \emph{Combinatorics of the gaps between primes}, Connections in Discrete Mathematics, Simon Fraser Univ.\ (2015); arXiv:1510.00743.
+\bibitem{Ho23} F.~B.~Holt, \emph{Models for gaps $g = 2p_1$}, preprint (2023), arXiv:2309.16833.
+\bibitem{Ho25} F.~B.~Holt, \emph{Eratosthenes sieve supports the $k$-tuple conjecture}, preprint (2025), arXiv:2502.20470.
+\bibitem{Ho26} F.~B.~Holt, \emph{Discrete dynamics in Eratosthenes sieve}, preprint (2026), arXiv:2608.26384v3.
+\bibitem{Zi20} M.~Ziller, \emph{On differences between consecutive numbers coprime to primorials}, preprint (2020), arXiv:2007.01808.
+\bibitem{Ha09} T.~Hagedorn, \emph{Computation of Jacobsthal's function $h(n)$ for $n < 50$}, Math.\ Comp.\ \textbf{78} (2009), no.~266, 1073--1087.
+\bibitem{HS12} L.~Hajdu and N.~Saradha, \emph{Disproof of a conjecture of Jacobsthal}, Math.\ Comp.\ \textbf{81} (2012), no.~280, 2461--2471.
+\bibitem{Ka67} H.-J.~Kanold, \emph{\"Uber eine zahlentheoretische Funktion von Jacobsthal}, Math.\ Ann.\ \textbf{170} (1967), 314--326.
+\bibitem{ZM16} M.~Ziller and J.~F.~Morack, \emph{Algorithmic concepts for the computation of Jacobsthal's function}, preprint (2016), arXiv:1611.03310; ancillary file \texttt{remainders.txt}.
+\bibitem{HL23} G.~H.~Hardy and J.~E.~Littlewood, \emph{Some problems of `Partitio numerorum' III: on the expression of a number as a sum of primes}, Acta Math.\ \textbf{44} (1923), 1--70.
+\bibitem{ZM17} M.~Ziller and J.~F.~Morack, \emph{Divisibility in paired progressions, Goldbach's conjecture, and the infinitude of prime pairs}, preprint (2017), arXiv:1706.00317.
+\bibitem{OEIS} OEIS Foundation, \emph{The On-Line Encyclopedia of Integer Sequences}, sequence A048670.
+\end{thebibliography}
+
+\end{document}
