@@ -1,8 +1,9 @@
 # Eratosthenes sieve dynamics beyond 2p
 
-**Author:** Tomasz Hojka (independent researcher)
-**Preprint, version 2:** <https://doi.org/10.5281/zenodo.23116158> (version 1: doi:10.5281/zenodo.23007183)  
+**Author:** Tomasz Hojka (independent researcher)  
+**Preprint:** <https://doi.org/10.5281/zenodo.23007183>  
 **Code and data, release v1.0.0:** <https://doi.org/10.5281/zenodo.23009305>
+
 This repository contains the code, data and verification scripts that accompany it.
 
 ## What this is about
@@ -23,7 +24,7 @@ This work gives the exact transition law for **all spans**, resolved by residue 
 
 **Computed**
 
-- **Ziller's missing differences up to k = 30:** all 20 are *lags* — none is caused by a blocked birth. 17 are *holes* in the set of sums of adjacent pairs and 3 lie in the *shadow* of a maximal gap born from a triple (186, 188 at k = 21; 328 at k = 30). Independent confirmation with the CP-SAT solver for 10 of the 14 computed cases.
+- **Ziller's missing differences up to k = 30:** all 20 are *delays* — none is caused by a blocked birth. 17 are *holes* in the set of sums of adjacent pairs and 3 lie in the *shadow* of a maximal gap born from a triple (186, 188 at k = 21; 328 at k = 30). Independent confirmation with the CP-SAT solver for 10 of the 14 computed cases.
 - **Birth of maximal gaps** (n ≤ 54 from Ziller's complete lists of maximal configurations, n ≤ 64 from the OEIS A048670 table): every maximum is born either from a pair of adjacent gaps or from a triple with middle gap exactly 2pₙ; the second route appears first at n = 21 and is the more frequent one afterwards. An earlier extrapolation ("only triples from n = 47 on") was **refuted** by the data for n = 55–64.
 - **Holt's models:** exact models for gaps 84 ≤ g ≤ 104 from initial conditions at 47#; the leading coefficient equals the Hardy–Littlewood constant for all 11 gaps, as required by Holt's Theorem 1.1 (arXiv:2608.26384; Corollary 1.2 of arXiv:2502.20470) — a check of the totals; Holt's Figure 6 (constellation 2,10,2,10,2) is reproduced for the three transitions that lie outside his linear model.
 
@@ -36,11 +37,11 @@ This work gives the exact transition law for **all spans**, resolved by residue 
 | `data/` | our population matrices n(g, j) for 41#, 43#, 47#; pair structures; classifier results; verifier logs (see `data/README.md`) |
 | `code/engine/` | counting engine for n(g, j) at p#, pair structures, gap profiles |
 | `code/ziller_verifier/` | exhaustive verifier of Ziller's table of missing differences, k = 18–30 |
-| `code/classifier/` | classifier lag/blocked-birth, closure of the table (pairs/triples), rescue check |
+| `code/classifier/` | classifier delay/blocked-birth, closure of the table (pairs/triples), rescue check |
 | `code/sat_check/` | independent check with a SAT model solved by Google OR-Tools CP-SAT |
 | `code/brute_force/` | full-cycle brute-force verification of all theorems, the "sieve laboratory", the audit |
 | `code/analysis/` | birth of maximal gaps, Holt's models for gaps 84–104, reproduction of Holt's Figure 6 |
-| `paper/` | the paper: LaTeX source and PDF (draft; the final version will carry the DOIs) |
+| `paper/` | the paper: LaTeX source and PDF (preprint, doi:10.5281/zenodo.23007183) |
 | `docs/` | working notes with all statements and proofs (Polish, v5) |
 
 ## Running
@@ -73,7 +74,7 @@ The engine, the verifier and the classifier were run in JupyterLab on Windows wi
 
 ## How to cite
 
-The paper: T. Hojka, *Exact dynamics of Eratosthenes sieve beyond 2p: coincident fusions, births of gaps and missing differences*, preprint, version 2 (2026), doi:10.5281/zenodo.23116158.
+The paper: T. Hojka, *Exact dynamics of Eratosthenes sieve beyond 2p: coincident fusions, births of gaps and missing differences*, preprint (2026), doi:10.5281/zenodo.23007183.
 
 The code and data: T. Hojka, *Eratosthenes sieve dynamics beyond 2p: code, data and verification*, version v1.0.0 (2026), doi:10.5281/zenodo.23009305.
 
@@ -83,7 +84,7 @@ Parts of the code, the computations and the drafting were carried out with the a
 
 ## Language
 
-Code comments and working notes are in Polish; the paper will be in English.
+Code comments and working notes are in Polish; the paper is in English.
 
 ## License
 
