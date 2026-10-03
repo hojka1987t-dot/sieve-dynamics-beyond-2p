@@ -1,4 +1,5 @@
 > Notatki robocze (po polsku), wersja 5. Obowiązującą wersją jest artykuł w folderze `paper/`; w razie rozbieżności decyduje artykuł.
+> Kryterium „dwa punkty giną w tym samym obrazie wtedy i tylko wtedy, gdy q dzieli ich odległość” pochodzi od Holta (arXiv:2502.20470, Lemat 3.1), a tożsamość ℓ₁ = stała Hardy’ego–Littlewooda — z jego Wniosku 1.2; zob. wersję 2 artykułu.
 
 # Dynamika sita Eratostenesa ponad granicą 2q — twierdzenia i dowody
 

@@ -22,13 +22,13 @@
 
 \title{Exact dynamics of Eratosthenes sieve beyond $2p$:\\ coincident fusions, births of gaps and missing differences}
 \author{Tomasz Hojka\\ \small Independent researcher}
-\date{\small Preprint --- September 2026\\ DOI: \href{https://doi.org/10.5281/zenodo.23007183}{10.5281/zenodo.23007183}}
+\date{\small Preprint, version 2 --- October 2026\\ DOI: \href{https://doi.org/10.5281/zenodo.23116158}{10.5281/zenodo.23116158}}
 
 \begin{document}
 \maketitle
 
 \begin{abstract}
-At each stage of Eratosthenes sieve the integers coprime to a modulus $N$ form a periodic cycle of gaps $\G(N)$. F.~B.~Holt showed that the populations of gaps and constellations, together with their driving terms, evolve by an exact linear system as long as the span is smaller than twice the next prime $q$. Beyond that threshold several points of one driving term may be removed in the same image, and the lengths of the resulting terms were not determined. We give the exact transition law for all spans: the points of a driving term split into residue classes modulo $q$, each class is removed in exactly one of the $q$ images, and this determines every image. Consequences include a ladder of thresholds (classes of $2,3,4,5$ points appear from spans $2q, 6q, 8q, 12q$), a form in binomial moments with nonnegative sources, an exact birth law for gaps and constellations, a criterion for the first appearance of a constellation, and a sufficient condition for the exactness of Holt's Markov chain. As applications we extend Holt's exact models to gaps $84 \le g \le 104$, reproduce the pre-linear rows of his worked example, classify all $20$ missing differences in Ziller's table up to $k = 30$ (all are delays; $17$ holes and $3$ shadows; none is caused by a blocked birth), and describe how the maximal gaps of $\G(p_n\#)$ arise for $n \le 64$. All theorems are also verified computationally; code and data accompany the paper.
+At each stage of Eratosthenes sieve the integers coprime to a modulus $N$ form a periodic cycle of gaps $\G(N)$. F.~B.~Holt showed that the populations of gaps and constellations, together with their driving terms, evolve by an exact linear system as long as the span is smaller than twice the next prime $q$. Beyond that threshold several points of one driving term may be removed in the same image; Holt showed that this happens exactly when $q$ divides their distance, but the lengths of the resulting terms were not determined. We give the exact transition law for all spans: by this criterion, applied to all points of a driving term including the interior ones, the points split into residue classes modulo $q$; each class is removed in exactly one of the $q$ images, and this determines every image. Consequences include a ladder of thresholds (classes of $2,3,4,5$ points appear from spans $2q, 6q, 8q, 12q$), a form in binomial moments with nonnegative sources, an exact birth law for gaps and constellations, a criterion for the first appearance of a constellation, and a sufficient condition for the exactness of Holt's Markov chain. As applications we extend Holt's exact models to gaps $84 \le g \le 104$, reproduce the pre-linear rows of his worked example, classify all $20$ missing differences in Ziller's table up to $k = 30$ (all are delays; $17$ holes and $3$ shadows; none is caused by a blocked birth), and describe how the maximal gaps of $\G(p_n\#)$ arise for $n \le 64$. All theorems are also verified computationally; code and data accompany the paper.
 \end{abstract}
 
 \section{Introduction}
@@ -39,9 +39,9 @@ For a prime $p$ let $p\#$ denote the product of all primes up to $p$. The intege
 \]
 with explicit eigenstructure, which yields exact models for the relative populations of gaps and constellations at all later stages of the sieve.
 
-This recursion holds under a restriction: the span must be smaller than twice the next prime. For larger spans two fusions can fall into the same image of a driving term. Holt notes that the minimum distance between fusions is $2p_{k+1}$ \cite[Obs.~2.3]{Ho26}, that for spans below $2p_1$ all fusions of a constellation fall into different images \cite[Lemma~2.4]{Ho26}, and that for gaps beyond $2p_1$ the counts of driving terms of various lengths could not be determined \cite{HR15,Ho23}; the single case $g = 2p_1$ was handled by a special first iteration \cite{Ho23}. Several fusions at the \emph{boundary} of one image are accounted for in his aggregate count through the number $\nu_s(p)$ of residue classes covered by the boundary points \cite[Lemma~2.5, Lemma~2.7]{Ho26}. What remained open is the case of several \emph{interior} fusions in the same image, which changes the distribution of lengths.
+This recursion holds under a restriction: the span must be smaller than twice the next prime. For larger spans two fusions can fall into the same image of a driving term, and Holt characterized when this happens: two fusions fall into the same image if and only if the next prime divides their distance \cite[Lemma~3.1]{Ho25}. Holt notes that the minimum distance between fusions is $2p_{k+1}$ \cite[Obs.~2.3]{Ho26}, that for spans below $2p_1$ all fusions of a constellation fall into different images \cite[Lemma~2.4]{Ho26}, and that for gaps beyond $2p_1$ the counts of driving terms of various lengths could not be determined \cite{HR15,Ho23}; the single case $g = 2p_1$ was handled by a special first iteration \cite{Ho23}. Several fusions at the \emph{boundary} of one image are accounted for in his aggregate count through the number $\nu_s(p)$ of residue classes covered by the boundary points \cite[Lemma~2.5, Lemma~2.7]{Ho26}. What remained open is the case of several \emph{interior} fusions in the same image, which changes the distribution of lengths.
 
-\paragraph{Main result.} We show that the transition from $\G(N)$ to $\G(qN)$ is determined exactly, for every span, by the partition of the points of a driving term into residue classes modulo $q$: each class is removed in exactly one of the $q$ images, and the remaining images are untouched (Theorem~\ref{thm:transition}). Holt's recursion is the special case in which all classes are singletons.
+\paragraph{Main result.} We show that the transition from $\G(N)$ to $\G(qN)$ is determined exactly, for every span, by the partition of the points of a driving term into residue classes modulo $q$: each class is removed in exactly one of the $q$ images, and the remaining images are untouched (Theorem~\ref{thm:transition}). The partition into classes is Holt's criterion \cite[Lemma~3.1]{Ho25} applied to all points of a driving term, interior points included; what is new is that this partition determines the lengths of all images, together with the consequences drawn from it. Holt's recursion is the special case in which all classes are singletons.
 
 \paragraph{Consequences.} Section~\ref{sec:transition} derives a ladder of thresholds for the size of the classes (Corollary~\ref{cor:ladder}) and a form of the dynamics in binomial moments, in which the nonlinearity appears only as a nonnegative source (Theorem~\ref{thm:moments}). Section~\ref{sec:births} gives an exact birth law for gaps and constellations (Theorem~\ref{thm:birth}), a criterion for the first appearance of a constellation (Corollary~\ref{cor:first}), and the description of the set of gap lengths $\D(qN)$ in terms of $\G(N)$. Section~\ref{sec:chain} identifies the exact process on shapes of driving terms and gives a sufficient condition for Holt's Markov chain on lengths to be exact (Theorem~\ref{thm:chain}).
 
@@ -88,6 +88,8 @@ The images $X_0, \dots, X_{q-1}$ of $x$ run through all residues modulo $q$, eac
 \begin{proof}
 $\gcd(N, q) = 1$, so $i \mapsto iN \bmod q$ is a bijection of $\mathbb{Z}/q$.
 \end{proof}
+
+Lemma~\ref{lem:images} is \cite[Lemma~4.1]{Ho25}, \cite[Lemma~2.6]{Ho26}. It gives Holt's criterion \cite[Lemma~3.1]{Ho25}: two points of a driving term are removed in the same image if and only if $q$ divides their distance, or equivalently, by Lemma~\ref{lem:parity}, $2q$ divides it. Holt applies it to the boundary points, to count admissible instances; Theorem~\ref{thm:transition} applies it to all points.
 
 \begin{lemma}\label{lem:survival}
 If $X \equiv x \pmod N$, then $X + t \in \Omega(qN)$ if and only if $x + t \in \Omega(N)$ and $q \nmid X + t$.
@@ -150,7 +152,7 @@ Moreover $n_{s,m}(N) = \sum_{k \ge 0} (-1)^k S_k(s, N)$.
 A pair $(x, T)$ with $x + a \in \Omega(N)$ for $a \in C \cup T$ is exactly a driving term $x$ together with a $k$-subset $T$ of its extra points, which gives the first identity. By the Chinese remainder theorem $W_{qN}(A) = W_N(A)\,(q - \nu_q(A))$, since the condition modulo $q$ excludes exactly $\nu_q(A)$ residues. Writing $q - \nu_q(A) = (q - |A|) + (|A| - \nu_q(A))$ with $|A| = m + 1 + k$ gives the recursion; $|A| - \nu_q(A) \ge 0$ counts coincidences modulo $q$. The last identity is binomial inversion, $\sum_k (-1)^k \binom{J-m}{k} = [J = m]$.
 \end{proof}
 
-For $k = 0$ the theorem gives $S_0(s, qN) = (q - \nu_q(C))\, S_0(s, N)$, the aggregate count of Holt \cite[Thm.~1.1, Lemma~2.7]{Ho26} (for gaps \cite[Cor.~5.3]{HR15}). The coefficients $q - m - 1 - k$ are the eigenvalues of Holt's linear system and the $S_k$ are its left-eigenvector coordinates \cite[\S3]{Ho26}; in these coordinates the nonlinearity is a nonnegative source, and decreases of a population can arise only through the alternating sum for $n_{s,m}$.
+For $k = 0$ the theorem gives $S_0(s, qN) = (q - \nu_q(C))\, S_0(s, N)$, the aggregate count of Holt \cite[Cor.~1.2]{Ho25}, \cite[Thm.~1.1, Lemma~2.7]{Ho26} (for gaps \cite[Cor.~5.3]{HR15}). The coefficients $q - m - 1 - k$ are the eigenvalues of Holt's linear system and the $S_k$ are its left-eigenvector coordinates \cite[\S3]{Ho26}; in these coordinates the nonlinearity is a nonnegative source, and decreases of a population can arise only through the alternating sum for $n_{s,m}$.
 
 \section{Births}\label{sec:births}
 
@@ -175,7 +177,7 @@ If $\nu_q(C) < q$, then $n_{s,m}(qN) \ge n_{s,m}(N)$. If $\nu_q(C) = q$, then $s
 The first part follows from Theorem~\ref{thm:birth}; the second because every $x$ then has a point $x + c$, $c \in C$, divisible by $q$.
 \end{proof}
 
-In substance this is Holt's Lemma~2.6 \cite{Ho26} applied to the occurrences of $s$ itself.
+Holt's Theorem~1.1 \cite{Ho25} shows that every admissible instance of $s$, driving terms included, arises and persists; the lemma is the corresponding statement for the occurrences of $s$ itself, in substance Holt's Lemma~2.6 \cite{Ho26}.
 
 \begin{corollary}[First appearance]\label{cor:first}
 Let $N_0 \mid N_1 \mid \cdots$ with $2 \mid N_0$ and $N_{i+1} = q_i N_i$ for odd primes $q_i \nmid N_i$. The constellation $s$ occurs for the first time in this chain at $N_{i+1}$ if and only if $n_{s,m}(N_i) = 0$ and $B^{(q_i)}_s(N_i) > 0$.
@@ -235,6 +237,8 @@ For every span the shape populations evolve by the exact linear system
 where $T_q(P, P) = q - |\C(P)|$, $T_q(P, P \setminus K) = 1$ for every class $K \in \C(P)$ with $K \cap C = \emptyset$, and all other coefficients are zero. Holt's chain on lengths is the aggregation of shapes of equal length. If no populated shape has two points congruent modulo $q$ --- in particular if $|s| < 2q$ --- the coefficients depend only on the length, $T(J \to J) = q - J - 1$ and $T(J \to J - 1) = J - m$, and Holt's chain is exact.
 \end{theorem}
 
+The condition extends Holt's condition $|s| < 2p_1$ \cite[\S5]{Ho25}, \cite[Lemma~2.4]{Ho26}, under which all fusions fall into separate images.
+
 \begin{proof}
 The system is Theorem~\ref{thm:transition}. With singleton classes $|\C(P)| = J + 1$ and there are $J - m$ classes disjoint from $C$, each of one point.
 \end{proof}
@@ -253,7 +257,7 @@ We computed the complete matrices $n_{g,j}(p\#)$ for $p = 41$ ($g \le 110$), $p 
 \begin{enumerate}
 \item The transitions $37\# \to 41\# \to 43\# \to 47\#$, all of which contain spans beyond $2q$, are reproduced exactly by Theorem~\ref{thm:transition} from Holt's data for $\G(37\#)$ and our pair structures ($309$, $225$ and $153$ cells).
 \item The populations of gaps in $\G(53\#)$ obtained from $n_{g,j}(47\#)$ by one linear step agree with an independently computed profile of $\G(53\#)$ for all even $g \le 104$ ($52$ of $52$).
-\item The leading coefficient of Holt's model, $\ell_1 = \sum_j w_{g,j}(47\#)$, where $w_{g,j}(47\#)$ is $n_{g,j}(47\#)$ divided by the number $\prod_{3 \le p \le 47}(p-2)$ of gaps $2$ in $\G(47\#)$, equals the Hardy--Littlewood constant $\prod_{q \mid g,\ q > 2} \frac{q-1}{q-2}$ \cite[eq.~(1.3)]{Ho26}, \cite{HL23} exactly, as a rational number, for all eleven gaps.
+\item The leading coefficient of Holt's model, $\ell_1 = \sum_j w_{g,j}(47\#)$, where $w_{g,j}(47\#)$ is $n_{g,j}(47\#)$ divided by the number $\prod_{3 \le p \le 47}(p-2)$ of gaps $2$ in $\G(47\#)$, equals the Hardy--Littlewood constant $\prod_{q \mid g,\ q > 2} \frac{q-1}{q-2}$ \cite[eq.~(1.3)]{Ho26}, \cite{HL23} exactly, as a rational number, for all eleven gaps. By Holt's Theorem~1.1 \cite{Ho26} (Corollary~1.2 of \cite{Ho25}) this must hold whenever the aggregate counts $\sum_j n_{g,j}(47\#)$ are right, so this check concerns the totals; the distribution over lengths is checked by the first two items.
 \end{enumerate}
 Table~\ref{tab:holt} lists the first coefficients $\ell_j = \sum_{i \ge j} \binom{i-1}{j-1} w_{g,i}(47\#)$ of Holt's expansion \cite[eq.~(1.2)]{Ho26}; the complete matrices are in the accompanying data. Evaluating the models shows how slowly large gaps approach their limits: at $p \approx 10^5$ the relative populations of the gaps $84$--$104$ have reached only between $0.4\%$ and $1.2\%$ of $\ell_1$, in line with the parameter $\lambda = \Theta(1/\ln p)$ of \cite{Ho26}.
 
@@ -370,11 +374,13 @@ Convention $|s| < N$ & spans $\ge N$, including $N = 2$ & laws hold (214 + 60 ca
 \section*{Acknowledgements}
 Parts of the code, the computations and the drafting were carried out with the assistance of Claude, an AI model developed by Anthropic. The author takes full responsibility for the content.
 
+\paragraph{Version history.} Version 1 (28 September 2026, doi:10.5281/zenodo.23007183). Version 2 (October 2026): the residue-class criterion is attributed explicitly to Holt \cite[Lemma~3.1]{Ho25}, and the identity for $\ell_1$ to \cite[Thm.~1.1]{Ho26} and \cite[Cor.~1.2]{Ho25}; no result has changed.
+
 \begin{thebibliography}{99}
 \bibitem{HR15} F.~B.~Holt and H.~Rudd, \emph{Combinatorics of the gaps between primes}, Connections in Discrete Mathematics, Simon Fraser Univ.\ (2015); arXiv:1510.00743.
 \bibitem{Ho23} F.~B.~Holt, \emph{Models for gaps $g = 2p_1$}, preprint (2023), arXiv:2309.16833.
 \bibitem{Ho25} F.~B.~Holt, \emph{Eratosthenes sieve supports the $k$-tuple conjecture}, preprint (2025), arXiv:2502.20470.
-\bibitem{Ho26} F.~B.~Holt, \emph{Discrete dynamics in Eratosthenes sieve}, preprint (2026), arXiv:2608.26384v3.
+\bibitem{Ho26} F.~B.~Holt, \emph{Discrete dynamics of Eratosthenes sieve}, preprint (2026), arXiv:2608.26384; cited by the numbering of versions~3 and~4, which agree.
 \bibitem{Zi20} M.~Ziller, \emph{On differences between consecutive numbers coprime to primorials}, preprint (2020), arXiv:2007.01808.
 \bibitem{Ha09} T.~Hagedorn, \emph{Computation of Jacobsthal's function $h(n)$ for $n < 50$}, Math.\ Comp.\ \textbf{78} (2009), no.~266, 1073--1087.
 \bibitem{HS12} L.~Hajdu and N.~Saradha, \emph{Disproof of a conjecture of Jacobsthal}, Math.\ Comp.\ \textbf{81} (2012), no.~280, 2461--2471.
