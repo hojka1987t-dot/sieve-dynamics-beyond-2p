@@ -1,0 +1,27 @@
+TEST HIPOTEZY PRZETRWANIA (Holt, "Surviving Eratosthenes sieve I", Hipoteza 2.1) - pazdziernik 2026
+Dane: wszystkie przerwy miedzy kolejnymi liczbami pierwszymi od 47^2 = 2209 do 10^9 (50 738 584 przerw, 3401 przedzialow
+przetrwania [p_k^2, p_{k+1}^2)), luki g = 2..104. Model: dokladne populacje n_{g,J}(47#) (data/nG47.csv) przeniesione
+rekurencja jednolita (g <= 104 < 2q dla q >= 53) na kazdy etap; oczekiwana liczba luki g w przedziale = liczba przerw
+w przedziale x udzial n_{g,1}/phi w cyklu na wybranym etapie z(x).
+
+etap cyklu z = x^c          mediana |A-E|/E     chi2 / stopien swobody
+c = 0.50  (sqrt x, Holt)         34.17%               19316.8
+c = 0.53                         14.76%                4313.9
+c = 0.55                          4.81%                 511.7
+c = 0.555                         2.62%                 155.3
+c = 0.56                          0.47%                   6.8
+c = e^-gamma = 0.5615             0.11%                   0.7     <- minimum; reszta zgodna z szumem
+c = 0.565                         1.49%                  52.7
+c = 0.57                          3.40%                 281.2
+c = 0.58                          6.97%                1242.7
+c = 0.60                         13.26%                4916.9
+
+Dla c = 1/2: male luki o ok. 10% za rzadko (g=2: -10.9%, zgodnie z 2C_2/(2C_2 e^-gamma * 2) = 0.8905),
+duze za czesto (g=60: +43%, g=104: +121%) - paradoks Mertensa: srednia luka cyklu na etapie sqrt(x) to ok. 0.89 log x.
+Poziom z = x^(1/e^gamma) to poziom modelu Banksa-Forda-Tao (Invent. Math. 2023); losowy wybor klas = losowe polozenie
+okna w cyklu G(P(z)). Nowe tutaj: dokladny (nie losowy) test z dokladnymi modelami populacji dla wszystkich luk <= 104
+i wszystkich liczb pierwszych do 10^9; minimum chi2 dokladnie przy e^-gamma, chi2/dof = 0.7.
+
+Pytanie Holta (najwieksza luka w przedziale przetrwania): stosunek do progu Legendre'a 2p_k+4 najwyzej 0.778 (p_k=7);
+powyzej 0.5 tylko w 3 z 3401 przedzialow. Dla k <= 64 najwieksza luka w przedziale (np. 42 przy p_k = 311) jest o rzad
+wielkosci mniejsza od funkcji Jacobsthala (h = 1110).

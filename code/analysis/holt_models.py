@@ -40,7 +40,7 @@ def main(path, g_from=84, g_to=104, nterms=4):
               + "  ".join("%9.4f" % float(x) for x in l[1:])
               + ("   OK" if good else "   MISMATCH"))
     total = (g_to - g_from) // 2 + 1
-    print("\nl_1 equal to the Hardy-Littlewood constant (exactly, as fractions): %d/%d" % (ok, total))
+    print("\nl_1 equal to the normalised singular series S(g)/S(2) (exactly, as fractions): %d/%d" % (ok, total))
 
 
 if __name__ == "__main__":

@@ -1,0 +1,24 @@
+WYCZERPUJACA WERYFIKACJA CZESCI I (sieve beyond 2p) - pelne cykle, wszystkie ksztalty i konstelacje do rozpietosci 40
+Program: weryfikacja_wyczerpujaca.py (python weryfikacja_wyczerpujaca.py "<liczby pierwsze N>" <q> 40 40)
+
+(1) Tozsamosc ksztaltow m_P(qN) = (q - nu_q(P)) m_P(N) + sum_K m_{P u K}(N)  [Tw. 3.4 i Tw. 5.1 dla wszystkich s naraz]
+(2) Prawo narodzin (Tw. 4.1) dla kazdej konstelacji
+(3) Warunek Tw. 5.1 (brak zaludnionego ksztaltu z dwoma punktami przystajacymi mod q) a dokladnosc lancucha Holta
+    n_{s,J}(qN) = (q-J-1) n_{s,J}(N) + (J+1-m) n_{s,J+1}(N)
+(4) Kryterium Holta: jednolitosc dla q > q_max(Q(s))
+
+przejscie                 ksztalty    konstelacje  prawo narodzin  warunek<=>lancuch (tak/tak + nie/nie)  Holt: bledne/przewidywania
+2*3*5*7        -> 11      1247/1247      7823      7823/7823        469 + 7354, rozjazdow 0               741/931
+2*3*5*7*11     -> 13      3889/3889      7823      7823/7823        979 + 6844, rozjazdow 0               1241/2034
+2*3*5*7*11*13  -> 17      6696/6696      7823      7823/7823        3224 + 4599, rozjazdow 0              1349/3718
+2*...*17       -> 19      7734/7734      7823      7823/7823        6376 + 1447, rozjazdow 0              0/6376
+2*5*7*11*13    -> 3      12431/12431   171568    171568/171568      3 + 171565, rozjazdow 0               6/9
+2*3*7*11*13    -> 5       5615/5615     13398     13398/13398       9 + 13389, rozjazdow 0                50/59
+2*3*5*11*13    -> 7       4242/4242      8678      8678/8678        90 + 8588, rozjazdow 0                244/298
+2*3*5*7*13     -> 11      3889/3889      7823      7823/7823        469 + 7354, rozjazdow 0               741/931
+2*3*7*11*13*17 -> 5      10601/10601    13398     13398/13398       9 + 13389, rozjazdow 0                50/59
+2*3*5*11*13*17 -> 7       7387/7387      8678      8678/8678        90 + 8588, rozjazdow 0                244/298
+
+RAZEM: 63 731 tozsamosci ksztaltow, 254 835 konstelacji: 0 bledow; 0 kontrprzykladow do koniecznosci w Tw. 5.1.
+Kryterium Q(s) Holta: bledne w 4666 z 14 713 przewidywan (punkty dodatkowe driving terms tworza przystawania).
+Dla porownania wersja 2 (Tabela 3): 1585 + 805 + 425 komorek, 160-600 wybranych konstelacji.
