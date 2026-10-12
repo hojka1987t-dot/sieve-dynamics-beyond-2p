@@ -5,6 +5,7 @@
 \usepackage{amsmath,amssymb,amsthm}
 \usepackage{booktabs}
 \usepackage{hyperref}
+\hypersetup{hidelinks}
 
 \newtheorem{theorem}{Theorem}[section]
 \newtheorem{lemma}[theorem]{Lemma}
@@ -22,13 +23,14 @@
 
 \title{Exact dynamics of Eratosthenes sieve beyond $2p$:\\ coincident fusions, births of gaps and missing differences}
 \author{Tomasz Hojka\\ \small Independent researcher}
-\date{\small Preprint --- October 2026\\ DOI: \href{https://doi.org/10.5281/zenodo.23007183}{10.5281/zenodo.23007183}}
+\date{\small Preprint --- October 2026\\ DOI: \href{https://doi.org/10.5281/zenodo.23007182}{10.5281/zenodo.23007182}}
 
+\usepackage{longtable}
 \begin{document}
 \maketitle
 
 \begin{abstract}
-At each stage of Eratosthenes sieve the integers coprime to a modulus $N$ form a periodic cycle of gaps $\G(N)$. F.~B.~Holt showed that the populations of gaps and constellations, together with their driving terms, evolve by an exact linear system as long as the span is smaller than twice the next prime $q$. Beyond that threshold several points of one driving term may be removed in the same image; Holt showed that this happens exactly when $q$ divides their distance, but the lengths of the resulting terms were not determined. We give the exact transition law for all spans: by this criterion, applied to all points of a driving term including the interior ones, the points split into residue classes modulo $q$; each class is removed in exactly one of the $q$ images, and this determines every image. Consequences include a ladder of thresholds (classes of $2,3,4,5$ points appear from spans $2q, 6q, 8q, 12q$), a form in binomial moments with nonnegative sources, an exact birth law for gaps and constellations, a criterion for the first appearance of a constellation, and a sufficient condition for the exactness of Holt's Markov chain. As applications we extend Holt's exact models to gaps $84 \le g \le 104$, reproduce the pre-linear rows of his worked example, classify all $20$ missing differences in Ziller's table up to $k = 30$ (all are delays; $17$ holes and $3$ shadows; none is caused by a blocked birth), and describe how the maximal gaps of $\G(p_n\#)$ arise for $n \le 64$. All theorems are also verified computationally; code and data accompany the paper.
+At each stage of Eratosthenes sieve the integers coprime to a modulus $N$ form a periodic cycle of gaps $\G(N)$. F.~B.~Holt showed that the populations of gaps and constellations, together with their driving terms, evolve by one linear system, the same for all of them, as long as the span is smaller than twice the next prime $q$, and that beyond this threshold several points of one driving term are removed in the same image exactly when $q$ divides their distance. Part~I gives the exact transition law for all spans: the points of a driving term split into residue classes modulo $q$, each class is removed in exactly one of the $q$ images, and this determines every image. Consequences are a form in binomial moments with nonnegative sources, an exact birth law, a criterion for first appearance, and a necessary and sufficient condition for the exactness of Holt's Markov chain on lengths. The transition law, the birth law and the criterion for Holt's chain were verified exhaustively for every constellation of span at most $40$ on all cycles up to $19\#$. As applications we extend Holt's exact models to gaps $g \le 150$ and list all their coefficients, classify the missing differences of Ziller's table up to $k = 30$, describe how the maxima of $\G(p_n\#)$ arise for $n \le 64$, and test Holt's survival hypothesis on all primes between $47^2$ and $10^9$: the gaps, and the pairs and triples of consecutive gaps, between primes near $x$ follow the cycle at the level $x^{1/e^\gamma}$ of the Banks--Ford--Tao model within sampling noise, and not at the level $\sqrt{x}$. Part~II concerns windows with the least number of survivors, the function $\varphi_{\min}$ of Costello and Watts. The minimum for $qN$ is attained by windows for $N$ close to the minimum: we prove that the excess, the depth, is $0$ for spans below $6q$ and at most $1$ below $8q$; in all $3943$ computed cases with spans up to about $20q$ it is at most $1$, and in all computed windows up to about $230q$ at most $2$. A certified recursion computes $\varphi_{\min}$ from the previous stage; in our tests it was faster than direct search.
 \end{abstract}
 
 \section{Introduction}
@@ -39,19 +41,21 @@ For a prime $p$ let $p\#$ denote the product of all primes up to $p$. The intege
 \]
 with explicit eigenstructure, which yields exact models for the relative populations of gaps and constellations at all later stages of the sieve.
 
-This recursion holds under a restriction: the span must be smaller than twice the next prime. For larger spans two fusions can fall into the same image of a driving term, and Holt characterized when this happens: two fusions fall into the same image if and only if the next prime divides their distance \cite[Lemma~3.1]{Ho25}. Holt notes that the minimum distance between fusions is $2p_{k+1}$ \cite[Obs.~2.3]{Ho26}, that for spans below $2p_1$ all fusions of a constellation fall into different images \cite[Lemma~2.4]{Ho26}, and that for gaps beyond $2p_1$ the counts of driving terms of various lengths could not be determined \cite{HR15,Ho23}; the single case $g = 2p_1$ was handled by a special first iteration \cite{Ho23}. Several fusions at the \emph{boundary} of one image are accounted for in his aggregate count through the number $\nu_s(p)$ of residue classes covered by the boundary points \cite[Lemma~2.5, Lemma~2.7]{Ho26}. What remained open is the case of several \emph{interior} fusions in the same image, which changes the distribution of lengths.
+This recursion holds under a restriction: the span must be smaller than twice the next prime. For larger spans two fusions can fall into the same image of a driving term, and Holt characterized when this happens: two fusions fall into the same image if and only if the next prime divides their distance \cite[Lemma~3.1]{Ho25}. Holt notes that the minimum distance between fusions is $2p_{k+1}$ \cite[Obs.~2.3]{Ho26}, that for spans below $2p_1$ all fusions of a constellation fall into different images \cite[Lemma~2.4]{Ho26}, and that for gaps beyond $2p_1$ the counts of driving terms of various lengths could not be determined \cite{HR15,Ho23}; the single case $g = 2p_1$ was handled by a special first iteration \cite{Ho23}. Several fusions at the \emph{boundary} of one image are accounted for in his aggregate count through the number $\nu_s(p)$ of residue classes covered by the boundary points \cite[Lemma~2.5, Lemma~2.7]{Ho26}. What remained open is the case of several \emph{interior} fusions in the same image, which changes the distribution of lengths. For single windows, the removal of one residue class per future prime appears in Samuel's residue slices \cite{Sa26}. His birth-delay identity \cite[Thm.~4.2]{Sa26} expresses the delay before a gap first appears as a minimum over single windows, while Corollary~\ref{cor:first} is a one-step criterion in terms of populations; his collision profiles use binomial moments of the class occupancies of one window \cite[Prop.~5.1]{Sa26}, while Theorem~\ref{thm:moments} concerns binomial moments of populations; Tucker's atlas \cite{Tu26} stratifies coverings of primorial windows by their defect.
 
 \paragraph{Main result.} We show that the transition from $\G(N)$ to $\G(qN)$ is determined exactly, for every span, by the partition of the points of a driving term into residue classes modulo $q$: each class is removed in exactly one of the $q$ images, and the remaining images are untouched (Theorem~\ref{thm:transition}). The partition into classes is Holt's criterion \cite[Lemma~3.1]{Ho25} applied to all points of a driving term, interior points included; what is new is that this partition determines the lengths of all images, together with the consequences drawn from it. Holt's recursion is the special case in which all classes are singletons.
 
-\paragraph{Consequences.} Section~\ref{sec:transition} derives a ladder of thresholds for the size of the classes (Corollary~\ref{cor:ladder}) and a form of the dynamics in binomial moments, in which the nonlinearity appears only as a nonnegative source (Theorem~\ref{thm:moments}). Section~\ref{sec:births} gives an exact birth law for gaps and constellations (Theorem~\ref{thm:birth}), a criterion for the first appearance of a constellation (Corollary~\ref{cor:first}), and the description of the set of gap lengths $\D(qN)$ in terms of $\G(N)$. Section~\ref{sec:chain} identifies the exact process on shapes of driving terms and gives a sufficient condition for Holt's Markov chain on lengths to be exact (Theorem~\ref{thm:chain}).
+\paragraph{Consequences.} Section~\ref{sec:transition} derives a ladder of thresholds for the size of the classes (Corollary~\ref{cor:ladder}) and a form of the dynamics in binomial moments, in which the non-uniformity appears only as a nonnegative source (Theorem~\ref{thm:moments}). Section~\ref{sec:births} gives an exact birth law for gaps and constellations (Theorem~\ref{thm:birth}), a criterion for the first appearance of a constellation (Corollary~\ref{cor:first}), and the description of the set of gap lengths $\D(qN)$ in terms of $\G(N)$. Section~\ref{sec:chain} identifies the exact process on shapes of driving terms and shows that Holt's Markov chain on lengths is exact if and only if no populated shape has two points congruent modulo $q$ (Theorems~\ref{thm:chain} and~\ref{thm:chainiff}).
 
-\paragraph{Applications} (part~2 of this draft). We extend Holt's exact models from gaps $g \le 82$ to $g \le 104$, which includes the gaps $84 \le g \le 90$ named in \cite{Ho26} as a current goal; reproduce the rows of Holt's worked example \cite[Fig.~6]{Ho26} that lie outside the linear model; classify all missing differences in Ziller's table \cite{Zi20} up to $k=30$; and describe how the maximal gaps of $\G(p_n\#)$ --- the values of Jacobsthal's function for primorials, OEIS A048670 --- arise from the previous cycle for $n \le 64$.
+\paragraph{Applications.} We extend Holt's exact models from gaps $g \le 82$ to $g \le 150$, which includes the gaps $84 \le g \le 90$ named in \cite{Ho26} as a current goal; reproduce the rows of Holt's worked example \cite[Fig.~6]{Ho26} that lie outside the uniform regime; classify all missing differences in Ziller's table \cite{Zi20} up to $k=30$; and describe how the maximal gaps of $\G(p_n\#)$ --- the values of Jacobsthal's function for primorials, OEIS A048670 --- arise from the previous cycle for $n \le 64$; and we test Holt's survival hypothesis \cite{Ho26b} on all primes between $47^2$ and $10^9$ (Section~\ref{sec:survival}).
 
-\paragraph{What is not claimed.} All results concern the cycles $\G(N)$; nothing is claimed about the actual gaps between primes. Ziller's Conjecture~4.1 \cite{Zi20} is reformulated, not proved. The condition in Theorem~\ref{thm:chain} is sufficient; its necessity is only observed. Statements marked as computed or observed rest on computation and are labelled as such.
+\paragraph{Part II.} Sections~\ref{sec:depth} and~\ref{sec:compdepth} study windows of fixed length with the least number of points of $\Omega(N)$ and the depth, above this minimum, of the windows from which the minimum for $qN$ arises.
+
+\paragraph{What is not claimed.} All results concern the cycles $\G(N)$; nothing is proved about the actual gaps between primes; Section~\ref{sec:survival} is an empirical comparison. Ziller's Conjecture~4.1 \cite{Zi20} is reformulated, not proved. In Part~II the bound on the depth is proved only for spans below $8q$; beyond, the depth is computed. Statements marked as computed or observed rest on computation and are labelled as such.
 
 \section{Setting and notation}\label{sec:setting}
 
-Throughout, $N$ is a squarefree integer with $2 \mid N$, and $q$ is an odd prime with $q \nmid N$. The main case is $N = p_k\#$ and $q = p_{k+1}$. Let $\Omega(N) = \{x \in \mathbb{Z} : \gcd(x,N) = 1\}$, a set periodic modulo $N$. The cycle of gaps $\G(N)$ is the sequence of differences of consecutive elements of $\Omega(N)$ over one period; $\D(N)$ is the set of gap lengths occurring in $\G(N)$ and
+Throughout, $N$ is a squarefree integer with $2 \mid N$, and $q$ is an odd prime with $q \nmid N$. The main case is $N = p_k\#$ and $q = p_{k+1}$. Let $\Omega(N) = \{x \in \mathbb{Z} : \gcd(x,N) = 1\}$, a set periodic modulo $N$; for $N = p\#$ these are the $p$-rough numbers. The cycle of gaps $\G(N)$ is the sequence of differences of consecutive elements of $\Omega(N)$ over one period; $\D(N)$ is the set of gap lengths occurring in $\G(N)$ and
 \[
   H(N) := \max \D(N)
 \]
@@ -129,30 +133,30 @@ A class with $r \ge 2$ points has its extreme points at distance at least $2q(r-
 \end{corollary}
 
 \begin{proof}
-The first statement follows from Lemma~\ref{lem:parity}. For the second, let $t_1 < t_2 < t_3$ lie in one class, $t_2 = t_1 + 2qa$, $t_3 = t_2 + 2qb$ with $a, b \ge 1$. If $a = b = 1$, the residues of $t_1, t_1 + 2q, t_1 + 4q$ modulo $3$ are $t_1, t_1 - q, t_1 + q$, all three residues since $3 \nmid q$; one of the points would be divisible by $3$, contradicting $3 \mid N$. Hence $a + b \ge 3$.
+The first statement follows from Lemma~\ref{lem:parity}. For the second, let $t_1 < t_2 < t_3$ lie in one class, $t_2 = t_1 + 2qa$, $t_3 = t_2 + 2qb$ with $a, b \ge 1$. If $a = b = 1$, the residues of $x + t_1, x + t_1 + 2q, x + t_1 + 4q$ modulo $3$ are $x + t_1, x + t_1 - q, x + t_1 + q$, all three residues since $3 \nmid q$; one of these numbers would be divisible by $3$, contradicting $3 \mid N$. Hence $a + b \ge 3$.
 \end{proof}
 
-Hagedorn's bounds for the number of positions a prime can remove \cite[Prop.~3.3]{Ha09} translate into further thresholds: in the presence of the primes $3$ and $5$ and for $q > 5$, classes of four points require span at least $8q$ and classes of five points at least $12q$. In all our tests (Section~\ref{sec:verification}, part~2) the first classes of $2, 3, 4, 5$ points occur exactly at the spans $2q, 6q, 8q, 12q$. In particular, for $3 \mid N$ and $|s| < 6q$ all classes have at most two points, at distance $2q$ or $4q$.
+The second statement is the case of three points of Hagedorn's bound for the number of positions a prime can remove \cite[Prop.~3.3]{Ha09}, which he attributes to Haugland. The same argument gives further thresholds. If $3 \mid N$ and $q \ne 3$, write the points of a class as $t_1 + 2q a_i$; since the numbers $x + t_1 + 2q a_i$ are prime to $3$, the integers $a_i$ avoid one residue class modulo $3$. Four integers of diameter at most $3$, and five of diameter at most $5$, meet every residue class modulo $3$, so classes of four points span at least $8q$ and classes of five points at least $12q$. In all our tests (Section~\ref{sec:verification}) the first classes of $2, 3, 4, 5$ points occur exactly at the spans $2q, 6q, 8q, 12q$. In particular, for $3 \mid N$ and $|s| < 6q$ all classes have at most two points, at distance $2q$ or $4q$.
 
 \begin{theorem}[Moment form]\label{thm:moments}
-For $k \ge 0$ let $S_k(s, N) = \sum_J \binom{J - m}{k}\, n_{s,J}(N)$, the number of pairs (driving term, $k$-subset of its extra points), and for a finite set $A$ let $W_N(A) = \#\{x \bmod N : x + a \in \Omega(N)\ \forall a \in A\}$. Then
+For $k \ge 0$ let $S_k(s, N) = \sum_J \binom{J - m}{k}\, n_{s,J}(N)$, the number of pairs (driving term, $k$-subset of its extra points), and for a finite set $A$ let $V_N(A) = \#\{x \bmod N : x + a \in \Omega(N)\ \forall a \in A\}$. Then
 \[
-  S_k(s, N) = \sum_{\substack{T \subseteq \{1, \dots, |s|-1\} \setminus C\\ |T| = k}} W_N(C \cup T),
+  S_k(s, N) = \sum_{\substack{T \subseteq \{1, \dots, |s|-1\} \setminus C\\ |T| = k}} V_N(C \cup T),
   \qquad
   S_k(s, qN) = (q - m - 1 - k)\, S_k(s, N) + \Pi_k(s, N),
 \]
 where
 \[
-  \Pi_k(s, N) = \sum_{|T| = k} \big( m + 1 + k - \nu_q(C \cup T) \big)\, W_N(C \cup T) \;\ge\; 0 .
+  \Pi_k(s, N) = \sum_{|T| = k} \big( m + 1 + k - \nu_q(C \cup T) \big)\, V_N(C \cup T) \;\ge\; 0 .
 \]
 Moreover $n_{s,m}(N) = \sum_{k \ge 0} (-1)^k S_k(s, N)$.
 \end{theorem}
 
 \begin{proof}
-A pair $(x, T)$ with $x + a \in \Omega(N)$ for $a \in C \cup T$ is exactly a driving term $x$ together with a $k$-subset $T$ of its extra points, which gives the first identity. By the Chinese remainder theorem $W_{qN}(A) = W_N(A)\,(q - \nu_q(A))$, since the condition modulo $q$ excludes exactly $\nu_q(A)$ residues. Writing $q - \nu_q(A) = (q - |A|) + (|A| - \nu_q(A))$ with $|A| = m + 1 + k$ gives the recursion; $|A| - \nu_q(A) \ge 0$ counts coincidences modulo $q$. The last identity is binomial inversion, $\sum_k (-1)^k \binom{J-m}{k} = [J = m]$.
+A pair $(x, T)$ with $x + a \in \Omega(N)$ for $a \in C \cup T$ is exactly a driving term $x$ together with a $k$-subset $T$ of its extra points, which gives the first identity. By the Chinese remainder theorem $W_{qN}(A) = V_N(A)\,(q - \nu_q(A))$, since the condition modulo $q$ excludes exactly $\nu_q(A)$ residues. Writing $q - \nu_q(A) = (q - |A|) + (|A| - \nu_q(A))$ with $|A| = m + 1 + k$ gives the recursion; $|A| - \nu_q(A) \ge 0$ counts coincidences modulo $q$. The last identity is binomial inversion, $\sum_k (-1)^k \binom{J-m}{k} = [J = m]$.
 \end{proof}
 
-For $k = 0$ the theorem gives $S_0(s, qN) = (q - \nu_q(C))\, S_0(s, N)$, the aggregate count of Holt \cite[Cor.~1.2]{Ho25}, \cite[Thm.~1.1, Lemma~2.7]{Ho26} (for gaps \cite[Cor.~5.3]{HR15}). The coefficients $q - m - 1 - k$ are the eigenvalues of Holt's linear system and the $S_k$ are its left-eigenvector coordinates \cite[\S3]{Ho26}; in these coordinates the nonlinearity is a nonnegative source, and decreases of a population can arise only through the alternating sum for $n_{s,m}$.
+For $k = 0$ the theorem gives $S_0(s, qN) = (q - \nu_q(C))\, S_0(s, N)$, the aggregate count of Holt \cite[Cor.~1.2]{Ho25}, \cite[Thm.~1.1, Lemma~2.7]{Ho26} (for gaps \cite[Cor.~5.3]{HR15}). The coefficients $q - m - 1 - k$ are the eigenvalues of Holt's uniform system and the $S_k$ are its left-eigenvector coordinates \cite[\S3]{Ho26}; in these coordinates the non-uniformity is a nonnegative source, and decreases of a population can arise only through the alternating sum for $n_{s,m}$.
 
 \section{Births}\label{sec:births}
 
@@ -206,7 +210,7 @@ No gap is a multiple of $2q$, so every pair qualifies and no constellation with 
 The corollaries concern gaps up to $H(qN)$ while the convention of Section~\ref{sec:setting} requires spans below $N$. This is consistent: $H(qN) \le N$ for every even squarefree $N$ with an odd prime factor. Indeed, by Kanold's bound $H(M) \le 2^{\omega(M)}$ \cite{Ka67}; if $\omega(N) \ge 3$ then $2^{\omega(N)+1} \le N$; if $N = 2p$ with $p \ge 5$ then $H(qN) \le 8 \le 2p$; and for $N = 6$ the gaps of $\G(6)$ alternate $4, 2$ and a prime $q \ge 5$ cannot remove two adjacent points, so $H(6q) = 6$. (For $N = 2$ one has $H(2q) = 4 > 2$.) The proofs of Theorems~\ref{thm:transition} and~\ref{thm:birth} do not use the convention at all, and our tests confirm the laws also for spans $\ge N$.
 \end{remark}
 
-For primorials, the known values of Jacobsthal's function give $h(k) < 2p_{k+1}$ for all $k \le 18$ ($h(18) = 132 < 134$), while $h(19) = 152 \ge 142 = 2p_{20}$. Hence for $k \le 18$
+For primorials, the known values of Jacobsthal's function for primorials, $h(k) = H(p_k\#)$ (OEIS A048670; Holt writes $g_{\max}(p_k\#)$), give $h(k) < 2p_{k+1}$ for all $k \le 18$ ($h(18) = 132 < 134$), while $h(19) = 152 \ge 142 = 2p_{20}$. Hence for $k \le 18$
 \[
   \D(k+1) = \D(k) \cup \{\text{sums of two adjacent gaps of } \G(p_k\#)\}, \qquad h(k+1) = \max\{\text{such sums}\},
 \]
@@ -216,10 +220,11 @@ and $k + 1 = 20$ is the first stage at which blocked and coincident births are p
 An even $g$ with $2 \le g < H(qN)$ is missing from $\D(qN)$ if and only if $n_{g,1}(N) = 0$ and $B^{(q)}_g(N) = 0$. Let $M^{(q)}_2(N)$ be the largest sum $a + b$ over pairs of adjacent gaps of $\G(N)$ with $2q \nmid a$, $2q \nmid b$. A missing difference $g$ is
 \begin{itemize}
 \item by cause: a \emph{delay} if no pair of adjacent gaps of $\G(N)$ sums to $g$, and a \emph{blocked birth} if such pairs exist but each contains a gap divisible by $2q$;
-\item by position: a \emph{hole} if $g < M^{(q)}_2(N)$, and a \emph{shadow} if $M^{(q)}_2(N) < g < H(qN)$; in the latter case the maximum $H(qN)$ arises from a coincident birth.
+\item by position: a \emph{hole} if $g < M^{(q)}_2(N)$, and a \emph{shadow} if $M^{(q)}_2(N) < g < H(qN)$; in the latter case $H(qN) > M^{(q)}_2(N)$, so $H(qN)$ is either $H(N)$ or arises from a coincident birth.
 \end{itemize}
 In the calm regime every missing difference is a hole and a delay.
 \end{corollary}
+In all our data, whenever a shadow occurs, $H(qN)$ arises from a coincident birth (Table~\ref{tab:ziller}).
 
 \begin{corollary}[Maximal gaps]\label{cor:max}
 The largest gap $H(qN)$ is the maximum of $H(N)$ and of all spans $g$ with $B^{(q)}_g(N) > 0$. If it is attained by a qualifying constellation of length $j$, then in each maximal interval of $\G(qN)$ produced by it the prime $q$ alone removes exactly $j - 1$ points. For $3 \mid N$ and $H(qN) < 6q$ this is one point for a pair birth and two points, at distance $2q$ or $4q$, for a coincident birth.
@@ -243,75 +248,113 @@ The condition extends Holt's condition $|s| < 2p_1$ \cite[\S5]{Ho25}, \cite[Lemm
 The system is Theorem~\ref{thm:transition}. With singleton classes $|\C(P)| = J + 1$ and there are $J - m$ classes disjoint from $C$, each of one point.
 \end{proof}
 
-\begin{remark}
-The condition is sufficient, not claimed necessary: contributions of different shapes have different signs and could in principle cancel. In all tested cases in which some populated shape contained two congruent points, Holt's chain was inexact ($44$ of $44$ in the main test, over $200$ cases in the audit).
-\end{remark}
+\begin{theorem}\label{thm:chainiff}
+Holt's chain on lengths is exact at the transition from $N$ to $qN$ if and only if no populated shape has two points congruent modulo $q$. More precisely, let $J^*$ be the largest length of a populated shape with two congruent points; then $n_{s,J^*}(qN)$ exceeds the value given by Holt's chain by
+\[
+  \sum_{|P| = J^* + 1} m_P(N)\, \big( |P| - \nu_q(P) \big) > 0,
+\]
+the sum over the populated shapes of length $J^*$.
+\end{theorem}
+
+\begin{proof}
+Sufficiency is Theorem~\ref{thm:chain}. Shapes longer than $J^*$ have only singleton classes, so each image loses at most one point; such a shape contributes to length $J^*$ only if its length is $J^* + 1$, and then through its $J^* + 1 - m$ extra points, as in Holt's chain. A shape $P$ of length $J^*$ keeps $T_q(P, P) = q - \nu_q(P)$ images of length $J^*$, which exceeds the coefficient $q - J^* - 1$ of the chain by $|P| - \nu_q(P)$, positive exactly when $P$ has two congruent points. Shorter shapes do not contribute to length $J^*$.
+\end{proof}
+
+Following Holt's suggestion, we say that $s$ is in the \emph{uniform regime} at the transition from $N$ to $qN$ if no populated shape has two points congruent modulo $q$, and in the \emph{non-uniform regime} otherwise. By Theorem~\ref{thm:chainiff} this is exactly when Holt's chain on lengths is exact; Holt's condition $|s| < 2p_1$ is sufficient. All transitions are linear, by Theorem~\ref{thm:chain}; what distinguishes the uniform regime is that the same matrix applies to all constellations of a given length.
+
+If the only coincidences are among the points of $s$, then every populated shape has the same classes containing points of $s$ and singleton classes otherwise, so by Theorem~\ref{thm:chain} a chain on lengths with a corrected diagonal is still exact, as for gaps divisible by $2q$.
 
 \section{Applications}\label{sec:applications}
 
-\subsection{Holt's exact models for gaps $84 \le g \le 104$}\label{sec:holt}
+\subsection{Holt's exact models for gaps \texorpdfstring{$84 \le g \le 150$}{84 <= g <= 150}}\label{sec:holt}
 
-Holt's exact models require initial conditions $n_{g,j}(p_0\#)$ at a stage after which every step is linear for the gap considered, that is $g < 2p_1$ for the prime $p_1$ following $p_0$. With initial conditions from $\G(37\#)$ this gives the models for $g \le 82$; the gaps $84 \le g \le 90$ are named in \cite[\S5]{Ho26} as a current goal.
+Holt's exact models require initial conditions $n_{g,j}(p_0\#)$ at a stage after which every step is uniform for the gap considered, that is $g < 2p_1$ for the prime $p_1$ following $p_0$. With initial conditions from $\G(37\#)$ this gives the models for $g \le 82$; the gaps $84 \le g \le 90$ are named in \cite[\S5]{Ho26} as a current goal.
 
-We computed the complete matrices $n_{g,j}(p\#)$ for $p = 41$ ($g \le 110$), $p = 43$ ($g \le 104$) and $p = 47$ ($g \le 104$). Since $2 \cdot 53 = 106 > 104$, every step from $47\#$ on is linear for $g \le 104$, so $n_{g,j}(47\#)$ are exact initial conditions, with $p_0 = 47$, for all gaps up to $104$. They pass three independent checks.
+We computed the complete matrices $n_{g,j}(p\#)$ for $p = 41$ ($g \le 110$), $p = 43$ ($g \le 104$) and $p = 47$ ($g \le 104$). Since $2 \cdot 53 = 106 > 104$, every step from $47\#$ on is uniform for $g \le 104$, so $n_{g,j}(47\#)$ are exact initial conditions, with $p_0 = 47$, for all gaps up to $104$. They pass three independent checks.
 \begin{enumerate}
 \item The transitions $37\# \to 41\# \to 43\# \to 47\#$, all of which contain spans beyond $2q$, are reproduced exactly by Theorem~\ref{thm:transition} from Holt's data for $\G(37\#)$ and our pair structures ($309$, $225$ and $153$ cells).
-\item The populations of gaps in $\G(53\#)$ obtained from $n_{g,j}(47\#)$ by one linear step agree with an independently computed profile of $\G(53\#)$ for all even $g \le 104$ ($52$ of $52$).
-\item The leading coefficient of Holt's model, $\ell_1 = \sum_j w_{g,j}(47\#)$, where $w_{g,j}(47\#)$ is $n_{g,j}(47\#)$ divided by the number $\prod_{3 \le p \le 47}(p-2)$ of gaps $2$ in $\G(47\#)$, equals the Hardy--Littlewood constant $\prod_{q \mid g,\ q > 2} \frac{q-1}{q-2}$ \cite[eq.~(1.3)]{Ho26}, \cite{HL23} exactly, as a rational number, for all eleven gaps. By Holt's Theorem~1.1 \cite{Ho26} (Corollary~1.2 of \cite{Ho25}) this must hold whenever the aggregate counts $\sum_j n_{g,j}(47\#)$ are right, so this check concerns the totals; the distribution over lengths is checked by the first two items.
+\item The populations of gaps in $\G(53\#)$ obtained from $n_{g,j}(47\#)$ by one uniform step agree with an independently computed profile of $\G(53\#)$ for all even $g \le 104$ ($52$ of $52$).
+\item The leading coefficient of Holt's model, $\ell_1 = \sum_j w_{g,j}(47\#)$, where $w_{g,j}(47\#)$ is $n_{g,j}(47\#)$ divided by the number of gaps $2$ in $\G(47\#)$, which is $\prod_{3 \le p \le 47}(p-2)$, equals $\mathfrak{S}(g)/\mathfrak{S}(2) = \prod_{q \mid g,\ q > 2} \frac{q-1}{q-2}$, the Hardy--Littlewood singular series $\mathfrak{S}(g)$ normalised by its value for $g = 2$, so that its universal factor $2C_2$ cancels \cite[eq.~(1.3)]{Ho26}, \cite{HL23}; the equality holds exactly, as a rational number, for all eleven gaps. By Holt's Theorem~1.1 \cite{Ho26} (Corollary~1.2 of \cite{Ho25}) this must hold whenever the aggregate counts $\sum_j n_{g,j}(47\#)$ are right, so this check concerns the totals; the distribution over lengths is checked by the first two items.
 \end{enumerate}
-Table~\ref{tab:holt} lists the first coefficients $\ell_j = \sum_{i \ge j} \binom{i-1}{j-1} w_{g,i}(47\#)$ of Holt's expansion \cite[eq.~(1.2)]{Ho26}; the complete matrices are in the accompanying data. Evaluating the models shows how slowly large gaps approach their limits: at $p \approx 10^5$ the relative populations of the gaps $84$--$104$ have reached only between $0.4\%$ and $1.2\%$ of $\ell_1$, in line with the parameter $\lambda = \Theta(1/\ln p)$ of \cite{Ho26}.
+Table~\ref{tab:holt} lists the first coefficients $\ell_j = \sum_{i \ge j} \binom{i-1}{j-1} w_{g,i}(p_0\#)$ of Holt's expansion \cite[eq.~(1.2)]{Ho26}, with $p_0$ as in the table; the complete matrices are in the accompanying data, and all nonzero coefficients $\ell_j$ for $2 \le g \le 150$ are listed in Appendix~\ref{app:coef}. Evaluating the models shows how slowly large gaps approach their limits: at $p \approx 10^5$ the relative populations of the gaps $84$--$104$ have reached only between $0.4\%$ and $1.2\%$ of $\ell_1$, in line with the parameter $\lambda = \Theta(1/\ln p)$ of \cite{Ho26}.
+
+\paragraph{Gaps $106 \le g \le 150$.} For larger gaps the initial conditions are taken at later stages, in each case with $g < 2p_1$: $p_0 = 53$ for $g \le 116$, $p_0 = 59$ for $g = 118, 120$, $p_0 = 61$ for $122 \le g \le 132$, $p_0 = 67$ for $134 \le g \le 140$, $p_0 = 71$ for $g = 142, 144$ and $p_0 = 73$ for $146 \le g \le 150$. These matrices were computed with the second method of Section~\ref{sec:verification} and checked in three ways. For $106 \le g \le 112$ the two methods give identical matrices. For every gap the sum over all lengths equals the number $\prod_{p \le p_0} (p - \nu_p(\{0, g\}))$ of pairs at distance $g$ in $\G(p_0\#)$, which is the identity for $\ell_1$ below, and the moments $\sum_j \binom{j-1}{k} n_{g,j}(p_0\#)$ for $k \le 4$ agree with Theorem~\ref{thm:moments}, evaluated independently. At every stage the gaps $20$, $40$ and $60$ agree with $\G(47\#)$ carried forward by uniform steps.
 
 \begin{table}[ht]
 \centering
-\begin{tabular}{rrrr}
+{\small
+\begin{tabular}{rrrrr}
 \toprule
-$g$ & $\ell_1$ (= HL constant) & $\ell_2$ & $\ell_3$ \\
+$g$ & $p_0$ & $\ell_1 = \mathfrak{S}(g)/\mathfrak{S}(2)$ & $\ell_2$ & $\ell_3$ \\
 \midrule
-84 & 2.400000 & 25.8583 & 129.4360 \\
-86 & 1.024390 & 11.4282 & 59.3230 \\
-88 & 1.111111 & 12.5253 & 65.7569 \\
-90 & 2.666667 & 31.1566 & 169.9885 \\
-92 & 1.047619 & 12.6201 & 71.1408 \\
-94 & 1.022222 & 12.4851 & 71.4527 \\
-96 & 2.000000 & 24.9092 & 145.4980 \\
-98 & 1.200000 & 15.3165 & 91.7893 \\
-100 & 1.333333 & 17.2173 & 104.4522 \\
-102 & 2.133333 & 28.4414 & 178.3882 \\
-104 & 1.090909 & 14.8365 & 95.0951 \\
+84 & 47 & 2.400000 & 25.8583 & 129.4360 \\
+86 & 47 & 1.024390 & 11.4282 & 59.3230 \\
+88 & 47 & 1.111111 & 12.5253 & 65.7569 \\
+90 & 47 & 2.666667 & 31.1566 & 169.9885 \\
+92 & 47 & 1.047619 & 12.6201 & 71.1408 \\
+94 & 47 & 1.022222 & 12.4851 & 71.4527 \\
+96 & 47 & 2.000000 & 24.9092 & 145.4980 \\
+98 & 47 & 1.200000 & 15.3165 & 91.7893 \\
+100 & 47 & 1.333333 & 17.2173 & 104.4522 \\
+102 & 47 & 2.133333 & 28.4414 & 178.3882 \\
+104 & 47 & 1.090909 & 14.8365 & 95.0951 \\
+106 & 53 & 1.019608 & 13.7526 & 87.4108 \\
+108 & 53 & 2.000000 & 27.4986 & 178.3419 \\
+110 & 53 & 1.481481 & 21.0815 & 141.7996 \\
+112 & 53 & 1.200000 & 17.1466 & 115.7727 \\
+114 & 53 & 2.117647 & 31.0361 & 215.3832 \\
+116 & 53 & 1.037037 & 15.5171 & 110.0515 \\
+118 & 59 & 1.017544 & 14.9431 & 103.9436 \\
+120 & 59 & 2.666667 & 40.4254 & 290.6921 \\
+122 & 61 & 1.016949 & 15.5665 & 113.1496 \\
+124 & 61 & 1.034483 & 15.8047 & 114.6004 \\
+126 & 61 & 2.400000 & 37.7316 & 281.9690 \\
+128 & 61 & 1.000000 & 16.0541 & 122.5834 \\
+130 & 61 & 1.454545 & 23.5718 & 181.8048 \\
+132 & 61 & 2.222222 & 36.9175 & 292.2726 \\
+134 & 67 & 1.015385 & 16.7839 & 132.2527 \\
+136 & 67 & 1.066667 & 17.9720 & 144.4877 \\
+138 & 67 & 2.095238 & 35.5301 & 287.5119 \\
+140 & 67 & 1.600000 & 27.8547 & 231.6899 \\
+142 & 71 & 1.014493 & 17.5423 & 144.9346 \\
+144 & 71 & 2.000000 & 35.1447 & 295.2872 \\
+146 & 73 & 1.014085 & 17.9333 & 151.7206 \\
+148 & 73 & 1.028571 & 18.0446 & 151.4317 \\
+150 & 73 & 2.666667 & 48.0656 & 414.7880 \\
 \bottomrule
-\end{tabular}
-\caption{Coefficients of Holt's exact models for the gaps $84 \le g \le 104$, initial conditions at $p_0 = 47$.}\label{tab:holt}
+\end{tabular}}
+\caption{Coefficients of Holt's exact models for the gaps $84 \le g \le 150$, with the stage $p_0$ of the initial conditions.}\label{tab:holt}
 \end{table}
 
-\paragraph{Holt's worked example.} For the constellation $s = 2,10,2,10,2$ ($|s| = 26$) Holt lists the populations of $s$ and its driving terms of lengths $5, 6, 7$ at $p = 5, 7, 11, 13$ \cite[Fig.~6]{Ho26}: $(0,0,1)$, $(1,0,2)$, $(6,4,8)$, $(52,44,48)$, and notes that the linear system holds from $p = 13$ on. The three transitions $5 \to 7$, $7 \to 11$ and $11 \to 13$ lie outside his model ($|s| \ge 2q$). Theorem~\ref{thm:transition} derives each of them exactly from the previous stage; they involve $3$, $3$ and $18$ removals of several points in one image, respectively.
+\paragraph{Holt's worked example.} For the constellation $s = 2,10,2,10,2$ ($|s| = 26$) Holt lists the populations of $s$ and its driving terms of lengths $5, 6, 7$ at $p = 5, 7, 11, 13$ \cite[Fig.~6]{Ho26}: $(0,0,1)$, $(1,0,2)$, $(6,4,8)$, $(52,44,48)$, and notes that the uniform system holds from $p = 13$ on. The three transitions $5 \to 7$, $7 \to 11$ and $11 \to 13$ lie outside his model ($|s| \ge 2q$). Theorem~\ref{thm:transition} derives each of them exactly from the previous stage; they involve $3$, $3$ and $18$ removals of several points in one image, respectively.
 
-\paragraph{A remark on quadratic density.} Holt shows that the expected quadratic density of a gap increases along the sieve \cite[Thm.~4.3]{Ho26}, under the assumption $g < 2p_1$. The proof uses the recursion only through the inequality $n_{g,1}(p_k\#) \ge (p_k - 2)\, n_{g,1}(p_{k-1}\#)$. By Theorem~\ref{thm:birth} this inequality holds for every gap, since $n_{g,1}(qN) = (q - 2 + e_g)\, n_{g,1}(N) + B^{(q)}_g(N)$ with $e_g \ge 0$ and $B^{(q)}_g(N) \ge 0$. Hence the conclusion of \cite[Thm.~4.3]{Ho26} holds for every gap once it occurs, without the restriction $g < 2p_1$.
+\paragraph{A remark on quadratic density.} Holt shows that the expected quadratic density of a gap increases along the sieve \cite[Thm.~4.3]{Ho26}, under the assumption $g < 2p_1$. The proof uses the recursion only through the inequality $n_{g,1}(p_k\#) \ge (p_k - 2)\, n_{g,1}(p_{k-1}\#)$. By Theorem~\ref{thm:birth} this inequality holds for every gap, since $n_{g,1}(qN) = (q - 2 + e_g)\, n_{g,1}(N) + B^{(q)}_g(N)$ with $e_g \ge 0$ and $B^{(q)}_g(N) \ge 0$. Hence the conclusion of \cite[Thm.~4.3]{Ho26} holds for every gap once it occurs, without the restriction $g < 2p_1$. Holt states the result for every gap in \cite[Thm.~3.3]{Ho26b}, with a proof through the same inequality in the uniform regime; Theorem~\ref{thm:birth} supplies this inequality for all spans.
 
 \subsection{Ziller's table of missing differences}\label{sec:ziller}
 
-Ziller \cite{Zi20} tabulated, for $k \le 44$, the even numbers below $h(k)$ that do not occur as gaps in $\G(p_k\#)$ --- the \emph{missing differences} of $\D(k)$. Writing $N_{\min}(k)$ for the largest even number such that all even numbers up to it belong to $\D(k)$, he conjectured that $h(k-1) \le N_{\min}(k)$ for $k > 1$ \cite[Conj.~4.1]{Zi20}: every even number up to $h(k-1)$ occurs as a gap of $\G(p_k\#)$, or equivalently, every missing difference of $\D(k)$ exceeds $h(k-1)$. We reproduced his table independently for $18 \le k \le 30$ by an exhaustive search (Section~\ref{sec:verification}); all entries agree.
+Ziller \cite{Zi20} tabulated, for $k \le 44$, the even numbers below $h(k)$ that do not occur as gaps in $\G(p_k\#)$ --- the \emph{missing differences} (missing gaps, in Holt's terminology) of $\D(k)$. Writing $N_{\min}(k)$ for the largest even number such that all even numbers up to it belong to $\D(k)$, he conjectured that $h(k-1) \le N_{\min}(k)$ for $k > 1$ \cite[Conj.~4.1]{Zi20}: every even number up to $h(k-1)$ occurs as a gap of $\G(p_k\#)$, or equivalently, every missing difference of $\D(k)$ exceeds $h(k-1)$. We reproduced his table independently for $18 \le k \le 30$ by an exhaustive search (Section~\ref{sec:verification}); all entries agree.
 
-A missing difference of $\D(k)$ arises from $\G(p_{k-1}\#)$ with $q = p_k$, and Corollary~\ref{cor:missing} classifies it. For $k \le 19$ the calm regime applies ($h(k-1) < 2p_k$), so all missing differences are delays and holes by Corollary~\ref{cor:calm}. For $20 \le k \le 30$ we searched $\G(p_{k-1}\#)$ exhaustively for the constellations $(2q, g - 2q)$ whose existence would make $g$ a blocked birth; none exists, so all are delays. Ten of these fourteen negative results were confirmed independently with a SAT model solved by CP-SAT; four of them ($170, 230, 256, 296$) are impossible already modulo $3$. The position (hole or shadow) is determined by the reach of pairs $M^{(q)}_2$, obtained from a complete classification of the new differences for $20 \le k \le 27$ (all $54$ present differences in these bands: $50$ pair births and $4$ coincident births, namely $190$, $216$, $234$ and $282$, all of them maxima), from the pair sum $326$ at $k = 30$, and from the type of the maxima (Section~\ref{sec:maxima}).
+A missing difference of $\D(k)$ arises from $\G(p_{k-1}\#)$ with $q = p_k$, and Corollary~\ref{cor:missing} classifies it. For $k \le 19$ the calm regime applies ($h(k-1) < 2p_k$), so all missing differences are delays and holes by Corollary~\ref{cor:calm}. For $20 \le k \le 30$ we searched $\G(p_{k-1}\#)$ exhaustively for the constellations $(2q, g - 2q)$ whose existence would make $g$ a blocked birth; none exists, so all are delays. Ten of these fourteen negative results were confirmed independently with a SAT model solved by CP-SAT; four of them ($170, 230, 256, 296$) are impossible already modulo $3$. The position (hole or shadow) is determined by the reach of pairs $M^{(q)}_2$, obtained from a complete classification of the new differences for $20 \le k \le 27$ (all $54$ present differences in these bands: $50$ arise from pairs and $4$ only coincidently, namely $190$, $216$, $234$ and $282$, all of them maxima; at least nine of the $50$, namely $200$, $202$, $206$, $210$, $224$, $226$, $268$, $274$ and $280$, also arise coincidently), from the pair sum $326$ at $k = 30$, and from the type of the maxima (Section~\ref{sec:maxima}). Witnesses for every value of $M^{(q)}_2$ in Table~\ref{tab:ziller} and for all $54$ births are in the accompanying data.
 
 \begin{table}[ht]
 \centering
-\begin{tabular}{rllll}
+\begin{tabular}{rrllll}
 \toprule
-$k$ & missing $g$ & $M^{(q)}_2$ & $h(k)$, birth & basis \\
+$k$ & $p_k$ & missing $g$ & $M^{(q)}_2$ & $h(k)$, birth & basis \\
 \midrule
-6 & 20 & 22 & 22, pair & theorem \\
-8 & 32 & 34 & 34, pair & theorem \\
-14 & 86, 88 & 90 & 90, pair & theorem \\
-15 & 98 & 100 & 100, pair & theorem \\
-19 & 146 & 152 & 152, pair & theorem \\
-20 & 166, 170, 172 & 174 & 174, pair & search + SAT \\
-21 & 182; \textbf{186, 188} & 184 & 190, coincident & search + SAT \\
-22 & 194 & 200 & 200, pair and coincident & search + SAT \\
-24 & 230 & 232 & 234, coincident & search + SAT \\
-25 & 254, 256 & 258 & 258, pair & search; SAT for 256 \\
-27 & 278 & 280 & 282, coincident & search \\
-28 & 296, 298 & 300 & 300, pair & search; SAT for 296 \\
-30 & \textbf{328} & 326 & 330, coincident & search \\
+6 & 13 & 20 & 22 & 22, pair & theorem \\
+8 & 19 & 32 & 34 & 34, pair & theorem \\
+14 & 43 & 86, 88 & 90 & 90, pair & theorem \\
+15 & 47 & 98 & 100 & 100, pair & theorem \\
+19 & 67 & 146 & 152 & 152, pair & theorem \\
+20 & 71 & 166, 170, 172 & 174 & 174, pair & search + SAT \\
+21 & 73 & 182; \textbf{186, 188} & 184 & 190, coincident & search + SAT \\
+22 & 79 & 194 & 200 & 200, pair and coincident & search + SAT \\
+24 & 89 & 230 & 232 & 234, coincident & search + SAT \\
+25 & 97 & 254, 256 & 258 & 258, pair & search; SAT for 256 \\
+27 & 103 & 278 & 280 & 282, coincident & search \\
+28 & 107 & 296, 298 & 300 & 300, pair & search; SAT for 296 \\
+30 & 113 & \textbf{328} & 326 & 330, coincident & search \\
 \bottomrule
 \end{tabular}
 \caption{All missing differences of $\D(k)$ for $k \le 30$. All are delays. Shadows in bold; all others are holes. ``Theorem'': calm regime; ``search'': exhaustive search for the blocking constellation; ``SAT'': independent confirmation by CP-SAT (for $254$ the solver did not finish within one hour).}\label{tab:ziller}
@@ -331,6 +374,52 @@ By Corollary~\ref{cor:max}, a maximal gap of $\G(p_n\#)$ arises from $\G(p_{n-1}
 \item In every coincident birth the two points are exactly $2p_n$ apart; the two sources agree wherever both are available.
 \end{itemize}
 Thus from $n = 21$ on both routes occur, the coincident one more often. The data do not support a simple rule deciding the route: an extrapolation from $n \le 54$, where $47 \le n \le 54$ are all coincident births, predicted coincident births for $n = 55$--$57$ and failed at $n = 55$ and $57$; nor does the ratio $2p_n/h(n-1)$ decide it, since pair births occur even at its smallest values in the range.
+
+\subsection{The survival hypothesis: a test up to \texorpdfstring{$10^9$}{10\^{}9}}\label{sec:survival}
+Below $p_{k+1}^2$ the survivors of the sieve by the primes up to $p_k$ are the primes, so the gaps between primes in the interval of survival $[p_k^2, p_{k+1}^2)$ are gaps of $\G(p_k\#)$. Holt's survival hypothesis \cite[Conj.~2.1]{Ho26b} states that these gaps form an approximately uniform sample of $\G(p_k\#)$. That the frequencies of small gaps between consecutive primes agree with predictions from the Hardy--Littlewood conjecture is classical \cite{Br74, Wo11}; the question here is at which stage of the cycle the sample is taken, with exact populations of the cycle in place of asymptotic constants. With the models of Section~\ref{sec:holt} this can be tested for all gaps $g \le 104$ and all primes from $47^2$ to $10^9$: $50\,738\,584$ gaps of size at most $104$ in $3387$ intervals. For each interval we multiply its number of gaps by the share $n_{g,1}/\varphi$ of $g$ in the cycle at a stage $z$, obtained from $47\#$ by Holt's chain (exact for $g \le 104$ and $q \ge 53$; the models of Section~\ref{sec:holt} for $106 \le g \le 150$ start at later stages and are not used here), and compare the sums $E_g$ with the actual counts $A_g$ (Table~\ref{tab:survival}; $x = p_k^2$, totals normalised to the same number of gaps $g \le 104$).
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{lrr}
+\toprule
+stage $z = x^c$ & median of $|A_g - E_g|/E_g$ & $\chi^2$ per degree of freedom \\
+\midrule
+$c = 0.50$ ($\sqrt{x}$) & $34.17\%$ & $19316.8$ \\
+$c = 0.53$ & $14.76\%$ & $4313.9$ \\
+$c = 0.55$ & $4.81\%$ & $511.7$ \\
+$c = 0.56$ & $0.46\%$ & $6.8$ \\
+$c = e^{-\gamma} = 0.5615$ & $0.11\%$ & $0.7$ \\
+$c = 0.565$ & $1.48\%$ & $52.7$ \\
+$c = 0.57$ & $3.40\%$ & $281.2$ \\
+$c = 0.60$ & $13.26\%$ & $4916.9$ \\
+\bottomrule
+\end{tabular}
+\caption{Gaps $2 \le g \le 104$ between primes in $[47^2, 10^9]$ against the cycle at stage $x^c$.}\label{tab:survival}
+\end{table}
+
+At $z = \sqrt{x}$ the cycle has too many small gaps and too few large ones: $A_2/E_2 - 1 = -10.9\%$, $A_{104}/E_{104} - 1 = +121\%$. By Mertens' theorem the mean gap of the cycle at $\sqrt{x}$ is about $e^\gamma \log \sqrt{x} \approx 0.89 \log x$, and for $g = 2$ the Hardy--Littlewood conjecture predicts the ratio $e^\gamma/2 = 0.8905$; this is the paradox discussed by P\'olya \cite{Po59}. At $z = x^{1/e^\gamma}$, the level of the random model of Banks, Ford and Tao \cite{BFT23}, at which the density of the cycle matches $1/\log x$, the deviations are at the level of sampling noise, and among the exponents tested this one minimises them. The same holds for constellations. For all constellations of length $2$ and $3$ and span at most $40$ --- $141$ patterns of pairs and $552$ of triples of consecutive gaps, $30\,891\,159$ pairs and $14\,880\,619$ triples between $47^2$ and $10^9$ --- we take the initial conditions from a complete enumeration of $\G(19\#)$ and apply Holt's chain from $q = 23$ on, which is exact since $2 \cdot 23 > 40$ (Table~\ref{tab:survival2}). In $\G(p\#)$ a constellation and its reversal have equal populations; among the primes up to $10^9$ the counts of $(a,b)$ and $(b,a)$ differ by less than two standard deviations for the ten pairs we compared, for example $379\,483$ and $379\,720$ for $(2,4)$ and $(4,2)$. The comparison is empirical; nothing is proved about primes.
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{lrrrr}
+\toprule
+ & \multicolumn{2}{c}{pairs} & \multicolumn{2}{c}{triples} \\
+stage $z = x^c$ & median dev. & $\chi^2$/d.f. & median dev. & $\chi^2$/d.f. \\
+\midrule
+$c = 0.50$ ($\sqrt{x}$) & $7.18\%$ & $1082.5$ & $4.59\%$ & $79.1$ \\
+$c = 0.55$ & $1.10\%$ & $30.9$ & $0.80\%$ & $3.1$ \\
+$c = 0.56$ & $0.20\%$ & $1.4$ & $0.45\%$ & $1.0$ \\
+$c = e^{-\gamma}$ & $0.14\%$ & $1.0$ & $0.44\%$ & $1.0$ \\
+$c = 0.565$ & $0.31\%$ & $3.7$ & $0.49\%$ & $1.2$ \\
+$c = 0.57$ & $0.77\%$ & $16.4$ & $0.66\%$ & $2.2$ \\
+\bottomrule
+\end{tabular}
+\caption{Pairs and triples of consecutive gaps of span at most $40$ between primes in $[47^2, 10^9]$, against the cycle at stage $x^c$.}\label{tab:survival2}
+\end{table}
+
+\paragraph{Statistics.} For each category --- a gap, or a pattern of two or three consecutive gaps --- $A$ is its total count over all intervals and $E$ the sum over the intervals of the number of gaps in the interval times the share of the category in the cycle at stage $z = x^c$. The values $E$ are rescaled so that the totals of $A$ and $E$ agree, which leaves $51$, $140$ and $551$ degrees of freedom for the gaps, the pairs and the triples. Consecutive gaps are not independent, so $\chi^2$ per degree of freedom is used as a measure of fit on the scale of Poisson noise, not as a formal test. To check this scale we computed the same statistic for the count of each gap in each interval separately, over the $140\,730$ cells with $E \ge 5$ in $3387$ intervals: it is $0.90$ at $c = e^{-\gamma}$ and $8.37$ at $c = 1/2$. In our data, at the level $x^{1/e^\gamma}$ the counts thus scatter about the model at the scale of independent sampling, and the dependence between consecutive gaps does not inflate the scatter.
+
+Holt also asks for the largest gaps inside the intervals of survival \cite[\S4.1]{Ho26b}. Up to $10^9$ the largest gap lying in $[p_k^2, p_{k+1}^2)$ is at most $0.515$ times the threshold $2p_k + 4$ relevant for Legendre's conjecture (at $p_k = 31$), and exceeds half of it only there, among the $3401$ intervals up to $10^9$ counted from $p_k = 2$; counting instead the gaps that start in the interval gives $0.778$ at $p_k = 7$, from the gap from $113$ to $127$; for $k \le 64$ it is an order of magnitude below Jacobsthal's function, for example $42$ against $1110$ at $p_k = 311$.
 
 \section{Computations and verification}\label{sec:verification}
 
@@ -359,22 +448,242 @@ Convention $|s| < N$ & spans $\ge N$, including $N = 2$ & laws hold (214 + 60 ca
 \caption{Computational verification.}\label{tab:verification}
 \end{table}
 
-\paragraph{Data availability.} Code, data (the matrices $n_{g,j}$ for $41\#$, $43\#$, $47\#$, the pair structures, the classification results and the verification logs) and the programs used for all computations are available at \url{https://github.com/hojka1987t-dot/sieve-dynamics-beyond-2p}; the version used in this paper (release v1.0.0) is archived at Zenodo as \href{https://doi.org/10.5281/zenodo.23009305}{doi:10.5281/zenodo.23009305}. Table~\ref{tab:holt} and the census of Section~\ref{sec:maxima} are reproduced by the scripts in \texttt{code/analysis}, Table~\ref{tab:verification} and the survey of Section~\ref{sec:ziller} by those in \texttt{code/brute\_force}. The classification in Table~\ref{tab:ziller} rests on the result files in \texttt{data/}, produced by the exhaustive searches and the SAT check, whose programs are included; these runs take from hours to about a day.
+\paragraph{Exhaustive verification (version 3).} The shape identity
+\[
+  m_P(qN) = \big(q - \nu_q(P)\big)\, m_P(N) + \sum_K m_{P \cup K}(N),
+\]
+where $K$ runs over the sets that form a full residue class modulo $q$ of $P \cup K$ and contain no endpoint, is Theorem~\ref{thm:transition} for all constellations at once. It was checked for every shape of span at most $40$ on complete cycles, and Theorems~\ref{thm:birth}, \ref{thm:chain} and~\ref{thm:chainiff} for every constellation of span at most $40$ (Table~\ref{tab:exhaustive}). In all $243\,117$ cases with a populated shape having two congruent points, the excess at length $J^*$ equals the sum in Theorem~\ref{thm:chainiff}.
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{lrrrr}
+\toprule
+$N$ & $q$ & shapes & constellations & chain exact / inexact \\
+\midrule
+$2 \cdot 3 \cdot 5 \cdot 7$ & 11 & 1247 & 7823 & 469 / 7354 \\
+$2 \cdots 11$ & 13 & 3889 & 7823 & 979 / 6844 \\
+$2 \cdots 13$ & 17 & 6696 & 7823 & 3224 / 4599 \\
+$2 \cdots 17$ & 19 & 7734 & 7823 & 6376 / 1447 \\
+$2 \cdot 5 \cdot 7 \cdot 11 \cdot 13$ & 3 & 12431 & 171568 & 3 / 171565 \\
+$2 \cdot 3 \cdot 7 \cdot 11 \cdot 13$ & 5 & 5615 & 13398 & 9 / 13389 \\
+$2 \cdot 3 \cdot 5 \cdot 11 \cdot 13$ & 7 & 4242 & 8678 & 90 / 8588 \\
+$2 \cdot 3 \cdot 5 \cdot 7 \cdot 13$ & 11 & 3889 & 7823 & 469 / 7354 \\
+$2 \cdot 3 \cdot 7 \cdot 11 \cdot 13 \cdot 17$ & 5 & 10601 & 13398 & 9 / 13389 \\
+$2 \cdot 3 \cdot 5 \cdot 11 \cdot 13 \cdot 17$ & 7 & 7387 & 8678 & 90 / 8588 \\
+\midrule
+total & & 63731 & 254835 & \\
+\bottomrule
+\end{tabular}
+\caption{Exhaustive verification, span at most $40$: all shape identities and all birth laws hold; Holt's chain is exact exactly when no populated shape has two congruent points.}\label{tab:exhaustive}
+\end{table}
+
+
+\paragraph{Two methods for $n_{g,j}$.} The matrices are computed window by window: a window is a pair of survivors of a small base wheel at distance $g$, and each prime above the base removes one residue class. The first method counts the assignments of classes by dynamic programming over the sets of nodes still uncovered. The second applies Theorem~\ref{thm:moments} to a single window: the number of assignments that leave a given set $T$ of nodes uncovered is $\prod_p (p - \nu_p(\{0, g\} \cup T))$, the product over the primes above the base, as in Theorem~\ref{thm:moments}, and binomial inversion of the sums over $|T| = k$ gives the number of assignments leaving exactly $m$ nodes uncovered. It uses the symmetry $x \mapsto -x$ and exact integer arithmetic, with sums modulo several primes and the Chinese remainder theorem where products exceed $2^{63}$. The two methods agree on the whole matrices for $106 \le g \le 112$ in $\G(53\#)$ and on single windows up to $79\#$; the second is several hundred times faster per window.
+
+\paragraph{Data availability.} Code, data (the matrices $n_{g,j}$ for $41\#$, $43\#$, $47\#$, the pair structures, the classification results and the verification logs) and the programs used for all computations are available at \url{https://github.com/hojka1987t-dot/sieve-dynamics-beyond-2p}; the version used in this paper (release v2.0.0) is archived at Zenodo under \href{https://doi.org/10.5281/zenodo.23009304}{doi:10.5281/zenodo.23009304} (all versions). Table~\ref{tab:holt}, Appendix~\ref{app:coef} and the census of Section~\ref{sec:maxima} are reproduced by the scripts in \texttt{code/analysis}, Table~\ref{tab:verification} and the survey of Section~\ref{sec:ziller} by those in \texttt{code/brute\_force}. The classification in Table~\ref{tab:ziller} rests on the result files in \texttt{data/}, produced by the exhaustive searches and the SAT check, whose programs are included; these runs take from hours to about a day. The exhaustive verification of Section~\ref{sec:verification}, the survival test of Section~\ref{sec:survival}, the computations of Part~II are reproduced by the scripts in \texttt{code/exhaustive}, \texttt{code/survival} and \texttt{code/windows} of release v2.0.0; the matrices for $106 \le g \le 150$ and the second method are in \texttt{data} and \texttt{code/engine\_45}.
+
+%% ===================== PART II =====================
+\section{Minimal windows and the depth of their ancestors}\label{sec:depth}
+
+For $y \ge 0$ let $W_N(y)$ be the least number of points of $\Omega(N)$ in $y + 1$ consecutive integers; this is $\varphi_{\min}(y+1, \cdot)$ of Costello and Watts \cite{CW15} and the minimum of the interval sieve in \cite{BFT23}. For a window $w$ of length $y$ let $|w|$ be its number of points of $\Omega(N)$ and $c_q(w)$ the largest number of them in one residue class modulo $q$.
+
+\begin{lemma}\label{lem:window}
+$W_{qN}(y) = \min_w \big(|w| - c_q(w)\big)$, over all windows $w$ of length $y$.
+\end{lemma}
+
+\begin{proof}
+By Lemma~\ref{lem:images}, the $q$ translates of $w$ by multiples of $N$ remove the residue classes of its points modulo $q$, each class in exactly one translate.
+\end{proof}
+
+Write $W = W_N(y)$ and, for $j \ge 0$, $C_j = \max\{\, c_q(w) : |w| = W + j \,\}$. By Lemma~\ref{lem:window}, $W_{qN}(y) = \min_{j \ge 0} (W + j - C_j)$. The least $j$ at which the minimum is attained is the \emph{depth} $d_q(y)$: the minimum for $qN$ arises from windows with $W + d_q(y)$ points.
+
+\begin{theorem}\label{thm:depth}
+Let $2, 3 \mid N$ and $W_N(y) \ge 1$, and let $c$ bound the number of points of a window of length $y$ in one class modulo $q$.
+\begin{enumerate}
+\item[(a)] If $y < 6q$, then $d_q(y) = 0$, that is, $W_{qN}(y) = W_N(y) - C_0$.
+\item[(b)] If $y < 8q$, then $d_q(y) \le 1$.
+\item[(c)] In general $d_q(y) \le \max(0,\, c - C_0 - 1)$.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+A window with $W + j$ points gives a value below $W - C_0$ only if $C_j \ge C_0 + j + 1$, hence only if $j \le c - C_0 - 1$; this is (c). Since $W \ge 1$, $C_0 \ge 1$. For $y < 6q$ a class has at most two points (Corollary~\ref{cor:ladder}), and (c) with $c = 2$ gives (a); for $y < 8q$ at most three, by the argument following Corollary~\ref{cor:ladder}, and (c) with $c = 3$ gives (b).
+\end{proof}
+
+The case $W_{qN}(y) = 0$ is Corollary~\ref{cor:max}: the maximal gaps of $\G(qN)$ arise from windows whose points form one class modulo $q$.
+
+\section{Computations on minimal windows}\label{sec:compdepth}
+
+\paragraph{A certified recursion.} Theorem~\ref{thm:depth}(c) turns Lemma~\ref{lem:window} into an algorithm. Given $W_N(y)$, compute $C_0, C_1, \dots$ by exhaustive search among windows with $W + j$ points, and stop as soon as $W + j + 1 - c$ is at least the current minimum, where $c$ is an upper bound for the size of a class: the largest number of survivors among $\lfloor y/(2q) \rfloor + 1$ consecutive terms of an arithmetic progression with difference $2q$, computed exactly for at most $17$ terms and bounded by subadditivity beyond. The output is $W_{qN}(y)$ with a certificate, independent of any assumption on the depth. Table~\ref{tab:bench} compares it with a direct branch-and-bound search over residue classes; the whole profile for $q = 79$, $198 \le y \le 700$ ($252$ lengths), took $5.9$ hours of processor time.
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{rrrr}
+\toprule
+$y$ & $W_{qN}(y)$ & direct search, all cores & certified recursion, one core \\
+\midrule
+300 & 9 & 12.2 s & 0.4 s \\
+400 & 19 & 12.8 s & 1.5 s \\
+500 & 29 & 157.4 s & 47.0 s \\
+600 & 39 & 118.2 s & 5.7 s \\
+700 & 50 & 192.9 s & 56.6 s \\
+\bottomrule
+\end{tabular}
+\caption{$N = 73\#$, $q = 79$; both methods give the same values.}\label{tab:bench}
+\end{table}
+
+\paragraph{Depth at most one up to about $20q$.} For $N = p_k\#$, $7 \le k \le 21$, $q = p_{k+1}$ and all even $y$ with $W_N(y) \ge 1$ in the ranges of Table~\ref{tab:depth1}, $3943$ values in total, $d_q(y) \le 1$. For $N \le 23\#$ all windows were enumerated; for $N = 73\#$ the values were computed by the certified recursion, and the depth is $0$ at all $252$ lengths. For $29\# \le N \le 71\#$, $W_N$ and $W_{qN}$ were computed by branch and bound; in $25$ cases in which the stored optimum came from a deeper window, an exhaustive search exhibited an optimal window of depth at most one. Depth $1$ is needed, for instance, for $N = 29\#$ at $y = 630, 632$; $N = 41\#$ at $y = 556, 566, 590, 598$; $N = 43\#$ at $y = 394, 402, 442, 448, 476, 618, 628, 634, 642$; and $N = 59\#$ at $y = 682$. In all these cases $C_1 = C_0 + 2$.
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{rrrr@{\qquad}rrrr}
+\toprule
+$N$ & $q$ & $y$ & values & $N$ & $q$ & $y$ & values \\
+\midrule
+$17\#$ & 19 & 26--200 & 88  & $43\#$ & 47 & 98--700  & 302 \\
+$19\#$ & 23 & 38--400 & 182 & $47\#$ & 53 & 104--700 & 299 \\
+$23\#$ & 29 & 44--400 & 179 & $53\#$ & 59 & 116--700 & 293 \\
+$29\#$ & 31 & 56--700 & 323 & $59\#$ & 61 & 130--700 & 286 \\
+$31\#$ & 37 & 64--700 & 319 & $61\#$ & 67 & 150--700 & 276 \\
+$37\#$ & 41 & 72--700 & 315 & $67\#$ & 71 & 172--700 & 265 \\
+$41\#$ & 43 & 88--700 & 307 & $71\#$ & 73 & 188--700 & 257 \\
+ & & & & $73\#$ & 79 & 198--700 & 252 \\
+\bottomrule
+\end{tabular}
+\caption{Ranges in which $d_q(y) \le 1$ was verified.}\label{tab:depth1}
+\end{table}
+
+\paragraph{Long windows.} Table~\ref{tab:depth2} gives the depth for long windows, by enumeration of all windows for $N = 11\#, 13\#, 17\#$ and by the certified recursion along $13\# \to 17\# \to 19\# \to 23\# \to 29\# \to 31\# \to 37\#$. Depth $2$ occurs sporadically and in clusters, first at about $39q$ to $217q$ depending on $N$; depth $3$ did not occur, also in windows up to $y = 3000$, that is up to about $230q$ for $N = 11\#$. In all $35$ cases of depth $2$ for $N = 11\#, 13\#, 17\#$ and $y \le 3000$ we have $C_2 = C_1 + 2$. Depth at least $1$ is not associated with increases of the capacity $c$ (difference in frequency $-0.7$ percentage points, $p = 0.63$ in a test by cyclic shifts, which preserves the dependence between nearby lengths), but it is associated with the scarcity of optimal windows: for $N = 11\#, 13\#, 17\#$ its frequency falls from $7.5\%$, $12.9\%$, $18.5\%$ in the lowest quartile of the number of optimal windows to $1.9\%$, $5.0\%$, $8.4\%$ in the highest ($p < 0.001$ in the same test). A plausible reading is that when the minimum is attained by few windows, the largest class among them is a maximum over a small set, while the windows with one or two more points are far more numerous. For $N = 17\#$, $q = 19$, $y = 820$: $W_N(y) = 141$, $W_{qN}(y) = 131$ and $(C_0, C_1, C_2) = (9, 10, 12)$, so the minimum $131$ is attained only by windows with $W + 2$ points.
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{llrrrl}
+\toprule
+method & $N \to qN$ & $y$ & $d = 0$ & $d = 1$ & $d = 2$ (first $y$) \\
+\midrule
+enumeration & $11\# \to 13$ & 26--3000 & 1416 & 65 & 7 (2820) \\
+enumeration & $13\# \to 17$ & 34--3000 & 1342 & 131 & 11 (1144) \\
+enumeration & $17\# \to 19$ & 38--3000 & 1279 & 186 & 17 (814) \\
+recursion & $13\# \to 17$ & 700--1500 & 170 & 29 & 2 (1144) \\
+recursion & $17\# \to 19$ & 700--1500 & 186 & 13 & 2 (820) \\
+recursion & $19\# \to 23$ & 700--1500 & 174 & 27 & --- \\
+recursion & $23\# \to 29$ & 700--1500 & 196 & 5 & --- \\
+recursion & $29\# \to 31$ & 700--1500 & 188 & 13 & --- \\
+recursion & $31\# \to 37$ & 700--1500 & 194 & 6 & 1 (1428) \\
+\bottomrule
+\end{tabular}
+\caption{Depth for long windows (enumeration: all even $y$; recursion: $y \equiv 0 \bmod 4$).}\label{tab:depth2}
+\end{table}
 
 \section{Open questions}\label{sec:open}
 
 \begin{enumerate}
-\item \emph{Ziller's Conjecture 4.1.} By Theorem~\ref{thm:birth} it states that every even number up to $h(k-1)$ is a gap of $\G(p_{k-1}\#)$ or the span of a qualifying constellation; in the calm regime, a gap or a sum of two adjacent gaps. Is there a structural reason why the holes of this set stay near its top? In all small sieves we examined no missing difference persisted for more than one stage.
+\item \emph{Ziller's Conjecture 4.1.} By Theorem~\ref{thm:birth} it states that every even number up to $h(k-1)$ is a gap of $\G(p_{k-1}\#)$ or the span of a qualifying constellation; in the calm regime, a gap or a sum of two adjacent gaps. Is there a structural reason why the holes of this set stay near its top? In all small sieves we examined no missing difference persisted for more than one stage. By Corollary~\ref{cor:missing} a missing difference stays absent at the next stage exactly when no qualifying constellation produces it, and up to $k = 30$ every missing difference is a delay (Section~\ref{sec:ziller}).
 \item \emph{Which route produces the maximum?} Both pair and coincident births of maxima occur for $n \ge 21$, with no simple rule deciding between them.
-\item \emph{Necessity in Theorem~\ref{thm:chain}.} Is Holt's chain exact only if no populated shape has two points congruent modulo $q$?
+\item \emph{Depth.} Is the depth $d_q(y)$ of Section~\ref{sec:depth} bounded? It is $0$ below $6q$ and at most $1$ below $8q$; in all computed cases, with windows up to about $230q$, it never exceeds $2$, while Theorem~\ref{thm:depth}(c) gives only a bound that grows with the capacity $c$. Equivalently, $d_q(y) \le 2$ exactly when $\max_j (C_j - j)$ is attained at some $j \le 2$.
 \item \emph{Higher thresholds.} Up to $n = 64$ the maxima stay below $4p_n$. For larger $n$ they will pass the thresholds $4p_n$ and $6p_n$, where births through pairs at distance $4q$ and through classes of three points become possible for maximal gaps.
+\item \emph{Survival at the level $x^{1/e^\gamma}$.} The agreement of Section~\ref{sec:survival} holds for gaps up to $104$ and for pairs and triples of span at most $40$. Does it persist for longer constellations, larger spans and larger $x$, and what is the size of the remaining deviation?
 \item \emph{Paired progressions.} The same method applies to sieves removing two residue classes per prime, as in the paired Jacobsthal function of Ziller and Morack \cite{ZM17}; the classes of coincidence and the thresholds then change.
 \end{enumerate}
 
 \section*{Acknowledgements}
-Parts of the code, the computations and the drafting were carried out with the assistance of Claude, an AI model developed by Anthropic. The author takes full responsibility for the content.
+Parts of the code, the computations and the drafting were carried out with the assistance of Claude, an AI model developed by Anthropic. The author takes full responsibility for the content. We thank F.~B.~Holt for comments on version~2, which led to Theorem~\ref{thm:chainiff}.
 
-\paragraph{Note on versions.} A preliminary version of this text is included in release v1.0.0 of the accompanying repository (doi:10.5281/zenodo.23009305). The present text differs from it in attributing the residue-class criterion explicitly to Holt \cite[Lemma~3.1]{Ho25}, and the identity for $\ell_1$ to \cite[Thm.~1.1]{Ho26} and \cite[Cor.~1.2]{Ho25}; no result has changed.
+\paragraph{Note on versions.} Version~3 adds Theorem~\ref{thm:chainiff}, the exhaustive verification in Section~\ref{sec:verification}, the extension of Holt's exact models to $g \le 150$ with a second exact method, the complete coefficients in Appendix~\ref{app:coef}, the survival test in Section~\ref{sec:survival} and Part~II. It states the classification of the new differences in Section~\ref{sec:ziller} more precisely, with archived witnesses, proves the thresholds $8q$ and $12q$ stated without proof in version~2, restricts the statement on shadows in Corollary~\ref{cor:missing} to what is proved, attributes the threshold $6q$ to Haugland and Hagedorn and related work to Samuel and Tucker, and adopts the terms uniform and non-uniform regime suggested by Holt. No numerical result of version~2 has changed. Version~2 attributed the residue-class criterion to Holt \cite[Lemma~3.1]{Ho25}, and the identity for $\ell_1$ to \cite[Thm.~1.1]{Ho26} and \cite[Cor.~1.2]{Ho25}.
+
+\appendix
+\section{All coefficients of Holt's models}\label{app:coef}
+For each even $g \le 150$ the coefficients $\ell_j = \sum_{i \ge j} \binom{i-1}{j-1} w_{g,i}(p_0\#)$, $j = 1, 2, \dots$, of Holt's expansion \cite[eq.~(1.2)]{Ho26}, with $w_{g,i}(p_0\#) = n_{g,i}(p_0\#) / \prod_{3 \le p \le p_0}(p-2)$, where $p_0 = 47$ for $g \le 104$ and as in Section~\ref{sec:holt} for larger $g$; eight significant digits. Exact values are in the file \texttt{wspolczynniki\_l.csv} of the accompanying data.
+{\small
+\begin{longtable}{r p{0.85\textwidth}}
+\toprule
+$g$ & $\ell_1, \ell_2, \dots$ \\
+\midrule
+\endhead
+\multicolumn{2}{l}{$p_0 = 47$} \\
+2 & 1 \\
+4 & 1 \\
+6 & 2, 0.60536573 \\
+8 & 1, 0.60536573, 0.061719984 \\
+10 & 1.3333333, 0.90804859, 0.12343997 \\
+12 & 2, 2.1187801, 0.61719984, 0.042479193 \\
+14 & 1.2, 1.5134143, 0.57605318, 0.06371879 \\
+16 & 1, 1.5134143, 0.74063981, 0.12743758, 0.0051352247 \\
+18 & 2, 3.4808529, 2.0573328, 0.46727112, 0.030811348 \\
+20 & 1.3333333, 2.9511579, 2.386506, 0.84958386, 0.12324539, 0.0045578743 \\
+22 & 1.1111111, 2.3836276, 1.8574776, 0.61948823, 0.073947236 \\
+24 & 2, 5.1456087, 5.1080634, 2.4354737, 0.55460427, 0.04785768 \\
+26 & 1.0909091, 3.1630359, 3.6215588, 2.0748431, 0.61974826, 0.090397839, 0.005019041 \\
+28 & 1.2, 3.4997706, 4.0206161, 2.3009563, 0.67990375, 0.095715359, 0.0047800391 \\
+30 & 2.6666667, 9.1334555, 12.722154, 9.2409945, 3.7231846, 0.81377047, 0.086399206, 0.0032742137 \\
+32 & 1, 3.8440724, 6.1501188, 5.3081292, 2.6783865, 0.80028676, 0.13664937, 0.01207821, 0.00042594272 \\
+34 & 1.0666667, 4.1348641, 6.6752536, 5.8099146, 2.9470054, 0.8780175, 0.14685342, 0.012278301, 0.00038943335 \\
+36 & 2, 8.401071, 14.876199, 14.441783, 8.3726838, 2.9622574, 0.62816353, 0.075507006, 0.0046123512, 0.00011090015 \\
+38 & 1.0588235, 4.727528, 8.9314067, 9.2781005, 5.7580305, 2.1661266, 0.47594704, 0.054654812, 0.0024136754 \\
+40 & 1.3333333, 6.1563533, 12.119273, 13.251886, 8.7820879, 3.6071397, 0.89941747, 0.12696673, 0.008664892, 0.00019011454 \\
+42 & 2.4, 12.1992, 26.806448, 33.310172, 25.691824, 12.694319, 3.9963698, 0.76928833, 0.082440876, 0.0040127041, 5.2400275e-05 \\
+44 & 1.1111111, 5.9846078, 14.068599, 18.943976, 16.114924, 9.0030567, 3.3237398, 0.79373943, 0.11592606, 0.0091819382, 0.000290875 \\
+46 & 1.047619, 5.8455628, 14.261662, 19.958036, 17.65539, 10.251105, 3.9223411, 0.96452391, 0.14308326, 0.011175335, 0.00032431785 \\
+48 & 2, 11.635454, 29.766332, 44.007736, 41.551494, 26.126049, 11.061326, 3.1144819, 0.5614013, 0.060022313, 0.0032685847, 6.2591641e-05 \\
+50 & 1.3333333, 8.2821599, 22.846766, 36.862979, 38.555368, 27.366443, 13.40668, 4.5170226, 1.0225499, 0.14809011, 0.012507593, 0.00050914247, 5.7985346e-06 \\
+52 & 1.0909091, 6.9479771, 19.609536, 32.27344, 34.28374, 24.563124, 12.035664, 3.9990672, 0.87250513, 0.11692329, 0.0084119779, 0.00023334647 \\
+54 & 2, 13.246699, 39.232218, 68.531432, 78.406568, 61.67592, 34.053822, 13.224923, 3.5598985, 0.64167623, 0.072571206, 0.0045392032, 0.00011558412 \\
+56 & 1.2, 8.3521553, 26.09316, 48.311875, 58.956029, 49.890671, 29.996273, 12.915065, 3.9631392, 0.85214243, 0.12432913, 0.011631194, 0.00062438621, 1.4407892e-05 \\
+58 & 1.037037, 7.2115024, 22.478413, 41.439065, 50.195138, 41.966748, 24.752242, 10.340414, 3.0266436, 0.60444168, 0.07861726, 0.006172424, 0.00025713537, 4.2357696e-06 \\
+60 & 2.6666667, 19.931526, 67.194473, 134.97372, 179.74255, 167.03385, 111.0166, 53.191289, 18.276545, 4.4226467, 0.7290003, 0.077548386, 0.0048880217, 0.00015831633, 1.8831171e-06 \\
+62 & 1.0344828, 8.2527024, 29.880419, 64.936954, 94.386781, 96.769568, 71.903499, 39.161708, 15.625232, 4.5141294, 0.9214869, 0.1274249, 0.011109595, 0.00053441888, 1.0299754e-05 \\
+64 & 1, 7.8406088, 27.845779, 59.215039, 83.966421, 83.659293, 60.106774, 31.441965, 11.937585, 3.2385898, 0.60878626, 0.075233261, 0.005593282, 0.00021410403, 3.1474957e-06 \\
+66 & 2.2222222, 18.428738, 69.584964, 158.28998, 241.86447, 262.00259, 206.95826, 120.73997, 52.105803, 16.495161, 3.7590821, 0.59745972, 0.063043818, 0.0040947145, 0.00014504205, 2.1810603e-06 \\
+68 & 1.0666667, 9.245533, 36.624107, 87.780389, 142.03676, 163.9083, 138.90404, 87.68133, 41.365736, 14.49746, 3.7149344, 0.67666231, 0.083665625, 0.0065050376, 0.0002763833, 4.5879864e-06 \\
+70 & 1.6, 14.048144, 56.427667, 137.31004, 225.92177, 265.61912, 229.91255, 148.71942, 72.21372, 26.207155, 7.014813, 1.3526331, 0.18109058, 0.015933832, 0.00085308712, 2.5407837e-05, 3.8016317e-07 \\
+72 & 2, 18.515244, 78.705236, 203.53084, 357.58697, 451.42755, 422.30648, 297.54446, 158.87162, 64.155523, 19.400434, 4.3116349, 0.68344768, 0.073791334, 0.0050501421, 0.00019383397, 3.1683496e-06 \\
+74 & 1.0285714, 9.6324371, 41.488999, 108.92364, 194.72215, 250.78545, 240.07184, 173.6911, 95.607302, 39.972457, 12.569443, 2.9156175, 0.48293986, 0.054160709, 0.0037516384, 0.00013384967, 1.4941787e-06 \\
+76 & 1.0588235, 10.284944, 46.083274, 126.27786, 236.53472, 320.65142, 324.85908, 250.41959, 148.11719, 67.287455, 23.34404, 6.1075762, 1.1807316, 0.1636909, 0.015607805, 0.00096718902, 3.5890668e-05, 6.5002772e-07 \\
+78 & 2.1818182, 21.567728, 98.445945, 275.1367, 526.36265, 729.96793, 758.04676, 600.3778, 365.90001, 171.87326, 61.915465, 16.903677, 3.4278201, 0.50038836, 0.050091559, 0.0031769049, 0.00011028896, 1.4647798e-06 \\
+80 & 1.3333333, 13.722972, 65.37844, 191.23879, 384.10937, 561.24768, 616.59233, 519.09041, 338.18024, 170.97814, 66.867814, 20.044428, 4.5340055, 0.75620794, 0.090075354, 0.0073507782, 0.0003908142, 1.2673587e-05, 2.0550101e-07 \\
+82 & 1.025641, 10.73904, 52.093809, 155.29886, 318.22235, 474.8943, 533.50014, 459.88462, 307.21991, 159.51867, 64.175594, 19.82184, 4.626614, 0.79689221, 0.097934234, 0.0082056875, 0.00044266715, 1.4357216e-05, 2.3721413e-07 \\
+84 & 2.4, 25.858285, 129.43604, 399.46107, 850.55428, 1324.766, 1561.3457, 1420.7726, 1009.458, 562.60857, 245.76064, 83.639859, 21.929755, 4.3553913, 0.64034185, 0.067745337, 0.0050075643, 0.00025300021, 8.4706776e-06, 1.5001684e-07 \\
+86 & 1.0243902, 11.428245, 59.32301, 190.17933, 421.43184, 684.56421, 843.43699, 804.49227, 600.97136, 353.38373, 163.50461, 59.196142, 16.586255, 3.53445, 0.55835651, 0.063045554, 0.0048294211, 0.0002324582, 6.1897956e-06, 6.5897389e-08 \\
+88 & 1.1111111, 12.525314, 65.756852, 213.41963, 479.35672, 790.29415, 989.79354, 961.43057, 732.95951, 440.96449, 209.38197, 78.082953, 22.637023, 5.0186775, 0.83033287, 0.098935389, 0.0080554925, 0.00041327664, 1.1611321e-05, 1.2917351e-07 \\
+90 & 2.6666667, 31.1566, 169.98845, 575.08825, 1350.984, 2338.5136, 3088.638, 3179.9769, 2584.9974, 1670.0587, 858.85629, 350.54248, 112.70014, 28.184565, 5.3818554, 0.76447968, 0.077963186, 0.0054457273, 0.00024506509, 6.474123e-06, 7.5557932e-08 \\
+92 & 1.047619, 12.620139, 71.140821, 249.25194, 608.01491, 1096.1879, 1513.2798, 1635.1842, 1401.864, 960.77656, 527.92171, 232.29518, 81.442764, 22.547354, 4.8635849, 0.80247766, 0.098832761, 0.0087961168, 0.00054008675, 2.0984713e-05, 4.0029878e-07 \\
+94 & 1.0222222, 12.485051, 71.452715, 254.5604, 632.56383, 1164.1958, 1644.6651, 1823.8651, 1610.1714, 1140.9541, 651.2602, 299.3684, 110.37966, 32.389664, 7.4731931, 1.3327704, 0.17950675, 0.017709446, 0.0012301093, 5.7049231e-05, 1.6086381e-06, 2.0569977e-08 \\
+96 & 2, 24.909168, 145.49799, 529.5825, 1346.008, 2537.1219, 3676.4772, 4189.6469, 3809.2817, 2787.4408, 1648.7376, 788.8641, 304.56284, 94.352121, 23.251443, 4.5039359, 0.67532243, 0.076881883, 0.0064782118, 0.00038776226, 1.5058697e-05, 2.892845e-07 \\
+98 & 1.2, 15.316524, 91.789286, 343.17466, 897.04986, 1741.2664, 2601.968, 3061.9781, 2878.9621, 2181.5456, 1337.889, 664.36302, 266.31989, 85.614125, 21.838916, 4.3528225, 0.6633641, 0.074974027, 0.0060111554, 0.00031891187, 9.8593693e-06, 1.2896227e-07 \\
+100 & 1.3333333, 17.217337, 104.45216, 395.62637, 1048.6359, 2066.3003, 3138.6815, 3761.0781, 3608.7704, 2798.4496, 1762.7318, 903.38889, 376.16786, 126.72692, 34.297171, 7.3819017, 1.246796, 0.16245212, 0.01597947, 0.0011531515, 5.8429942e-05, 1.9007006e-06, 3.0533559e-08 \\
+102 & 2.1333333, 28.441362, 178.38816, 699.54694, 1922.52, 3933.5848, 6213.1771, 7752.4395, 7754.7048, 6274.8925, 4126.3694, 2207.2636, 958.04309, 335.41147, 93.798113, 20.655361, 3.5109007, 0.44810305, 0.041332857, 0.0026095792, 0.00010396191, 2.2780153e-06, 2.0164871e-08 \\
+104 & 1.0909091, 14.836529, 95.09509, 381.81951, 1076.6937, 2265.8171, 3690.7808, 4763.1943, 4944.4677, 4167.3964, 2866.3639, 1611.132, 738.59189, 274.65272, 82.073618, 19.431818, 3.5710154, 0.49446347, 0.049364824, 0.0033171391, 0.00013328423, 2.5031663e-06, 8.8983515e-09 \\
+\multicolumn{2}{l}{$p_0 = 53$} \\
+106 & 1.0196078, 13.752615, 87.410799, 347.98923, 972.85421, 2029.4363, 3276.4949, 4190.5689, 4310.3763, 3599.2386, 2452.1353, 1364.9341, 619.4844, 227.98435, 67.396756, 15.778139, 2.8657341, 0.3920813, 0.038705361, 0.0025825122, 0.00010486262, 2.1646433e-06, 1.6702392e-08 \\
+108 & 2, 27.498621, 178.34191, 725.28473, 2073.9986, 4432.0778, 7343.0893, 9658.0256, 10241.576, 8843.4388, 6253.693, 3629.9335, 1727.9833, 671.96839, 211.91341, 53.589087, 10.69072, 1.6437013, 0.18832239, 0.015288442, 0.0008113541, 2.4336557e-05, 2.9338151e-07 \\
+110 & 1.4814815, 21.081535, 141.79957, 599.43805, 1786.2067, 3988.3462, 6924.9749, 9576.5633, 10716.653, 9805.4391, 7381.6681, 4585.6536, 2350.7854, 991.66712, 342.24866, 95.750935, 21.426401, 3.7629734, 0.50496017, 0.049813512, 0.0034088464, 0.00014747578, 3.4222987e-06, 2.9922776e-08 \\
+112 & 1.2, 17.146559, 115.77271, 491.09921, 1467.7519, 3285.271, 5714.348, 7910.1123, 8851.9762, 8090.0864, 6074.8434, 3757.772, 1914.1332, 800.22482, 272.79385, 75.065433, 16.430422, 2.8017557, 0.3613778, 0.033776404, 0.0021438623, 8.3266309e-05, 1.6536315e-06, 1.2109061e-08 \\
+114 & 2.1176471, 31.036083, 215.38316, 941.23325, 2905.5897, 6737.2139, 12179.858, 17589.588, 20623.767, 19845.485, 15778.813, 10402.696, 5691.1649, 2578.7812, 963.33132, 294.40909, 72.779967, 14.320567, 2.1924155, 0.2527669, 0.020900583, 0.0011464172, 3.6287409e-05, 4.9111997e-07, 1.2492177e-09 \\
+116 & 1.037037, 15.517119, 110.0515, 492.05196, 1556.0768, 3701.619, 6876.9329, 10225.675, 12372.931, 12319.53, 10167.426, 6984.4889, 3999.7545, 1907.7573, 755.39206, 246.845, 65.981645, 14.246567, 2.4418447, 0.32427862, 0.032234324, 0.002278183, 0.00010540562, 2.7451039e-06, 2.8093952e-08 \\
+\multicolumn{2}{l}{$p_0 = 59$} \\
+118 & 1.0175439, 14.943082, 103.9436, 455.47887, 1410.5974, 3283.2901, 5962.8461, 8658.5392, 10219.218, 9912.017, 7956.924, 5307.2146, 2944.7521, 1357.4239, 517.82098, 162.38277, 41.444878, 8.4891451, 1.3684844, 0.16895527, 0.015367244, 0.00097204497, 3.9037517e-05, 8.4876865e-07, 7.1066243e-09 \\
+120 & 2.6666667, 40.425405, 290.6921, 1318.8588, 4236.0472, 10244.685, 19371.534, 29354.119, 36247.329, 36891.93, 31181.645, 21984.99, 12955.422, 6378.3173, 2616.5792, 889.88889, 248.96008, 56.663104, 10.332035, 1.4777474, 0.16095045, 0.012791766, 0.00069552537, 2.332119e-05, 4.035197e-07, 2.7172238e-09 \\
+\multicolumn{2}{l}{$p_0 = 61$} \\
+122 & 1.0169492, 15.56652, 113.14956, 519.54603, 1691.1053, 4150.8123, 7978.7649, 12313.298, 15517.085, 16154.979, 14004.494, 10158.072, 6179.9785, 3154.2028, 1348.0313, 480.46013, 141.89356, 34.402876, 6.7608513, 1.0582568, 0.12878713, 0.011773639, 0.00076788221, 3.2834099e-05, 7.8373698e-07, 6.9084385e-09 \\
+124 & 1.0344828, 15.804662, 114.6004, 524.61348, 1701.2923, 4157.2681, 7948.9142, 12190.552, 15249.491, 15739.653, 13507.046, 9681.9693, 5809.3122, 2917.2774, 1223.2092, 426.25896, 122.5628, 28.779559, 5.441035, 0.81224853, 0.093182162, 0.0079008563, 0.00046652918, 1.7357044e-05, 3.3269059e-07, 1.7839085e-09 \\
+126 & 2.4, 37.731634, 281.96902, 1332.5318, 4469.3399, 11318.515, 22480.107, 35903.288, 46907.06, 50730.517, 45787.446, 34667.851, 22081.615, 11840.399, 5338.0607, 2016.8262, 635.15342, 165.42827, 35.250985, 6.0565574, 0.82263078, 0.085965852, 0.0066500234, 0.00035927923, 1.2311131e-05, 2.2155984e-07, 1.2368071e-09 \\
+128 & 1, 16.054142, 122.58344, 592.27787, 2032.3121, 5269.0313, 10721.201, 17555.267, 23533.128, 26135.781, 24244.389, 18883.507, 12384.817, 6844.8195, 3184.0114, 1242.6326, 404.72539, 109.16233, 24.124646, 4.306259, 0.60899359, 0.066460691, 0.0053936324, 0.0003081774, 1.1355066e-05, 2.2933981e-07, 1.7006534e-09 \\
+130 & 1.4545455, 23.571819, 181.80481, 887.93976, 3082.3521, 8091.7804, 16688.259, 27727.853, 37764.331, 42673.942, 40345.365, 32090.214, 21542.397, 12220.392, 5854.3133, 2362.744, 799.92111, 225.74379, 52.642355, 10.026535, 1.5359339, 0.18538664, 0.017143406, 0.0011672031, 5.5096348e-05, 1.6327456e-06, 2.5270645e-08, 1.41708e-10 \\
+132 & 2.2222222, 36.917531, 292.27264, 1467.2786, 5243.2814, 14192.156, 30230.137, 51971.535, 73384.65, 86154.384, 84817.351, 70420.443, 49475.774, 29456.253, 14854.997, 6331.7207, 2271.7617, 681.93864, 169.81931, 34.685275, 5.7234643, 0.74779615, 0.075273275, 0.0056170993, 0.00029333105, 9.737256e-06, 1.6905204e-07, 8.2905113e-10 \\
+\multicolumn{2}{l}{$p_0 = 67$} \\
+134 & 1.0153846, 16.783934, 132.25269, 661.08587, 2353.3901, 6349.6754, 13492.167, 23160.126, 32688.197, 38410.08, 37906.863, 31609.021, 22353.788, 13431.647, 6857.6644, 2970.1994, 1087.6536, 334.95951, 86.105253, 18.288162, 3.1658034, 0.43856498, 0.047429621, 0.0038683268, 0.00022627152, 8.7782027e-06, 1.9695597e-07, 1.8717451e-09 \\
+136 & 1.0666667, 17.971975, 144.48768, 737.64795, 2684.8056, 7414.549, 16145.161, 28436.239, 41235.398, 49852.878, 50698.471, 43636.067, 31911.189, 19868.86, 10536.331, 4752.7889, 1818.4516, 587.41838, 159.16077, 35.851946, 6.6355079, 0.99354048, 0.11788584, 0.010774575, 0.00072839523, 3.4202316e-05, 9.9806295e-07, 1.404311e-08, 2.5509536e-11 \\
+138 & 2.0952381, 35.530078, 287.51187, 1477.5273, 5413.8581, 15053.727, 33009.445, 58558.798, 85550.333, 104232.8, 106864.04, 92768.371, 68462.535, 43045.706, 23070.172, 10528.247, 4080.4159, 1337.3165, 368.36698, 84.574535, 16.008631, 2.462548, 0.30205268, 0.028794581, 0.0020580578, 0.00010454028, 3.4571879e-06, 6.29087e-08, 4.0600563e-10 \\
+140 & 1.6, 27.854675, 231.68988, 1225.5066, 4628.5667, 13287.137, 30131.906, 55387.106, 84019.037, 106538.77, 113972.78, 103534.18, 80213.934, 53139.352, 30131.114, 14616.456, 6054.3587, 2134.1251, 636.97894, 159.88927, 33.450377, 5.7651907, 0.80633376, 0.089733145, 0.0077389364, 0.00049854302, 2.269507e-05, 6.6405691e-07, 1.0202759e-08, 4.0345487e-11 \\
+\multicolumn{2}{l}{$p_0 = 71$} \\
+142 & 1.0144928, 17.542294, 144.93459, 761.49956, 2856.9057, 8146.5815, 18350.849, 33504.663, 50479.124, 63567.834, 67525.925, 60900.499, 46834.35, 30789.134, 17319.182, 8331.4431, 3420.6651, 1194.4755, 352.92575, 87.613718, 18.105255, 3.0768917, 0.42326566, 0.046152457, 0.0038765749, 0.00024078156, 1.0377366e-05, 2.765465e-07, 3.4297029e-09 \\
+144 & 2, 35.144732, 295.28721, 1578.9991, 6034.3255, 17545.112, 40342.761, 75281.179, 116086.07, 149862.53, 163498.41, 151764.18, 120414.06, 81903.47, 47825.217, 23974.948, 10305.024, 3787.8978, 1185.9392, 314.50176, 70.126534, 13.022824, 1.9896725, 0.24618491, 0.02416375, 0.0018295959, 0.00010269868, 4.0174486e-06, 9.7885233e-08, 1.1234938e-09 \\
+\multicolumn{2}{l}{$p_0 = 73$} \\
+146 & 1.0140845, 17.933256, 151.72063, 817.43126, 3149.6365, 9239.9782, 21454.372, 40463.185, 63125.721, 82536.924, 91312.227, 86067.688, 69450.324, 48126.71, 28687.727, 14714.719, 6488.7319, 2454.6468, 793.87584, 218.45526, 50.822318, 9.9145474, 1.6050822, 0.21280135, 0.022713552, 0.0019080837, 0.00012225915, 5.7032527e-06, 1.7953059e-07, 3.3072228e-09, 2.5236209e-11 \\
+148 & 1.0285714, 18.044617, 151.43169, 809.20109, 3092.0139, 8994.2022, 20703.52, 38702.68, 59833.493, 77505.926, 84926.13, 79257.312, 63299.953, 43397.866, 25581.883, 12969.375, 5649.4559, 2109.7618, 673.0952, 182.55958, 41.821462, 8.0247534, 1.2760721, 0.16588478, 0.017318338, 0.0014175966, 8.7906792e-05, 3.9129601e-06, 1.1346584e-07, 1.7208572e-09, 5.4649147e-12 \\
+150 & 2.6666667, 48.065624, 414.78795, 2281.3064, 8980.6956, 26941.87, 64031.895, 123740.14, 198018.89, 265898.77, 302501.08, 293617.24, 244361.63, 174947.63, 107947.77, 57438.555, 26339.934, 10391.569, 3516.6253, 1016.564, 249.63469, 51.709748, 8.955709, 1.2826605, 0.14984025, 0.014028248, 0.0010280418, 5.6998117e-05, 2.261566e-06, 5.7652929e-08, 7.1382142e-10 \\
+\bottomrule
+\end{longtable}}
 
 \begin{thebibliography}{99}
 \bibitem{HR15} F.~B.~Holt and H.~Rudd, \emph{Combinatorics of the gaps between primes}, Connections in Discrete Mathematics, Simon Fraser Univ.\ (2015); arXiv:1510.00743.
@@ -389,6 +698,14 @@ Parts of the code, the computations and the drafting were carried out with the a
 \bibitem{HL23} G.~H.~Hardy and J.~E.~Littlewood, \emph{Some problems of `Partitio numerorum' III: on the expression of a number as a sum of primes}, Acta Math.\ \textbf{44} (1923), 1--70.
 \bibitem{ZM17} M.~Ziller and J.~F.~Morack, \emph{Divisibility in paired progressions, Goldbach's conjecture, and the infinitude of prime pairs}, preprint (2017), arXiv:1706.00317.
 \bibitem{OEIS} OEIS Foundation, \emph{The On-Line Encyclopedia of Integer Sequences}, sequence A048670.
+\bibitem{Br74} R.~P.~Brent, \emph{The distribution of small gaps between successive primes}, Math.\ Comp.\ \textbf{28} (1974), 315--324.
+\bibitem{BFT23} W.~Banks, K.~Ford and T.~Tao, \emph{Large prime gaps and probabilistic models}, Invent.\ Math.\ \textbf{233} (2023), 1471--1518; arXiv:1908.08613.
+\bibitem{CW15} F.~Costello and P.~Watts, \emph{An upper bound on Jacobsthal's function}, Math.\ Comp.\ \textbf{84} (2015), 1389--1399; arXiv:1208.5342.
+\bibitem{Ho26b} F.~B.~Holt, \emph{Surviving Eratosthenes sieve I: quadratic density and Legendre's conjecture}, arXiv:2603.25915 (2026).
+\bibitem{Wo11} M.~Wolf, \emph{Some heuristics on the gaps between consecutive primes}, arXiv:1102.0481 (2011).
+\bibitem{Po59} G.~P\'olya, \emph{Heuristic reasoning in the theory of numbers}, Amer.\ Math.\ Monthly \textbf{66} (1959), 375--384.
+\bibitem{Sa26} A.~Samuel, \emph{Residue-slice dynamics and certified primorial-gap coverings}, Zenodo, records 21636888 and 21897424 (2026).
+\bibitem{Tu26} D.~C.~Tucker, \emph{The atlas of maximal gaps: exact covering enumeration for primorial sieves}, Zenodo, doi:10.5281/zenodo.22919682 (2026).
 \end{thebibliography}
 
 \end{document}

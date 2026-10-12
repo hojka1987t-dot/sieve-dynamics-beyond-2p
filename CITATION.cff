@@ -5,8 +5,8 @@ authors:
   - family-names: "Hojka"
     given-names: "Tomasz"
     affiliation: "Independent researcher"
-version: "1.0.0"
-doi: "10.5281/zenodo.23009305"
+version: "2.0.0"
+doi: "10.5281/zenodo.23009304"
 license: MIT
 repository-code: "https://github.com/hojka1987t-dot/sieve-dynamics-beyond-2p"
 keywords:
@@ -23,4 +23,4 @@ preferred-citation:
     - family-names: "Hojka"
       given-names: "Tomasz"
   year: 2026
-  doi: "10.5281/zenodo.23007183"
+  doi: "10.5281/zenodo.23007182"

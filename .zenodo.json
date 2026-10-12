@@ -1,7 +1,8 @@
 {
   "title": "Eratosthenes sieve dynamics beyond 2p: code, data and verification",
   "upload_type": "software",
-  "description": "Code, data and verification scripts accompanying the preprint by T. Hojka, \"Exact dynamics of Eratosthenes sieve beyond 2p: coincident fusions, births of gaps and missing differences\" (doi:10.5281/zenodo.23007183). Code is licensed under MIT; data and documents under CC BY 4.0.",
+  "version": "2.0.0",
+  "description": "Code, data and verification scripts accompanying version 3 of the preprint by T. Hojka, \"Exact dynamics of Eratosthenes sieve beyond 2p: coincident fusions, births of gaps and missing differences\" (doi:10.5281/zenodo.23007182). Release 2.0.0 adds the exhaustive verification of Part I, the exact models of Holt for gaps up to 150 computed with a second exact method, witnesses for Ziller's table of missing differences, the survival test up to 10^9 and the computations on minimal windows of Part II. Code is licensed under MIT; data and documents under CC BY 4.0.",
   "creators": [
     {
       "name": "Hojka, Tomasz",
@@ -18,7 +19,7 @@
   ],
   "related_identifiers": [
     {
-      "identifier": "10.5281/zenodo.23007183",
+      "identifier": "10.5281/zenodo.23007182",
       "relation": "isSupplementTo",
       "resource_type": "publication-preprint",
       "scheme": "doi"

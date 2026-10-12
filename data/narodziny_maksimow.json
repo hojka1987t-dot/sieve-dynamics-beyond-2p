@@ -1,0 +1,83 @@
+[
+ {
+  "k+1": 20,
+  "g": 174,
+  "typ": "PARA",
+  "konstelacja": "(84,90)",
+  "X": "484891012737757654958124079",
+  "zrodlo": "u(n) from Gerbicz's table (A048670)",
+  "uwaga": "maximal gap 174 of G(p_20#) at X; at stage p_19# its interior holds the points [84], removed by 71; checked by gcd"
+ },
+ {
+  "k+1": 21,
+  "g": 190,
+  "typ": "KOINCYDENTNE",
+  "konstelacja": "(34,146,10)",
+  "X": "58810556038910741050470579979",
+  "zrodlo": "u(n) from Gerbicz's table (A048670)",
+  "uwaga": "maximal gap 190 of G(p_21#) at X; at stage p_20# its interior holds the points [34, 180], removed by 73; checked by gcd"
+ },
+ {
+  "k+1": 22,
+  "g": 200,
+  "typ": "PARA",
+  "konstelacja": "(156,44)",
+  "X": "4739691835350349000080634061303",
+  "zrodlo": "u(n) from Gerbicz's table (A048670)",
+  "uwaga": "maximal gap 200 of G(p_22#) at X; at stage p_21# its interior holds the points [156], removed by 79; checked by gcd"
+ },
+ {
+  "k+1": 23,
+  "g": 216,
+  "typ": "KOINCYDENTNE",
+  "konstelacja": "(36,166,14)",
+  "X": "203493068953311000190715581648381",
+  "zrodlo": "u(n) from Gerbicz's table (A048670)",
+  "uwaga": "maximal gap 216 of G(p_23#) at X; at stage p_22# its interior holds the points [36, 202], removed by 83; checked by gcd"
+ },
+ {
+  "k+1": 24,
+  "g": 234,
+  "typ": "KOINCYDENTNE",
+  "konstelacja": "(2,178,54)",
+  "X": "19999220403754061489432023709092877",
+  "zrodlo": "u(n) from Gerbicz's table (A048670)",
+  "uwaga": "maximal gap 234 of G(p_24#) at X; at stage p_23# its interior holds the points [2, 180], removed by 89; checked by gcd"
+ },
+ {
+  "k+1": 25,
+  "g": 258,
+  "typ": "PARA",
+  "konstelacja": "(158,100)",
+  "X": "2671098085263057081173281452864776501",
+  "zrodlo": "u(n) from Gerbicz's table (A048670)",
+  "uwaga": "maximal gap 258 of G(p_25#) at X; at stage p_24# its interior holds the points [158], removed by 97; checked by gcd"
+ },
+ {
+  "k+1": 27,
+  "g": 282,
+  "typ": "KOINCYDENTNE",
+  "konstelacja": "(36,206,40)",
+  "X": "33071854059327812766469917236597755164137",
+  "zrodlo": "u(n) from Gerbicz's table (A048670)",
+  "uwaga": "maximal gap 282 of G(p_27#) at X; at stage p_26# its interior holds the points [36, 242], removed by 103; checked by gcd"
+ },
+ {
+  "k+1": 28,
+  "g": 300,
+  "typ": "PARA",
+  "konstelacja": "(228,72)",
+  "X": "1413365804011383560186668369273484633157179",
+  "zrodlo": "u(n) from Gerbicz's table (A048670)",
+  "uwaga": "maximal gap 300 of G(p_28#) at X; at stage p_27# its interior holds the points [228], removed by 107; checked by gcd"
+ },
+ {
+  "k+1": 30,
+  "g": 330,
+  "typ": "KOINCYDENTNE",
+  "konstelacja": "(84,226,20)",
+  "X": "32335739636943603382014401686213086400872487249",
+  "zrodlo": "u(n) from Gerbicz's table (A048670)",
+  "uwaga": "maximal gap 330 of G(p_30#) at X; at stage p_29# its interior holds two points 2*113 apart; checked by gcd"
+ }
+]

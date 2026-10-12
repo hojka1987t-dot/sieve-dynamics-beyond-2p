@@ -1,0 +1,12 @@
+WERYFIKACJA BRAKUJACYCH ROZNIC (strumien) | k=23  baza=7  Lmax=216
+roznic: 108 | sektorow: 17 | zadan: 1836 | rdzeni: 16 | budzet/okno: 100000000
+--- CERTYFIKAT ---
+  przeszukano wszystkie 17 sektorow z ogonem przez granice: TAK
+  okien sprawdzonych: 74336 | krokow dfs: 626055876
+  budzet nie wiazal dla zadnej brakujacej roznicy -> kazde 'brak' jest DOWODEM
+  kazdy znaleziony swiadek zweryfikowany niezaleznie przez gcd: TAK
+--- WYNIK ---
+  brakujace roznice <= 216: []
+  tabela Zillera:          []
+  >>> ZGODNE
+  czas: 389.5 s

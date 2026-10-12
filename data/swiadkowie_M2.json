@@ -1,0 +1,115 @@
+[
+ {
+  "k+1": 6,
+  "g": 22,
+  "typ": "PARA",
+  "konstelacja": "(12,10)",
+  "X": "9439",
+  "zrodlo": "u(n) from Gerbicz's table (A048670)",
+  "uwaga": "maximal gap 22 of G(p_6#) at X; at stage p_5# its interior holds one point, removed by 13; checked by gcd; gives M2 = 22 at k = 6"
+ },
+ {
+  "k+1": 8,
+  "g": 34,
+  "typ": "PARA",
+  "konstelacja": "(16,18)",
+  "X": "60043",
+  "zrodlo": "u(n) from Gerbicz's table (A048670)",
+  "uwaga": "maximal gap 34 of G(p_8#) at X; at stage p_7# its interior holds one point, removed by 19; checked by gcd; gives M2 = 34 at k = 8"
+ },
+ {
+  "k+1": 14,
+  "g": 90,
+  "typ": "PARA",
+  "konstelacja": "(56,34)",
+  "X": "18729282685998827",
+  "zrodlo": "u(n) from Gerbicz's table (A048670)",
+  "uwaga": "maximal gap 90 of G(p_14#) at X; at stage p_13# its interior holds one point, removed by 43; checked by gcd; gives M2 = 90 at k = 14"
+ },
+ {
+  "k+1": 15,
+  "g": 100,
+  "typ": "PARA",
+  "konstelacja": "(66,34)",
+  "X": "776703760998840643",
+  "zrodlo": "u(n) from Gerbicz's table (A048670)",
+  "uwaga": "maximal gap 100 of G(p_15#) at X; at stage p_14# its interior holds one point, removed by 47; checked by gcd; gives M2 = 100 at k = 15"
+ },
+ {
+  "k+1": 19,
+  "g": 152,
+  "typ": "PARA",
+  "konstelacja": "(96,56)",
+  "X": "6506766494951041715911421",
+  "zrodlo": "u(n) from Gerbicz's table (A048670)",
+  "uwaga": "maximal gap 152 of G(p_19#) at X; at stage p_18# its interior holds one point, removed by 67; checked by gcd; gives M2 = 152 at k = 19"
+ },
+ {
+  "k+1": 20,
+  "g": 174,
+  "typ": "PARA",
+  "konstelacja": "(116,58)",
+  "X": "628592552164206298093367",
+  "uwaga": "pair of adjacent gaps (116,58) in G(p_19#) = G(67#); witness X checked by gcd; neither gap divisible by 2*71; gives M2 = 174 at k = 20"
+ },
+ {
+  "k+1": 21,
+  "g": 184,
+  "typ": "PARA",
+  "konstelacja": "(120,64)",
+  "X": "382830682151135431268009833",
+  "uwaga": "pair of adjacent gaps (120,64) in G(p_20#) = G(71#); witness X checked by gcd; neither gap divisible by 2*73; gives M2 = 184 at k = 21"
+ },
+ {
+  "k+1": 22,
+  "g": 200,
+  "typ": "PARA",
+  "konstelacja": "(98,102)",
+  "X": "21483412671717145684550380283",
+  "uwaga": "pair of adjacent gaps (98,102) in G(p_21#) = G(73#); witness X checked by gcd; neither gap divisible by 2*79; gives M2 = 200 at k = 22"
+ },
+ {
+  "k+1": 24,
+  "g": 232,
+  "typ": "PARA",
+  "konstelacja": "(132,100)",
+  "X": "15490804318055925868423142908884589",
+  "zrodlo": "verifier witness (stream, base 7), k = 24",
+  "uwaga": "pair of adjacent gaps (132,100) in G(p_23#) = G(83#); witness X checked by gcd; neither gap divisible by 2*89; gives M2 = 232 at k = 24"
+ },
+ {
+  "k+1": 25,
+  "g": 258,
+  "typ": "PARA",
+  "konstelacja": "(158,100)",
+  "X": "2671098085263057081173281452864776501",
+  "zrodlo": "u(n) from Gerbicz's table (A048670)",
+  "uwaga": "maximal gap 258 of G(p_25#) at X; at stage p_24# its interior holds the points [158], removed by 97; checked by gcd; gives M2 = 258 at k = 25"
+ },
+ {
+  "k+1": 27,
+  "g": 280,
+  "typ": "PARA",
+  "konstelacja": "(144,136)",
+  "X": "20784043291362870891200276403879341853289",
+  "zrodlo": "targeted pair search (para_worker, base 7)",
+  "uwaga": "pair of adjacent gaps (144,136) in G(p_26#) = G(101#); witness X checked by gcd; neither gap divisible by 2*103; gives M2 = 280 at k = 27"
+ },
+ {
+  "k+1": 28,
+  "g": 300,
+  "typ": "PARA",
+  "konstelacja": "(228,72)",
+  "X": "1413365804011383560186668369273484633157179",
+  "zrodlo": "u(n) from Gerbicz's table (A048670)",
+  "uwaga": "maximal gap 300 of G(p_28#) at X; at stage p_27# its interior holds the points [228], removed by 107; checked by gcd; gives M2 = 300 at k = 28"
+ },
+ {
+  "k+1": 30,
+  "g": 326,
+  "typ": "PARA",
+  "konstelacja": "(72,254)",
+  "X": "84258147263211108962294414255809182974278601",
+  "uwaga": "pair of adjacent gaps (72,254) in G(p_29#); witness X checked by gcd; gives M2 = 326 at k = 30, hence 328 is a shadow"
+ }
+]
