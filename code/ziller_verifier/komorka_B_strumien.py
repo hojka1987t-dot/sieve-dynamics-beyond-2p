@@ -4,8 +4,8 @@ import importlib
 import roznice_worker as W
 
 importlib.reload(W)
-if getattr(W, "WERSJA", "0") < "2.0":
-    raise ImportError("roznice_worker.py na dysku to stara wersja (nie strumieniowa).")
+if getattr(W, "WERSJA", "0") < "2.1":
+    raise ImportError("roznice_worker.py na dysku to stara wersja - uruchom najpierw komorke A (wersja 2.1).")
 
 # Tabela Zillera (arXiv:2007.01808, tab. 1): k -> (h(k), [brakujace roznice])
 ZILLER = {
@@ -28,6 +28,7 @@ def sprawdz(k, r_base=None, Lmax=None, budzet_na_okno=10**8,
     Wersja STRUMIENIOWA: jednostka podzialu to sektor kola bazowego.
     Pamiec stala - nie powstaje tablica ocalalych, wiec baza 9 i 10 wchodza
     bez ograniczen pamieciowych.
+    budzet_na_okno: limit krokow dfs dla jednego okna (od wersji workera 2.1 naprawde na okno).
     """
     if r_base is None:
         r_base = max(3, min(10, k // 2 - 1))

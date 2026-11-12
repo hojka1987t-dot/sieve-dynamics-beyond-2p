@@ -1,6 +1,6 @@
 # KOMORKA C - n_{g,j}(53#) dla nowych luk 106..116 (+ luki kontrolne 20, 30, 40).
 # Wymaga komorki A (holt_A.py -> holt_worker.py). Zapis po kazdej luce do PLIK: przebieg mozna przerwac i wznowic.
-# Kontrola: luki 20, 30, 40 musza sie zgadzac z nG47.csv przeniesionym o jeden krok jednolity (sprawdzi Claude).
+# Kontrola: luki 20, 30, 40 musza sie zgadzac z nG47.csv przeniesionym o jeden krok jednolity (sprawdzane osobno).
 import os, time, csv, multiprocessing, importlib
 import holt_worker as HW
 importlib.reload(HW)

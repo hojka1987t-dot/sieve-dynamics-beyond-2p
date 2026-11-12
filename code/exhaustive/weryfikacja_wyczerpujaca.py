@@ -1,8 +1,8 @@
 """Wyczerpujaca weryfikacja Czesci I (sieve beyond 2p) na pelnych cyklach.
 (1) Tozsamosc ksztaltow (Tw. 3.4 i 5.1 dla WSZYSTKICH konstelacji o rozpietosci <= S):
     m_P(qN) = (q - nu_q(P)) m_P(N) + sum_K m_{P u K}(N),  K = pelna klasa mod q bez koncow.
-(2) Dla kazdej konstelacji s o rozpietosci <= S_s: prawo narodzin (Tw. 4.1), lancuch Holta na dlugosciach,
-    warunek Tw. 5.1 (brak zaludnionego ksztaltu z dwoma punktami przystajacymi mod q) i kryterium Q(s) Holta.
+(2) Dla kazdej konstelacji s o rozpietosci <= S_s: prawo narodzin (Tw. 4.1), lancuch Holta na dlugosciach
+    i warunek Tw. 5.1-5.2 (brak zaludnionego ksztaltu z dwoma punktami przystajacymi mod q).
 Uzycie: python weryfikacja_wyczerpujaca.py "2,3,5,7" 11 40 24"""
 import sys, time
 import numpy as np
@@ -37,19 +37,6 @@ def klasy(pts, q):
 
 def maska(pts): return sum(1 << (t // 2) for t in pts)
 
-def q_max(C):
-    Q = set()
-    for i in range(len(C)):
-        for j in range(i + 1, len(C)):
-            n = C[j] - C[i]; p = 2
-            while p * p <= n:
-                if n % p == 0:
-                    Q.add(p)
-                    while n % p == 0: n //= p
-                p += 1
-            if n > 1: Q.add(n)
-    return max(Q)
-
 def uruchom(primes, q, S, Ss):
     t0 = time.time()
     N, mN = ksztalty(primes, S); _, mQ = ksztalty(primes + [q], S)
@@ -81,7 +68,7 @@ def uruchom(primes, q, S, Ss):
                     if E and len({t % q for t in E}) == 1 and (E[0] % q) not in {t % q for t in Cpts}:
                         B[key] += c
     rozloz(mN, nN, True); rozloz(mQ, nQ, False)
-    st = defaultdict(int); bledy_ur = 0; holt_zle = 0; holt_dobre = 0
+    st = defaultdict(int); bledy_ur = 0
     for C, d in nN.items():
         m = len(C) - 1; nu = len({t % q for t in C})
         if nQ[C][m] != (q - nu) * d.get(m, 0) + B[C]: bledy_ur += 1
@@ -89,15 +76,11 @@ def uruchom(primes, q, S, Ss):
         lancuch = all(nQ[C].get(J, 0) == (q - J - 1) * d.get(J, 0) + (J + 1 - m) * d.get(J + 1, 0) for J in Js)
         a = not kong[C]
         st[(a, lancuch)] += 1
-        holt = q > q_max(list(C))
-        if holt and not a: holt_zle += 1
-        if holt and a: holt_dobre += 1
     nazwa = "*".join(map(str, primes))
     print(f"N={nazwa} -> q={q}: ksztaltow (rozp. <= {S}) w N: {len(mN)}, w qN: {len(mQ)}; tozsamosc ksztaltow: {len(klucze) - bledy1}/{len(klucze)} zgodnych")
     print(f"   konstelacji (rozp. <= {Ss}): {len(nN)}; prawo narodzin: {len(nN) - bledy_ur}/{len(nN)} zgodnych")
-    print(f"   warunek Tw.5.1 / lancuch Holta dokladny: tak/tak {st[(True,True)]}, tak/nie {st[(True,False)]} (powinno byc 0), "
-          f"nie/tak {st[(False,True)]} (kontrprzyklady do koniecznosci), nie/nie {st[(False,False)]}")
-    print(f"   kryterium Holta q > q_max(Q(s)): przewiduje jednolitosc {holt_dobre + holt_zle} razy, w tym bledne {holt_zle}   ({time.time() - t0:.0f} s)")
+    print(f"   warunek Tw. 5.1-5.2 / lancuch Holta dokladny: tak/tak {st[(True,True)]}, tak/nie {st[(True,False)]} (powinno byc 0), "
+          f"nie/tak {st[(False,True)]} (kontrprzyklady do koniecznosci), nie/nie {st[(False,False)]}   ({time.time() - t0:.0f} s)")
 
 if __name__ == "__main__":
     pr = [int(x) for x in sys.argv[1].split(",")]

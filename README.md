@@ -2,7 +2,7 @@
 
 **Author:** Tomasz Hojka (independent researcher)  
 **Preprint:** <https://doi.org/10.5281/zenodo.23007182> (all versions; this release accompanies version 3)  
-**Code and data:** <https://doi.org/10.5281/zenodo.23009304> (all versions; this is release v2.0.0)
+**Code and data:** <https://doi.org/10.5281/zenodo.23009304> (all versions; version 3 of the preprint uses release v2.0.0, the constellation folders were added after it)
 
 This repository contains the code, data and verification scripts that accompany the preprint.
 
@@ -42,14 +42,16 @@ Part I gives the exact transition law for **all spans**, resolved by residue cla
 | `paper/` | the paper: LaTeX source and PDF of version 3 |
 | `data/` | population matrices n(g, j) for 41#, 43#, 47# and, for g ≥ 106, for 53#–73#; exact coefficients of Holt's models (`wspolczynniki_l.csv`); witnesses for Table 2 and for the births in the bands; classifier results; verifier logs (see `data/README.md`) |
 | `data/windows/` | profiles W_N(y) for 29#–73# and the recursion for 79#, the depth map, full enumerations, depth statistics |
+| `data/constellations/` | exact populations of pairs, triples and quadruples of consecutive gaps (span ≤ 104) at 5#–47#, coefficients of Holt's models from p₀ = 47, missing constellations, survival test up to span 104 (see `data/constellations/README.md`); added after release v2.0.0 |
 | `code/engine/` | first exact method for n(g, j): dynamic programming over uncovered nodes (PyPy) |
 | `code/engine_45/` | second exact method: inclusion–exclusion over node subsets with exact integer arithmetic (CPython + numpy); stage checks `kontrola_etapu.py` |
 | `code/exhaustive/` | exhaustive verification of Part I and of Theorem 5.2 |
-| `code/survival/` | sieve up to 10⁹ and the survival tests of Section 6.4 |
+| `code/survival/` | sieve up to 10⁹ and the survival tests of Section 6.4, including the largest gaps against the threshold 2p_k + 4 (`prog_legendre.py`) |
+| `code/constellations/` | the inclusion–exclusion engine with all points of a constellation forced, notebook cells for pairs, triples and quadruples, checks of all data in `data/constellations/`; added after release v2.0.0 |
 | `code/windows/` | Part II: branch and bound for W_N(y), depth tests, certified recursion, full enumerations, depth statistics |
 | `code/ziller_verifier/` | exhaustive verifier of Ziller's table of missing differences; targeted search for pair witnesses |
 | `code/classifier/` | classifier delay / blocked birth, closure of the table, rescue check |
-| `code/sat_check/` | independent check with a SAT model solved by Google OR-Tools CP-SAT |
+| `code/sat_check/` | independent check with a SAT model solved by Google OR-Tools CP-SAT; validation of the model against brute force in G(19#) (`walidacja_brute.py`) |
 | `code/brute_force/` | full-cycle brute-force verification of the theorems, the "sieve laboratory", the audit |
 | `code/analysis/` | birth of maximal gaps, Holt's models and their coefficients (`generuj_150.py` produces Table 1 and Appendix A), Holt's Figure 6 |
 | `docs/` | working notes for version 2 of the paper (Polish); where they differ, the paper is authoritative |
@@ -59,16 +61,20 @@ Part I gives the exact transition law for **all spans**, resolved by residue cla
 Python 3.10+ and `numpy`; `ortools` for `code/sat_check`. Quick checks (minutes):
 
 ```
-cd code/brute_force && python bf.py && python kon.py && python nar.py && python pakiet.py && python audyt.py
-cd code/analysis   && python holt_models.py ../../data/nG47.csv && python holt_fig6.py
-cd code/exhaustive && python weryfikacja_wyczerpujaca.py "2,3,5,7" 11 40 40 && python test_koniecznosci.py
+cd code/brute_force    && python bf.py && python kon.py && python nar.py && python pakiet.py && python audyt.py
+cd code/analysis       && python holt_models.py ../../data/nG47.csv && python holt_fig6.py
+cd code/exhaustive     && python weryfikacja_wyczerpujaca.py "2,3,5,7" 11 40 40 && python test_koniecznosci.py
+cd code/sat_check      && python walidacja_brute.py
+cd code/constellations && python check_all.py && python models_p0_47.py
 ```
 
-`weryfikacja_wyczerpujaca.py` takes the primes of N, the prime q and the two spans; the ten calls behind Table 6 are listed in `wyniki_weryfikacji.txt`. `test_koniecznosci.py` and `test_koniecznosci_reszta.py` check the excess formula of Theorem 5.2 on the same transitions.
+`weryfikacja_wyczerpujaca.py` takes the primes of N, the prime q and the two spans; the ten calls behind Table 6 are listed in `wyniki_weryfikacji.txt`. `test_koniecznosci.py` and `test_koniecznosci_reszta.py` check the excess formula of Theorem 5.2 on the same transitions. `walidacja_brute.py` checks the SAT model with its exhaustive solver, so OR-Tools is not needed. `models_p0_47.py` rewrites `data/constellations/model_coefficients_p0_47.csv`; the result is identical to the file in the repository.
 
-Survival test: `python sito.py` (sieve up to 10⁹, writes `sito_1e9.npz`) and `python sito_konst.py`, then `test_przetrwania.py`, `test_przetrwania_konstelacje.py` and `rozrzut.py` in the same folder.
+Coefficients of Holt's models: `cd code/analysis && python generuj_150.py ../../data` writes `wspolczynniki_l.csv` (identical to `data/wspolczynniki_l.csv`) and the rows of Table 1 and Appendix A to the current folder.
 
-The engines, the verifier, the classifier and the computations of Part II were run in JupyterLab on Windows with multiprocessing. Each component consists of a cell **A**, which writes a worker module to disk, and further cells that load it and run the computation; paste them as separate notebook cells. The first engine was run under PyPy, the second requires CPython with numpy. Long runs took from minutes to about a day on 16 cores.
+Survival test: `python sito.py` (sieve up to 10⁹, writes `sito_1e9.npz`) and `python sito_konst.py`, then `test_przetrwania.py`, `test_przetrwania_konstelacje.py` and `rozrzut.py` in the same folder. `python prog_legendre.py` (its own sieve, under a minute and about 1 GB of memory) gives the largest gaps against the threshold 2p_k + 4 quoted in Section 6.4.
+
+The engines, the verifier, the classifier and the computations of Part II were run in JupyterLab on Windows with multiprocessing. Each component consists of a cell **A**, which writes a worker module to disk, and further cells that load it and run the computation; paste them as separate notebook cells. Files whose first line is `%%writefile ...` are such cells and are not plain Python scripts. In `code/windows/` the cells C, P and T use `policz_Wy` from cell B, so run A and B first in the same kernel. The first engine was run under PyPy, the second requires CPython with numpy. Long runs took from minutes to about a day on 16 cores.
 
 ## Third-party data (not included)
 
@@ -93,7 +99,7 @@ The engines, the verifier, the classifier and the computations of Part II were r
 
 The paper: T. Hojka, *Exact dynamics of Eratosthenes sieve beyond 2p: coincident fusions, births of gaps and missing differences*, preprint, version 3 (2026), doi:10.5281/zenodo.23007182.
 
-The code and data: T. Hojka, *Eratosthenes sieve dynamics beyond 2p: code, data and verification*, version v2.0.0 (2026), doi:10.5281/zenodo.23009304.
+The code and data: T. Hojka, *Eratosthenes sieve dynamics beyond 2p: code, data and verification* (2026), doi:10.5281/zenodo.23009304 (all versions; version 3 of the paper uses v2.0.0).
 
 ## AI assistance
 

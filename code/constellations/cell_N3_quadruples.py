@@ -1,6 +1,6 @@
 # KOMORKA N3: czworki kolejnych luk (rozpietosc <= 104) na etapach 5# .. 47#.
-# Etapy 5#..13#: pelne wyliczenie cyklu (numpy). Etapy 17#..43#: silnik konstelacji (kolo bazowe 13#).
-# Na kazdym etapie: suma CRT dla kazdej konstelacji i kazdej luki, oraz zgodnosc sum po parach i trojkach
+# Etapy 5#..13#: pelne wyliczenie cyklu (numpy). Etapy 17#..47#: silnik konstelacji (kolo bazowe 13#).
+# Na kazdym etapie: suma CRT dla kazdej konstelacji i kazdej luki, oraz zgodnosc sum po czworkach
 # z wierszami luk liczonymi niezaleznie (pelne wyliczenie albo silnik luk). Plik wynikowy osobno dla kazdego etapu;
 # po przerwaniu uruchomic ponownie - gotowe etapy sa pomijane. Wymaga komorki A (konst_worker 4.5-K).
 import os, sys, csv, time, multiprocessing, importlib

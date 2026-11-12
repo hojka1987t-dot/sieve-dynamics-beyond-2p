@@ -257,7 +257,7 @@ Podsumowanie: **20 brakujących różnic, wszystkie opóźnienia, zero zabójstw
 
 | Co | Jak | Wynik |
 |---|---|---|
-| Tw. 1, wersja ogólna | siłowe wypisanie całych cykli, kod niezależny od silnika; 7#→11, 11#→13, 13#→17 oraz sita z pominiętą liczbą pierwszą (bez 7, bez 5, bez 11) | 1585 komórek, 0 błędów; 462 zabójstwa i 48 ratunków rozliczonych; klasy do 5 punktów |
+| Tw. 1, wersja ogólna | siłowe wypisanie całych cykli, kod niezależny od silnika; 7#→11, 11#→13, 13#→17 oraz sita z pominiętą liczbą pierwszą (bez 7, bez 5, bez 11) | 1585 komórek, 0 błędów; 96 zabójstw (członów dwulukowych z punktem wewnętrznym w klasie końca) i 48 ratunków rozliczonych; klasy do 5 punktów |
 | Drabina progów | te same testy | pierwsze klasy 2-, 3-, 4-, 5-punktowe dokładnie przy 2q, 6q, 8q, 12q |
 | Tw. 1, reżim par | silnik zliczający; 23#→29#, 37#→41#, 41#→43#, 43#→47# | 805 komórek, 0 błędów |
 | Tw. 2 | 37#→41#, 41#→43# | 609 komórek, 0 błędów, 493 z niezerowym źródłem |

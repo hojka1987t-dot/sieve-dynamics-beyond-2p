@@ -31,10 +31,11 @@ def test(primes, q, Gmax):
         kl = defaultdict(list)
         for t in pts: kl[t % q].append(t)
         pred[(g, j)] += q - len(kl)
+        if j == 2 and (pts[1] % q == 0 or (g - pts[1]) % q == 0):
+            zab += 1      # zablokowane narodziny: czlon 2-lukowy (a, b) z 2q | a lub 2q | b - punkt wewn. w klasie konca
         for c in kl.values():
             maxkl = max(maxkl, len(c))
             if 0 in c or g in c:
-                if j == 2 and len(c) == 2: zab += 1        # czlon 2-lukowy: punkt w klasie konca
                 continue
             pred[(g, j - len(c))] += 1
             if j == 3 and len(c) == 2: rat += 1              # czlon 3-lukowy: dwa punkty wewn. razem

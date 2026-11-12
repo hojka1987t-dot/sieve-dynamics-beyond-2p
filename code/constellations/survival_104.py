@@ -1,6 +1,6 @@
 """Test przetrwania dla par i trojek kolejnych luk o rozpietosci <= 104 (rozszerzenie Tabeli 4 wersji 3, ktora siegala 40).
-Warunki poczatkowe: dokladne populacje n_{s,J}(47#) (nK47_konstelacje.csv); lancuch Holta od q = 53 (jednolity, 2q >= 106 > 104).
-Licznosci: konst104_1e9.npz (sito_konst104.py). Statystyki jak w wersji 3: dla kazdej konstelacji A = laczna liczba
+Warunki poczatkowe: dokladne populacje n_{s,J}(47#) (data/constellations/pairs_triples/nK47_constellations.csv); lancuch Holta od q = 53 (jednolity, 2q >= 106 > 104).
+Licznosci: konst104_1e9.npz (sieve_104.py). Statystyki jak w wersji 3: dla kazdej konstelacji A = laczna liczba
 w [47^2, 10^9], E = suma po przedzialach przetrwania (liczba przerw w przedziale x udzial w cyklu na etapie x^c);
 E normalizowane do sumy A osobno dla par i trojek; mediana |A-E|/E i chi^2 na stopien swobody."""
 import csv, math, os, numpy as np

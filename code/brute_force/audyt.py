@@ -20,7 +20,7 @@ def pop(P, C):
     c = Counter(len(W) - 1 for W in okna(P, C)); return dict(c)
 
 def tw4(P, C, q):
-    """Twierdzenie 4 (dla m=1 to Twierdzenie 1): przewidywane n_{s,J}(qN)."""
+    """Prawo przejscia (Tw. 3.4 wersji 3) dla czlonow konstelacji C: przewidywane n_{s,J}(qN)."""
     Cs = set(C); pr = defaultdict(int)
     for W in okna(P, C):
         kl = defaultdict(list)
@@ -39,14 +39,14 @@ if __name__ == "__main__":
         def __setitem__(self,k,v):
             super().__setitem__(k,v); print('  %-78s %s' % (k, '%s/%s' % v), flush=True)
     wyn = D_()
-    # A. Tw. 1/4 dla luk: g az do N-2, a takze g >= N; w tym wykluczony przypadek N = 2
+    # A. Tw. 3.4 dla luk: g az do N-2, a takze g >= N; w tym wykluczony przypadek N = 2
     for P, q, G in [([2], 3, 12), ([2], 5, 12), ([2,3], 5, 18), ([2,3,5], 7, 58), ([2,3,5,7], 11, 208), ([2,3,5,11], 7, 120)]:
         N = prod(P); ok = tot = 0; pow_N = 0
         for g in range(2, G + 1, 2):
             p1 = tw4(P, [0, g], q); p2 = pop(P + [q], [0, g])
             tot += 1; ok += zgodne(p1, p2); pow_N += (g >= N)
         wyn['A %s->%d (g do %d, w tym %d rozp. >= N)' % (P, q, G, pow_N)] = (ok, tot)
-    # B. Tw. 3 (narodziny) = wiersz J=1 z A - sprawdzany razem; tu osobno zbior D(qN)
+    # B. Tw. 4.1 (narodziny) = wiersz J=1 z A - sprawdzany razem; tu osobno zbior D(qN)
     for P, q in [([2], 3), ([2,3], 5), ([2,3,5], 7), ([2,3,5,7], 11), ([2,3,5,7,11], 13)]:
         N, a = wsk(P); cop = np.flatnonzero(a[:N]); gaps = np.diff(np.append(cop, cop[0] + N))
         D = set(gaps.tolist()); m = gaps % (2*q) == 0; Pn = np.flatnonzero(~m)
@@ -55,7 +55,7 @@ if __name__ == "__main__":
         ur = set((cs[nx + 1] - cs[Pn]).tolist())
         N2, a2 = wsk(P + [q]); c2 = np.flatnonzero(a2[:N2]); D2 = set(np.diff(np.append(c2, c2[0] + N2)).tolist())
         wyn['B prawo narodzin (zbiory) %s->%d, H(qN)=%d, N=%d' % (P, q, max(D2), N)] = (int(D | ur == D2), 1)
-    # D. Tw. 4 dla konstelacji o rozpietosci blisko N i powyzej N
+    # D. Tw. 3.4 dla konstelacji o rozpietosci blisko N i powyzej N
     random.seed(4)
     for P, q in [([2,3,5], 7), ([2,3,5,7], 11)]:
         N, a = wsk(P); cop = np.flatnonzero(a[:N]).tolist(); ok = tot = 0; bl = 0
@@ -67,7 +67,7 @@ if __name__ == "__main__":
             C = [t - pts[0] for t in pts]
             tot += 1; ok += zgodne(tw4(P, C, q), pop(P + [q], C))
         wyn['D konstelacje %s->%d, rozpietosc od N-12 do N+40' % (P, q)] = (ok, tot)
-    # E. Lemat 6 i Wniosek 5.1 w lancuchu 2 -> 6 -> 30 -> 210 -> 2310 -> 30030
+    # E. Lemat 4.2 i Wniosek 4.3 w lancuchu 2 -> 6 -> 30 -> 210 -> 2310 -> 30030
     lanc = [[2], [2,3], [2,3,5], [2,3,5,7], [2,3,5,7,11], [2,3,5,7,11,13]]
     konst = set()
     for m_ in (1, 2, 3):
@@ -85,7 +85,7 @@ if __name__ == "__main__":
             if obecna[i] and nu == q and obecna[i + 1]: zle.append(('przetrwala mimo niedopuszczalnosci', s, i))
         for i in range(len(lanc) - 1):
             if obecna[i] and not obecna[i + 1] and any(obecna[i + 2:]): zle.append(('wrocila po zniknieciu', s, i))
-        # pierwsze pojawienie sie: Wn. 5.1
+        # pierwsze pojawienie sie: Wn. 4.3
         for i in range(len(lanc) - 1):
             q = lanc[i + 1][-1]
             Cr = {c % q for c in C}; Cs = set(C)
@@ -96,9 +96,9 @@ if __name__ == "__main__":
             przew = (not obecna[i]) and B > 0
             fakt = obecna[i + 1] and not any(obecna[:i + 1])
             pierwsze_tot += 1; pierwsze_ok += (przew == fakt)
-    wyn['E Lemat 6: trwalosc/znikanie/powroty (%d konstelacji)' % len(konst)] = (len(konst) - len({z[1] for z in zle}), len(konst))
-    wyn['E Wniosek 5.1: pierwsze pojawienie sie w lancuchu (przypadki)'] = (pierwsze_ok, pierwsze_tot)
-    # F. Tw. 6: warunek wystarczajacy - oraz szukanie kontrprzykladu na koniecznosc
+    wyn['E Lemat 4.2: trwalosc/znikanie/powroty (%d konstelacji)' % len(konst)] = (len(konst) - len({z[1] for z in zle}), len(konst))
+    wyn['E Wniosek 4.3: pierwsze pojawienie sie w lancuchu (przypadki)'] = (pierwsze_ok, pierwsze_tot)
+    # F. Tw. 5.1: warunek wystarczajacy - oraz szukanie kontrprzykladu na koniecznosc (Tw. 5.2: nie ma takich)
     random.seed(6); suf_ok = suf_tot = 0; kontr = []
     for P, q in [([2,3,5,7], 11), ([2,3,5,7,11], 13), ([2,3,5,11,13], 7), ([2,3,7,11,13], 5)]:
         N, a = wsk(P); cop = np.flatnonzero(a[:N]).tolist(); proby = 0
@@ -115,8 +115,8 @@ if __name__ == "__main__":
             wielo = any(len({t % q for t in w}) < len(w) for w in W)
             if not wielo: suf_tot += 1; suf_ok += dokl
             elif dokl: kontr.append((P, q, tuple(C)))
-    wyn['F Tw. 6 jako warunek wystarczajacy'] = (suf_ok, suf_tot)
-    wyn['F kontrprzyklady na koniecznosc (punkty przystajace, a lancuch Holta dokladny)'] = (len(kontr), '-')
+    wyn['F Tw. 5.1 jako warunek wystarczajacy'] = (suf_ok, suf_tot)
+    wyn['F kontrprzyklady na koniecznosc w Tw. 5.2 (powinno byc 0)'] = (len(kontr), '-')
     pass
     if zle: print('  NIEZGODNOSCI:', zle[:5])
     if kontr: print('  przyklad kontrprzykladu:', kontr[0])

@@ -3,7 +3,7 @@ s = 2,10,2,10,2 and its driving terms of lengths 5, 6, 7 for p = 5, 7, 11, 13.
 
 The transitions 5->7, 7->11 and 11->13 lie outside Holt's linear model (|s| = 26 >= 2p);
 Holt lists them as computed values. Here they are derived from the previous stage by
-Theorem 4 (transition law with residue classes) and compared with brute force.
+Theorem 3.4 (transition law with residue classes) and compared with brute force.
 
 Usage: python holt_fig6.py
 """
@@ -29,5 +29,5 @@ for (P, p), (Pn, q) in zip(stages[:-1], stages[1:]):
     a = tuple(pred.get(j, 0) for j in (5, 6, 7))
     b = tuple(fact.get(j, 0) for j in (5, 6, 7))
     status = "MATCH" if a == b == HOLT[q] else "DIFFERENT"
-    print("p=%-2d: Theorem 4 %s, brute force %s, Holt %s -> %s (multi-point fusions: %d)"
+    print("p=%-2d: Theorem 3.4 %s, brute force %s, Holt %s -> %s (multi-point fusions: %d)"
           % (q, a, b, HOLT[q], status, multi))

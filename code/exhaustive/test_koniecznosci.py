@@ -1,4 +1,4 @@
-"""Sprawdzenie dowodu koniecznosci w Tw. 5.1: dla kazdej konstelacji s, dla ktorej istnieje zaludniony ksztalt
+"""Sprawdzenie dowodu koniecznosci w Tw. 5.2 (wzor na nadwyzke): dla kazdej konstelacji s, dla ktorej istnieje zaludniony ksztalt
 z dwoma punktami przystajacymi mod q, niech J* = najwieksza dlugosc takiego ksztaltu. Wtedy
 n_{s,J*}(qN) - [(q-J*-1) n_{s,J*}(N) + (J*+1-m) n_{s,J*+1}(N)] = sum_{P przystajace, dl. J*} m_P (|P| - nu_q(P)) > 0."""
 import sys

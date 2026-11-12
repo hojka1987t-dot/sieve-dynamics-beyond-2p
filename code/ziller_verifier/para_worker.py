@@ -90,10 +90,11 @@ def para_sektor(args):
         v0 = cel
         if v0 >= koniec: break
         okien += 1; wez = [buf[j % BUF] - v0 for j in range(t + 1, n - 1)]
+        licznik[0] = 0                                   # budzet osobno dla kazdego okna
         try:
             res = csp_jeden_wolny(wez, fale, L, q, budzet, licznik)
         except Budzet:
-            przekroczono = True; licznik[0] = 0; continue
+            przekroczono = True; continue
         if res:
             ui, asg = res; u = wez[ui]
             V = W.zloz_crt(v0, L, asg + [(q, u % q)], fale + [q], P)

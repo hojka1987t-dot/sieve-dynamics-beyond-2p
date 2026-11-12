@@ -2,7 +2,7 @@
 # KOMORKA A - zapis workera. Uruchom, potem komorke B.
 # =====================================================================
 kod = r'''
-WERSJA = "3.1"
+WERSJA = "3.2"   # 3.2: koniec okna liczony modulo Pb (wczesniej okna gubione, gdy L > Pb)
 
 from math import gcd
 
@@ -91,12 +91,10 @@ def zadanie_L(args):
         Pb *= p
     fale = pr[r_base:k]
     oc = [v for v in range(1, Pb + 1) if gcd(v, Pb) == 1]
-    ocs = set(oc)
     tot = 0
     okien = 0
     for v0 in oc:
-        w2 = v0 + L if v0 + L <= Pb else v0 + L - Pb
-        if w2 not in ocs:
+        if gcd(v0 + L, Pb) != 1:          # koniec okna musi przetrwac kolo bazowe (dziala dla dowolnego L)
             continue
         wez = [i for i in range(1, L) if gcd(v0 + i, Pb) == 1]
         if wezly_max and len(wez) > wezly_max:

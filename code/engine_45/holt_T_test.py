@@ -1,11 +1,28 @@
 # KOMORKA T - porownanie workerow 4.1 i 4.5 okno po oknie: przy 53# (arytmetyka int64) i przy 73#, 79#
-# (iloczyn klas > 2^63, czyli sciezka wielomodularna). Wymaga holt_A_41.py i holt_A_45.py obok.
-import random, time, importlib
+# (iloczyn klas > 2^63, czyli sciezka wielomodularna).
+# Zrodla workerow: 4.5 - holt_A_45.py (ten folder); 4.1 - holt_A_41.py, jesli lezy obok,
+# a w przeciwnym razie code/engine/holt_A.py z repozytorium (to ta sama komorka A wersji 4.1).
+import os, random, time, importlib
 from math import gcd, prod
+
+ZRODLA = {"41": ["holt_A_41.py", os.path.join("..", "engine", "holt_A.py")],
+          "45": ["holt_A_45.py"]}
+
+
+def _zrodlo(wersja):
+    for sciezka in ZRODLA[wersja]:
+        if os.path.exists(sciezka):
+            return sciezka
+    raise FileNotFoundError("brak komorki A wersji %s: szukano %s" % (wersja, ZRODLA[wersja]))
+
+
 for wersja in ("41", "45"):
-    src = open("holt_A_%s.py" % wersja, encoding="utf-8").read()
+    with open(_zrodlo(wersja), encoding="utf-8") as f:
+        src = f.read()
     kod = src.split("kod = r'''", 1)[1].split("'''", 1)[0]
-    open("holt_worker_%s.py" % wersja, "w", encoding="utf-8").write(kod)
+    with open("holt_worker_%s.py" % wersja, "w", encoding="utf-8") as f:
+        f.write(kod)
+importlib.invalidate_caches()
 import holt_worker_41 as A, holt_worker_45 as E
 importlib.reload(A); importlib.reload(E)
 random.seed(1)

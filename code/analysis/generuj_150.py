@@ -2,7 +2,8 @@
 Zrodla (kazde sprawdzone osobno: suma CRT, momenty k <= 4, luki kontrolne):
   g <= 104: nG47.csv (p0 = 47); 106-112: nG53_106_112.csv (metoda 1, = metoda 2); 114-116: nG53_45.csv;
   118-120: nG59_45.csv; 122-132: nG61_45.csv; 134-140: nG67_45.csv; 142-144: nG71_45.csv; 146-150: nG73_45.csv.
-Wynik: wspolczynniki_l.csv (dokladne ulamki), tabela1_wiersze.tex, dodatekA_wiersze.tex."""
+Wynik: wspolczynniki_l.csv (dokladne ulamki), tabela1_wiersze.tex, dodatekA_wiersze.tex - w biezacym folderze.
+Uruchomienie: python generuj_150.py <folder z plikami nG*.csv>, np. z code/analysis: python generuj_150.py ../../data"""
 import csv, os, sys
 from fractions import Fraction
 from math import comb, prod

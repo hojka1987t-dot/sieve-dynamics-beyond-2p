@@ -6,10 +6,12 @@ All files in this folder were computed in this project. Third-party data are not
 
 Format of Holt's tables: one row per span, `Gap Sum = g`; column `Totals` is the sum over lengths; columns `Length = j` give
 n_{g,j}(p#), the number of driving terms of span g consisting of j consecutive gaps in one period of the cycle G(p#). Empty cells are zero.
+The files `nG53_106_112.csv` and `nG*_45.csv` have no header row: each row is `Gap Sum = g`, the total, and then the
+values for lengths j = 1, 2, 3, ...
 
 | File | Stage | Spans | Method |
 |---|---|---|---|
-| `nG41.csv`, `nG41_92.csv`, `nG41_110.csv` | G(41#) | g <= 82, 92, 110 | first |
+| `nG41.csv`, `nG41_92.csv`, `nG41_110.csv` | G(41#) | g <= 84, 92, 110 | first |
 | `nG43.csv`, `nG43_104.csv` | G(43#) | g <= 92, 104 | first |
 | `nG47.csv` | G(47#) | g <= 104 (initial conditions p0 = 47) | first |
 | `nG53_106_112.csv` | G(53#) | controls 20, 30, 40; 106-112 (written by `code/engine/holt_C_53.py` as `nG53_nowe.csv`) | first |
@@ -50,11 +52,20 @@ Used to verify the transition law in the band 2q <= g < 4q.
 - `klasyfikacja_pasm_k20_27.json` - all 54 new differences h(k-1) < g <= h(k) for 20 <= k <= 27: a pair witness (`para`),
   a coincident witness (`koincydentne`) where one is known, and the route (`droga`).
 - `closure_k30_326.json` - the pair sum 326 at k = 30 (also contained in `swiadkowie_M2.json`).
+- `domkniecie.json` - closure of the bands for k+1 = 26, 27: for every present difference g the route (`typ`: `PARA` pair,
+  `RATUNEK` coincident triple), the constellation and its witness X (second convention below).
 
-**Witness convention.** A witness is an integer X. The gap g occurs in G(p_k#) at X if X and X + g are coprime to p_k#
-and every integer strictly between them has a common factor with p_k#. The constellation lists the gaps that the same
-interval spans at the previous stage, that is, with respect to p_{k-1}#: one interior point for a pair, two points at
-distance 2p_k for a coincident birth. Every witness can be checked with `gcd` alone.
+**Witness convention.** A witness is an integer X. In most files X is the start of the gap itself: the gap g occurs in
+G(p_k#) at X if X and X + g are coprime to p_k# and every integer strictly between them has a common factor with p_k#.
+The constellation lists the gaps that the same interval spans at the previous stage, that is, with respect to p_{k-1}#:
+one interior point for a pair, two points at distance 2p_k for a coincident birth.
+
+**Second convention.** In the entries k+1 = 20, 21, 22, 30 of `swiadkowie_M2.json`, in `closure_k30_326.json` and in all
+of `domkniecie.json`, X is the start of the constellation itself in G(p_k#), the stage before the birth: X, the interior
+points of the constellation and its end are coprime to p_k#, and every other integer between X and X + g has a common
+factor with p_k#. The gap g is then born at stage p_{k+1}# in the lift in which q = p_{k+1} removes the interior points
+(Theorem 4.1); the corresponding start is obtained by the Chinese remainder theorem. Every witness of either kind can be
+checked with `gcd` alone.
 
 ## `verification_logs/`
 
@@ -68,9 +79,11 @@ validation against Holt's G(37#) data (`waliacja.txt`).
   optimal window: position t in [0, y] is removed by the prime l exactly when t = a_l (mod l). Computed by branch and bound
   (`code/windows/`). `profil_rek_z79.txt` was computed by the certified recursion; columns as in its header
   (y, W_79#(y), last level J, certificate, C_0..C_J, time in seconds).
-- `mapa_glebokosci.txt` - the recursion chain 13# -> 37# for long windows (Table 8); columns as in its header
+- `mapa_glebokosci.txt` - the recursion chain 13# -> 37# for long windows (Table 9); columns as in its header
   (q, y, W, depth, certificate, C_0..C_J, time).
 - `full_enumeration/szt_wyniki_r{7,8,9}.txt` - complete enumeration for N = 17#, 19#, 23#: y, W_N(y), W_qN(y), depths of the
   ancestors of the optimal windows, the largest class C_j at each level (as `j:C_j`), completeness flag, windows checked.
+  `szt_wyniki_r7.txt` and `szt_wyniki_r8.txt` were written by `sztywnosc3.py`; `szt_wyniki_r9.txt` was written by
+  `szt_partie.py` and has no last column (windows checked).
 - `depth_analysis/` - `dane_q{13,17,19}.json`: one record per length, [y, n, S(n), capacity increase (0/1), W, C_0, C_1,
   C_2, depth]; `krotnosci.json`: the number of optimal windows for each length. Used for the depth statistics of Section 9.

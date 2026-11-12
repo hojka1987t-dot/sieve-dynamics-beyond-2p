@@ -1,8 +1,8 @@
 import multiprocessing, time, json, importlib
 import klas_worker as KW
 importlib.reload(KW)
-if getattr(KW, "WERSJA", "0") < "6.0":
-    raise ImportError("klas_worker.py to stara wersja albo uciety plik.")
+if getattr(KW, "WERSJA", "0") < "6.2":
+    raise ImportError("klas_worker.py to stara wersja albo uciety plik - uruchom najpierw komorke A z domk_A.py (wersja 6.2).")
 
 # brakujace roznice Zillera od k+1 = 20 (wczesniej zabojstwa sa niemozliwe z twierdzenia)
 # (k+1, g, etap k, baza) - bazy jak w weryfikatorze

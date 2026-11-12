@@ -4,8 +4,7 @@
 
 - **`holt_A_45.py`**: komórka A, zapisuje `holt_worker.py` w wersji 4.5. Interfejs `rozklad_csp` i `zadanie` jest ten sam co w 4.1.
 - **`holt_C_etap.py`**: komórka C dla dowolnego etapu (`K`, `BAZA`, `LUKI`). Zapis po każdej luce, z możliwością wznowienia. Uruchomienie: `licz()`.
-- **`holt_T_test.py`**: porównuje 4.1 i 4.5 okno po oknie, także tam, gdzie int64 nie wystarcza (73#, 79#).
-- **`holt_A_41.py`**: Twoja komórka A, potrzebna do testu.
+- **`holt_T_test.py`**: porównuje 4.1 i 4.5 okno po oknie, także tam, gdzie int64 nie wystarcza (73#, 79#). Uruchamiać z tego folderu. Komórkę A wersji 4.1 bierze z `../engine/holt_A.py` (albo z `holt_A_41.py`, jeśli leży obok).
 - **`sufit_45.py`**: szacunek czasu, np. `python sufit_45.py 16 10` (16 rdzeni, 10 ns na operację).
 - **`nG59_118_120.csv`**: n_{g,j}(59#) dla g = 118 i 120, policzone tutaj i sprawdzone momentami CRT dla k = 0..4.
 

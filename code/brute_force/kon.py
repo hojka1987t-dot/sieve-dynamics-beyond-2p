@@ -51,7 +51,7 @@ def test(primes, q, ile=40, seed=1):
     return kom, bl, nl
 
 if __name__ == "__main__":
-    print("Twierdzenie 1 dla KONSTELACJI (rozpietosci 2q..5q), sprawdzenie silowe")
+    print("Prawo przejscia (Tw. 3.4) dla KONSTELACJI (rozpietosci 2q..5q), sprawdzenie silowe")
     for P, q in [([2,3,5,7], 11), ([2,3,5,7,11], 13), ([2,3,5,7,11,13], 17), ([2,3,5,11,13], 7)]:
         k, b, n = test(P, q)
         print("  %-22s -> %2d : 40 konstelacji, komorek %4d, bledow %d, zlan wielopunktowych %d" % (str(P), q, k, b, n), flush=True)

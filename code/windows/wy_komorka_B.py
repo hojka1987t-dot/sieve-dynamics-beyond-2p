@@ -97,8 +97,7 @@ def siatka_Wy(lista_y, lista_z, watki=None, plik="wy_siatka.txt"):
     print("      y     z  ile p       r     W_y   a_p=0   iloraz      czas")
     wyn = []
     with open(plik, "a") as f:
-        f.write("# y z ile_p r W_y trywialne iloraz czas\
-")
+        f.write("# y z ile_p r W_y trywialne iloraz czas\n")
     for y in lista_y:
         for z in lista_z:
             if z >= y:
@@ -114,8 +113,7 @@ def siatka_Wy(lista_y, lista_z, watki=None, plik="wy_siatka.txt"):
                   % (y, z, len(P), r, Wv, triv, Wv / triv, dt))
             wyn.append((y, z, len(P), r, Wv, triv, Wv / triv))
             with open(plik, "a") as f:
-                f.write("%d %d %d %.4f %d %d %.6f %.1f\
-"
+                f.write("%d %d %d %.4f %d %d %.6f %.1f\n"
                         % (y, z, len(P), r, Wv, triv, Wv / triv, dt))
     print()
     print("  zapisane do %s" % plik)

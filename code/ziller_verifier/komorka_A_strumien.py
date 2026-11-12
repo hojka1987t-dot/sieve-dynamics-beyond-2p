@@ -9,7 +9,7 @@ Metoda niezalezna od AGPA Zillera: enumeracja okien w kole bazowym
 """
 from math import gcd
 
-WERSJA = "2.0"
+WERSJA = "2.1"   # 2.1: budzet krokow dfs liczony osobno dla kazdego okna (wczesniej wspolny dla calego sektora)
 
 
 class BudzetWyczerpany(Exception):
@@ -221,6 +221,7 @@ def zadanie_L(args):
     Pamiec stala - nie powstaje zadna tablica ocalalych.
     rozstrzygniete: wspoldzielony slownik L -> True; jesli inny sektor
     znalazl juz swiadka dla tego L, ten konczy natychmiast.
+    budzet: limit krokow dfs dla JEDNEGO okna; 'krokow' w wyniku to suma po oknach sektora.
     """
     k, r_base, L, budzet, sektor, _nieuzywane, rozstrzygniete = args
     od = sektor
@@ -237,7 +238,7 @@ def zadanie_L(args):
     P = P_prev * top
     koniec_sektora = 1 + (sektor + 1) * P_prev
 
-    licznik = [0]; okien = 0
+    licznik = [0]; okien = 0; krokow = 0
     przekroczono = False; swiadek = None
 
     # bufor przesuwny: wystarczy L//2+2 pozycji, bo najmniejsza luka to 2
@@ -262,12 +263,13 @@ def zadanie_L(args):
                 break                     # poczatek juz poza sektorem - to zadanie sasiada
             okien += 1
             wez = [buf[q % BUF] - v0 for q in range(t + 1, n - 1)]
+            licznik[0] = 0                    # budzet osobno dla kazdego okna
             try:
                 ok, asg = solve_csp(wez, fale, L, budzet, licznik)
             except BudzetWyczerpany:
                 przekroczono = True
                 ok, asg = False, []
-                licznik[0] = 0
+            krokow += licznik[0]
             if ok:
                 swiadek = (v0, asg)
                 if rozstrzygniete is not None:
@@ -279,7 +281,7 @@ def zadanie_L(args):
         P_target *= p
 
     wynik = {'L': L, 'k': k, 'r_base': r_base, 'od': od, 'do': None, 'okien': okien,
-             'krokow': licznik[0], 'budzet_przekroczony': przekroczono,
+             'krokow': krokow, 'budzet_przekroczony': przekroczono,
              'wystepuje': swiadek is not None, 'V': None, 'zweryfikowane': None,
              'pominiete': False}
     if swiadek:

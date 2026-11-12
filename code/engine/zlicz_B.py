@@ -4,8 +4,8 @@ import importlib
 import zlicz_worker as Z
 
 importlib.reload(Z)
-if getattr(Z, "WERSJA", "0") < "3.1":
-    raise ImportError("zlicz_worker.py na dysku to stara wersja albo uciety plik.")
+if getattr(Z, "WERSJA", "0") < "3.2":
+    raise ImportError("zlicz_worker.py na dysku to stara wersja albo uciety plik - uruchom najpierw komorke A.")
 
 # h(k) i n_seq z pliku remainders.txt Zillera - do kontroli
 H = {6:22, 7:26, 8:34, 9:40, 10:46, 11:58, 12:66, 13:74, 14:90, 15:100,

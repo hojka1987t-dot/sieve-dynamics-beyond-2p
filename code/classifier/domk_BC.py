@@ -1,8 +1,8 @@
 import multiprocessing, time, json, importlib
 import klas_worker as KW
 importlib.reload(KW)
-if getattr(KW, "WERSJA", "0") < "6.1":
-    raise ImportError("klas_worker.py to stara wersja - uruchom najpierw komorke A.")
+if getattr(KW, "WERSJA", "0") < "6.2":
+    raise ImportError("klas_worker.py to stara wersja - uruchom najpierw komorke A (wersja 6.2).")
 
 H = {19:152, 20:174, 21:190, 22:200, 23:216, 24:234, 25:258, 26:264, 27:282, 28:300, 29:312, 30:330}
 BRAK = {20:[166,170,172], 21:[182,186,188], 22:[194], 23:[], 24:[230], 25:[254,256],
@@ -41,13 +41,17 @@ def domknij(od=20, do=30, watki=None, budzet=10**9, plik='domkniecie.json'):
             if r and r['zweryfikowane']:
                 t = r['wolne'][0]; typ = 'PARA'; opis = '(%d,%d)' % (t, g - t)
             else:
+                przekr_pary = przekr                # czy szukanie par bylo pelne (bez przekroczenia budzetu)
                 typ = None; opis = ''
                 for u in range(2, g - dq - 1, 2):
-                    r2, p2, o2 = _rownolegle(KW.zadanie_wolne,
-                                             (k, rb, g, (u, u + dq), budzet), top, watki)
+                    r2, p2, _ = _rownolegle(KW.zadanie_wolne,
+                                            (k, rb, g, (u, u + dq), budzet), top, watki)
                     przekr |= p2
                     if r2 and r2['zweryfikowane']:
-                        r = r2; typ = 'RATUNEK'; opis = '(%d,%d,%d)' % (u, dq, g - dq - u); break
+                        r = r2; opis = '(%d,%d,%d)' % (u, dq, g - dq - u)
+                        # 'RATUNEK' = narodziny WYLACZNIE przez trojke - tylko gdy szukanie par bylo pelne
+                        typ = 'NIEPEWNE' if przekr_pary else 'RATUNEK'
+                        break
                 if typ is None:
                     typ = 'NIEPEWNE' if przekr else 'SPRZECZNOSC'
             licz[typ] += 1
@@ -60,6 +64,7 @@ def domknij(od=20, do=30, watki=None, budzet=10**9, plik='domkniecie.json'):
     print("PODSUMOWANIE:", licz)
     print("  PARA        - roznica urodzila sie jako suma dwoch sasiednich luk (prawo proste)")
     print("  RATUNEK     - urodzila sie WYLACZNIE przez trojke z luka 2q w srodku")
+    print("  NIEPEWNE    - budzet przekroczony (np. trojka jest, ale szukanie par nie bylo pelne)")
     print("  SPRZECZNOSC - nie znaleziono zadnej drogi narodzin (nie powinno sie zdarzyc)")
     return wyniki
 

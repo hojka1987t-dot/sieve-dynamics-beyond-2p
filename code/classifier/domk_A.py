@@ -1,4 +1,4 @@
-# KOMORKA A - zapis workera 6.1 (klasyfikator + domkniecie). Uruchom, potem komorke B.
+# KOMORKA A - zapis workera 6.2 (klasyfikator + domkniecie). Uruchom, potem komorke B.
 kod = r'''"""
 Klasyfikator brakujacych roznic - worker.
 Sprawdza, czy dana roznica L wystepuje jako roznica miedzy kolejnymi
@@ -9,7 +9,7 @@ Metoda niezalezna od AGPA Zillera: enumeracja okien w kole bazowym
 """
 from math import gcd
 
-WERSJA = "6.1"
+WERSJA = "6.2"   # 6.2: budzet krokow liczony osobno dla kazdego okna / wywolania CSP (wczesniej wspolny dla sektora)
 
 
 class BudzetWyczerpany(Exception):
@@ -231,10 +231,11 @@ def zadanie_konst(args):
             wez = [buf[qq % BUF] - v0 for qq in range(t + 1, n - 1)]
             if a not in wez: continue
             wez.remove(a); okien += 1
+            licznik[0] = 0                                  # budzet osobno dla kazdego okna
             try:
                 ok, asg = solve_csp_z(wez, fale, (0, a, g), budzet, licznik)
             except BudzetWyczerpany:
-                przekr = True; ok = False; licznik[0] = 0
+                przekr = True; ok = False
             if ok:
                 swiadek = (v0, asg)
                 if rozstrz is not None: rozstrz[klucz] = True
@@ -299,10 +300,11 @@ def zadanie_wolne(args):
         if any(w not in wez for w in wolne): continue
         okien += 1
         wz = [w for w in wez if w not in wolne]
+        licznik[0] = 0                                      # budzet osobno dla kazdego okna
         try:
             ok, asg = solve_csp_z(wz, fale, (0, g) + tuple(wolne), budzet, licznik)
         except BudzetWyczerpany:
-            przekr = True; ok = False; licznik[0] = 0
+            przekr = True; ok = False
         if ok:
             if rozstrz is not None: rozstrz[klucz] = True
             X, wer = _swiadek(k, r_base, g, wolne, v0, asg)
@@ -325,10 +327,11 @@ def zadanie_para(args):
         okien += 1
         for t in kand:
             wz = [w for w in wez if w != t]
+            licznik[0] = 0                                  # budzet osobno dla kazdego wywolania CSP (jak w rat_A)
             try:
                 ok, asg = solve_csp_z(wz, fale, (0, t, g), budzet, licznik)
             except BudzetWyczerpany:
-                przekr = True; ok = False; licznik[0] = 0
+                przekr = True; ok = False
             if ok:
                 if rozstrz is not None: rozstrz[klucz] = True
                 X, wer = _swiadek(k, r_base, g, (t,), v0, asg)
